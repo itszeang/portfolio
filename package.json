@@ -1,0 +1,27 @@
+{
+  "name": "burak-alp-yahsi-portfolio",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --configLoader runner",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1 --configLoader runner"
+  },
+  "dependencies": {
+    "@fontsource-variable/bricolage-grotesque": "^5.2.0",
+    "@fontsource-variable/dm-sans": "^5.2.0",
+    "@fontsource/ibm-plex-mono": "^5.2.0",
+    "lucide-react": "^0.468.0",
+    "motion": "^12.23.12",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.13",
+    "@types/react-dom": "^19.1.9",
+    "@vitejs/plugin-react": "^5.0.3",
+    "typescript": "~5.9.2",
+    "vite": "^7.1.7"
+  }
+}
