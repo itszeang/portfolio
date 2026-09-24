@@ -30,6 +30,8 @@ import {
   Layers3,
   Sparkles,
   Send,
+  Mail,
+  Phone as PhoneIcon,
 } from "lucide-react";
 import {
   BackgroundPaths,
@@ -51,6 +53,7 @@ import {
   ScrollProgress,
   useSpotlight,
 } from "./components/effects";
+import { Dock, XLogo } from "./components/dock";
 import { projects, experience, certificates, type Project } from "./data";
 
 const nav = [
@@ -956,15 +959,32 @@ function Contact() {
               {copied}
             </span>
           </div>
-          <div className="social-links">
-            <External href="https://github.com/burakalpyahsi">
-              GitHub <Github size={14} />
-            </External>
-            <External href="https://x.com/itszeang">X</External>
-            <a href="tel:+905073975060">
-              Telefon <ArrowUpRight size={16} />
-            </a>
-          </div>
+          <Dock
+            links={[
+              {
+                label: "GitHub",
+                href: "https://github.com/burakalpyahsi",
+                icon: <Github size={18} />,
+                external: true,
+              },
+              {
+                label: "X",
+                href: "https://x.com/itszeang",
+                icon: <XLogo size={16} />,
+                external: true,
+              },
+              {
+                label: "E-posta",
+                href: "mailto:hello@burakalpyahsi.com",
+                icon: <Mail size={18} />,
+              },
+              {
+                label: "Telefon",
+                href: "tel:+905073975060",
+                icon: <PhoneIcon size={18} />,
+              },
+            ]}
+          />
         </div>
         <div className="footer-line">
           <span>© 2026 Burak Alp Yahşi</span>

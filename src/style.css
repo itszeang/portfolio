@@ -1,5 +1,5 @@
 :root {
-  font-family: "DM Sans Variable", sans-serif;
+  font-family: "Geist Variable", system-ui, sans-serif;
   color: #22241f;
   background: #f5f4ef;
   font-synthesis: none;
@@ -12,8 +12,8 @@
   --line: #deded5;
   --blue: #2948ed;
   --blue-hover: #1734cf;
-  --serif: "Bricolage Grotesque Variable", sans-serif;
-  --mono: "IBM Plex Mono", monospace;
+  --serif: "Geist Variable", system-ui, sans-serif;
+  --mono: "Geist Mono Variable", ui-monospace, monospace;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   color-scheme: light;
 }
@@ -1454,7 +1454,7 @@ details[open] .details-plus {
   letter-spacing: -0.2px;
 }
 .language-info h3 span {
-  font-family: "DM Sans Variable", sans-serif;
+  font-family: "Geist Variable", system-ui, sans-serif;
   font-size: 12px;
   font-weight: 400;
   color: var(--muted);
@@ -3499,5 +3499,268 @@ details[open] .details-plus {
     max-width: 100%;
     overflow-x: auto;
     scrollbar-width: none;
+  }
+}
+
+/* ==========================================================================
+   Liquid-glass buttons — dark smoked glass with a lit bottom rim and a faint
+   text reflection; frosted white glass in the light theme.
+   ========================================================================== */
+:root {
+  --gb-fill: linear-gradient(180deg, rgba(255, 255, 255, 0.62), rgba(255, 255, 255, 0.28));
+  --gb-text: #1d1b2b;
+  --gb-border: rgba(30, 26, 60, 0.09);
+  --gb-shadow:
+    inset 0 10px 18px -10px rgba(40, 30, 90, 0.16),
+    inset 0 -1.5px 1px rgba(255, 255, 255, 0.95),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 10px 24px -10px rgba(40, 30, 90, 0.28);
+  --gb-shadow-hover:
+    inset 0 10px 18px -10px rgba(40, 30, 90, 0.2),
+    inset 0 -2px 2px #fff,
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    0 14px 30px -10px rgba(40, 30, 90, 0.34);
+  --gb-reflect: 0 6px 7px rgba(40, 30, 90, 0.12);
+}
+:root[data-theme="dark"],
+.featured-project,
+.hero-art,
+.project-art {
+  --gb-fill: linear-gradient(180deg, rgba(22, 20, 32, 0.62), rgba(8, 7, 14, 0.38));
+  --gb-text: #f3f1fa;
+  --gb-border: rgba(255, 255, 255, 0.07);
+  --gb-shadow:
+    inset 0 10px 18px -6px rgba(0, 0, 0, 0.75),
+    inset 0 -1.5px 1px rgba(255, 255, 255, 0.3),
+    inset 0 -9px 14px -9px rgba(255, 255, 255, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 8px 22px -6px rgba(0, 0, 0, 0.65);
+  --gb-shadow-hover:
+    inset 0 10px 18px -6px rgba(0, 0, 0, 0.7),
+    inset 0 -2px 1.5px rgba(255, 255, 255, 0.45),
+    inset 0 -10px 16px -9px rgba(255, 255, 255, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 12px 28px -6px rgba(0, 0, 0, 0.7);
+  --gb-reflect: 0 7px 7px rgba(255, 255, 255, 0.16);
+}
+/* The contact band stays light in both themes. */
+.contact-wrap {
+  --gb-fill: linear-gradient(180deg, rgba(255, 255, 255, 0.62), rgba(255, 255, 255, 0.28));
+  --gb-text: #1d1b2b;
+  --gb-border: rgba(30, 26, 60, 0.09);
+  --gb-shadow:
+    inset 0 10px 18px -10px rgba(40, 30, 90, 0.16),
+    inset 0 -1.5px 1px rgba(255, 255, 255, 0.95),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 10px 24px -10px rgba(40, 30, 90, 0.28);
+  --gb-reflect: 0 6px 7px rgba(40, 30, 90, 0.12);
+}
+
+.button,
+.button-blue,
+.button-ink,
+.header-contact,
+.theme-button,
+.icon-button,
+.mobile-menu,
+.showcase-open,
+.project-art-arrow,
+.email-group > button {
+  background: var(--gb-fill);
+  color: var(--gb-text);
+  border: 1px solid var(--gb-border);
+  border-radius: 999px;
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+  backdrop-filter: blur(10px) saturate(140%);
+  box-shadow: var(--gb-shadow);
+  text-shadow: var(--gb-reflect);
+  transition:
+    box-shadow 0.25s var(--ease),
+    transform 0.2s var(--ease),
+    background 0.25s;
+}
+[data-theme="dark"] .button-blue {
+  color: var(--gb-text);
+}
+.button:hover,
+.header-contact:hover,
+.theme-button:hover,
+.icon-button:hover:not(:disabled),
+.mobile-menu:hover,
+.showcase-open:hover,
+.email-group > button:hover {
+  background: var(--gb-fill);
+  box-shadow: var(--gb-shadow-hover);
+  transform: translateY(-1px);
+}
+.button:active,
+.header-contact:active,
+.theme-button:active,
+.icon-button:active,
+.mobile-menu:active,
+.showcase-open:active,
+.email-group > button:active {
+  transform: scale(0.97);
+}
+.button svg,
+.header-contact svg,
+.theme-button svg,
+.icon-button svg,
+.showcase-open svg {
+  filter: drop-shadow(var(--gb-reflect));
+}
+.button {
+  gap: 14px;
+  padding: 14px 24px;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.2px;
+  min-height: 52px;
+}
+/* Primary: same glass, lifted by a faint accent glow in the lower rim. */
+.button-primary {
+  box-shadow:
+    var(--gb-shadow),
+    inset 0 -14px 22px -14px color-mix(in srgb, var(--blue) 70%, transparent),
+    0 12px 36px -14px color-mix(in srgb, var(--blue) 60%, transparent);
+}
+.button-primary:hover {
+  box-shadow:
+    var(--gb-shadow-hover),
+    inset 0 -16px 24px -12px color-mix(in srgb, var(--blue) 80%, transparent),
+    0 14px 40px -12px color-mix(in srgb, var(--blue) 70%, transparent);
+}
+.project-bottom .button {
+  font-size: 13px;
+  min-height: 46px;
+  padding: 11px 18px;
+}
+.header-contact {
+  font-weight: 500;
+}
+.theme-button,
+.icon-button,
+.mobile-menu,
+.email-group > button {
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  padding: 0;
+}
+.showcase-open {
+  width: 44px;
+  height: 44px;
+}
+.showcase-open:hover {
+  transform: translateY(-1px) rotate(45deg);
+}
+.project-art-arrow {
+  width: 40px;
+  height: 40px;
+}
+.icon-button:disabled {
+  box-shadow: none;
+}
+@media (max-width: 650px) {
+  .mobile-menu {
+    display: inline-flex;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--gb-border);
+  }
+  .button {
+    min-height: 50px;
+  }
+}
+.theme-button,
+.icon-button,
+.email-group > button {
+  display: inline-flex;
+}
+
+/* Geist runs wider and tighter than the previous display face. */
+h1 {
+  letter-spacing: -0.045em;
+}
+h2 {
+  letter-spacing: -0.035em;
+}
+.contact h2 {
+  letter-spacing: -0.04em;
+}
+.icon-button.mobile-menu {
+  display: none;
+}
+@media (max-width: 650px) {
+  .icon-button.mobile-menu {
+    display: inline-flex;
+  }
+}
+
+/* Footer dock */
+.dock {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  height: 64px;
+  padding: 10px 12px;
+  border-radius: 22px;
+  background: var(--gb-fill);
+  border: 1px solid var(--gb-border);
+  box-shadow: var(--gb-shadow);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  backdrop-filter: blur(12px) saturate(140%);
+}
+.dock-item {
+  position: relative;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  color: #1d1b2b;
+  background: linear-gradient(180deg, #fff, #f1f0f6);
+  border: 1px solid rgba(30, 26, 60, 0.08);
+  box-shadow:
+    inset 0 -1.5px 1px rgba(30, 26, 60, 0.08),
+    0 6px 14px -6px rgba(30, 26, 60, 0.35);
+}
+.dock-icon {
+  display: flex;
+}
+.dock-tip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  translate: -50% 4px;
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  color: #f3f1fa;
+  background: #1d1b2b;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.18s,
+    translate 0.18s var(--ease);
+}
+.dock-item:hover .dock-tip,
+.dock-item:focus-visible .dock-tip {
+  opacity: 1;
+  translate: -50% 0;
+}
+.dock-item:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 3px;
+}
+@media (max-width: 650px) {
+  .dock {
+    align-self: flex-start;
   }
 }

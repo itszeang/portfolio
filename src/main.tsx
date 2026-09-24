@@ -1,8 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "@fontsource-variable/bricolage-grotesque";
-import "@fontsource-variable/dm-sans";
-import "@fontsource/ibm-plex-mono/400.css";
+import "@fontsource-variable/geist";
+import "@fontsource-variable/geist-mono";
 import App from "./App";
 import "./style.css";
 const root = document.getElementById("root")!;
