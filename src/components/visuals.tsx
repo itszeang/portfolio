@@ -5,7 +5,6 @@ import {
   Cpu,
   Check,
   Radio,
-  Smartphone,
 } from "lucide-react";
 
 export function Phone({
@@ -35,7 +34,6 @@ export function ReviewVisual({ hero = false }: { hero?: boolean }) {
     <div className={`review-visual ${hero ? "hero-review" : ""}`}>
       <div className="orbit orbit-one" />
       <div className="orbit orbit-two" />
-      <span className="visual-coordinate mono">01 / BAĞLANTI NOKTASI</span>
       <div className="phone-pair">
         <Phone index={2} className="back-phone" eager={hero} />
         <Phone index={1} className="front-phone" eager={hero} />
@@ -51,9 +49,6 @@ export function ReviewVisual({ hero = false }: { hero?: boolean }) {
           ReviewMS
         </b>
       </div>
-      <span className="visual-bottom mono">
-        <Smartphone size={12} /> WEB + MOBİL DENEYİM
-      </span>
     </div>
   );
 }
@@ -61,7 +56,6 @@ export function RoomVisual() {
   const floorId = useId();
   return (
     <div className="room-visual">
-      <span className="visual-coordinate mono">02 / MEKÂNI KEŞFET</span>
       <svg viewBox="0 0 500 340" aria-hidden="true" className="room-svg">
         <defs>
           <pattern
@@ -113,16 +107,12 @@ export function RoomVisual() {
           <circle cx="331" cy="251" r="5" fill="#234f3b" />
         </g>
       </svg>
-      <span className="visual-bottom mono">
-        360° SANAL TUR · KAVRAMSAL GÖSTERİM
-      </span>
     </div>
   );
 }
 export function ScholarVisual() {
   return (
     <div className="scholar-visual">
-      <span className="visual-coordinate mono">03 / BİLGİYE BİR YOL</span>
       <div className="document-sheet">
         <div className="document-heading">
           <FileText size={19} />
@@ -152,14 +142,12 @@ export function ScholarVisual() {
           <FileText size={11} /> Kaynak belge
         </span>
       </div>
-      <span className="visual-bottom mono">YEREL YAPAY ZEKÂ · ÜRÜN AKIŞI</span>
     </div>
   );
 }
 export function ArkunVisual() {
   return (
     <div className="arkun-visual">
-      <span className="visual-coordinate mono">04 / SİSTEMİN BÜTÜNÜ</span>
       <div className="system-grid">
         <div className="system-node node-a">
           <Layers3 size={19} />
@@ -193,7 +181,6 @@ export function ArkunVisual() {
           />
         </svg>
       </div>
-      <span className="visual-bottom mono">MODÜLER ERP · SİSTEM ŞEMASI</span>
     </div>
   );
 }

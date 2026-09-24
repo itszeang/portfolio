@@ -1,6 +1,6 @@
 // Adapted from 21st.dev-listed Aceternity, Magic UI and Kokonut UI primitives.
 // Source links, licenses and changes: THIRD_PARTY_NOTICES.md.
-import { useRef, type CSSProperties, type ReactNode } from "react";
+import { useRef, type ReactNode } from "react";
 import {
   motion,
   useScroll,
@@ -158,7 +158,6 @@ export function BackgroundPaths() {
           stroke="currentColor"
           strokeWidth={2 + i * 0.18}
           opacity={0.08 + i * 0.009}
-          style={{ "--i": i } as CSSProperties}
         />
       ))}
     </svg>

@@ -32,7 +32,7 @@ Bu Codex oturumunun Windows sandbox'ında `dev` komutunun bağımlılık taramas
 - `src/App.tsx`: Türkçe sayfa bölümleri, proje filtreleri ve detay penceresi.
 - `src/style.css`: renkler, tipografi, açık/koyu tema ve responsive düzen.
 - `src/components/motion.tsx`: 21st.dev üzerinden seçilen dört animasyonun uyarlaması.
-- `src/components/effects.tsx`: imleçle tepki veren nokta alanı (hero), spotlight kenar ışığı, 3D eğim ve manyetik butonlar için tek pointer dinleyicisi, kaydırma çubuğu ve kayan şerit. Hepsi hareket azaltma tercihine uyar; nokta alanı ekran dışında ve arka plan sekmesinde durur.
+- `src/components/effects.tsx`: hero arka planındaki parçacık girdabı (21st.dev Aether Vortex uyarlaması), cam kartlardaki spotlight için pointer dinleyicisi ve kaydırma çubuğu. Girdap hareket azaltma tercihinde tek kare çizer; ekran dışında ve arka plan sekmesinde durur. Hero zemini CSS gradyan + SVG gren dokusudur.
 - `public/images/`: orijinal portfolyodaki altı gerçek ReviewMS ekran görüntüsünün WebP sürümleri. Ürün ekranlarının kendi İngilizce metinleri korunmuştur; site arayüzü Türkçedir.
 
 Hero: satır girişleri ve değiştirilebilir ürün vitrini. Projeler: kaydırmaya bağlı perspektif, kategori filtreleri ve ekran galerisi. Yaklaşım: etkileşimli dört adım. Deneyim: dolan zaman çizgisi. Hakkımda: kelime bazlı görünürlük ve teknoloji sekmeleri. İletişim: başlığın üstünde sınırlandırılmış SVG çizgileri ve e-posta kopyalama. Üst logo, işlevsiz dekoratif oklar ve yeşil durum noktaları kaldırıldı. Remotion tanıtımı, bileşen dosyası ve npm bağımlılıkları kaldırıldı.

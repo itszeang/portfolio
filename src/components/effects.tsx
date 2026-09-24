@@ -1,22 +1,22 @@
-// Interactive surfaces: cursor-reactive dot field, pointer spotlight/tilt/magnet
-// delegation, scroll progress and an infinite marquee. All effects respect
-// prefers-reduced-motion and pause when off screen or in a background tab.
+// Hero background effects and the pointer spotlight.
+// ParticleVortex is adapted from the 21st.dev "Aether Vortex" component
+// (accretion-disk mode only): rewritten for this project's plain-CSS stack,
+// a transparent canvas so the grain gradient shows through, the site's
+// data-theme switch, and reduced-motion / off-screen pausing.
 import { useEffect, useRef } from "react";
 import { motion, useScroll, useSpring } from "motion/react";
 
-function readColor(name: string, fallback: string) {
-  const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-  return v || fallback;
-}
-function hexToRgb(hex: string): [number, number, number] {
-  const m = hex.replace("#", "");
-  const full = m.length === 3 ? m.split("").map((c) => c + c).join("") : m;
-  const n = parseInt(full.slice(0, 6), 16);
-  return Number.isNaN(n) ? [240, 241, 233] : [(n >> 16) & 255, (n >> 8) & 255, n & 255];
-}
+type Particle = {
+  angle: number;
+  radius: number;
+  baseRadius: number;
+  y: number;
+  speed: number;
+  mass: number;
+  phase: number;
+};
 
-/** Dot grid that swells, brightens and parts around the pointer. */
-export function DotField() {
+export function ParticleVortex() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -25,64 +25,79 @@ export function DotField() {
     if (!ctx) return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const coarse = window.matchMedia("(pointer: coarse)").matches;
-    const GAP = 26;
-    const RADIUS = 170;
-    let w = 0, h = 0, dpr = 1, raf = 0, visible = true, running = false;
-    let ink: [number, number, number] = [240, 241, 233];
-    let accent: [number, number, number] = [139, 162, 255];
-    const pointer = { x: -9999, y: -9999, tx: -9999, ty: -9999, active: false };
-    let t0 = performance.now();
 
-    const readTheme = () => {
-      ink = hexToRgb(readColor("--ink", "#f0f1e9"));
-      accent = hexToRgb(readColor("--blue", "#8ba2ff"));
+    let w = 0, h = 0, raf = 0, t = 0;
+    let visible = true, running = false;
+    let dark = document.documentElement.dataset.theme !== "light";
+    let particles: Particle[] = [];
+    const m = { tx: 0, ty: 0, x: 0, y: 0, px: -1e4, py: -1e4 };
+
+    const init = () => {
+      const count = w < 700 ? 420 : 900;
+      const spread = Math.min(w, h) * (w < 700 ? 0.42 : 0.48);
+      particles = Array.from({ length: count }, () => {
+        const radius = Math.random() * spread + 24;
+        return {
+          angle: Math.random() * Math.PI * 2,
+          radius,
+          baseRadius: radius,
+          y: (Math.random() - 0.5) * 50,
+          speed: Math.random() * 0.008 + 0.002,
+          mass: Math.random() * 1.2 + 0.4,
+          phase: Math.random() * Math.PI * 2,
+        };
+      });
     };
-    const resize = () => {
-      const r = canvas.getBoundingClientRect();
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
-      w = r.width; h = r.height;
-      canvas.width = Math.round(w * dpr);
-      canvas.height = Math.round(h * dpr);
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      if (!running) draw(performance.now());
-    };
-    const draw = (now: number) => {
-      // Ease the pointer; with no pointer (touch/idle) drift along a slow Lissajous path.
-      if (!pointer.active) {
-        const t = (now - t0) / 1000;
-        pointer.tx = w * (0.62 + 0.26 * Math.sin(t * 0.23));
-        pointer.ty = h * (0.45 + 0.3 * Math.sin(t * 0.31 + 1.2));
-      }
-      if (pointer.x < -9000) { pointer.x = pointer.tx; pointer.y = pointer.ty; }
-      pointer.x += (pointer.tx - pointer.x) * 0.12;
-      pointer.y += (pointer.ty - pointer.y) * 0.12;
-      ctx.clearRect(0, 0, w, h);
-      const glow = ctx.createRadialGradient(pointer.x, pointer.y, 0, pointer.x, pointer.y, RADIUS * 1.9);
-      glow.addColorStop(0, `rgba(${accent.join(",")},0.16)`);
-      glow.addColorStop(1, `rgba(${accent.join(",")},0)`);
-      ctx.fillStyle = glow;
+
+    const frame = (advance: boolean) => {
+      if (advance) t += 0.005;
+      m.x += (m.tx - m.x) * 0.05;
+      m.y += (m.ty - m.y) * 0.05;
+      // Fade the previous frame instead of painting over it, so trails
+      // remain while the canvas stays transparent.
+      ctx.globalCompositeOperation = "destination-out";
+      ctx.fillStyle = advance ? "rgba(0,0,0,0.34)" : "rgba(0,0,0,1)";
       ctx.fillRect(0, 0, w, h);
-      const ox = (w % GAP) / 2, oy = (h % GAP) / 2;
-      for (let y = oy; y < h; y += GAP) {
-        for (let x = ox; x < w; x += GAP) {
-          const dx = x - pointer.x, dy = y - pointer.y;
-          const d = Math.hypot(dx, dy);
-          const k = d < RADIUS ? 1 - d / RADIUS : 0;
-          const e = k * k * (3 - 2 * k); // smoothstep
-          const push = e * 9;
-          const px = x + (d > 0 ? (dx / d) * push : 0);
-          const py = y + (d > 0 ? (dy / d) * push : 0);
-          const r = 0.9 + e * 1.6;
-          const c = e > 0.02 ? accent.map((a, i) => Math.round(ink[i] + (a - ink[i]) * e)) : ink;
-          ctx.fillStyle = `rgba(${c[0]},${c[1]},${c[2]},${0.13 + e * 0.75})`;
-          ctx.beginPath();
-          ctx.arc(px, py, r, 0, Math.PI * 2);
-          ctx.fill();
+      ctx.globalCompositeOperation = "source-over";
+
+      const cx = w * (w < 700 ? 0.5 : 0.7) + m.x;
+      const cy = h * (w < 700 ? 0.72 : 0.5) + m.y;
+      const tiltCos = Math.cos(0.6), tiltSin = Math.sin(0.6);
+      const fov = 800, cameraZ = 600;
+      const rgb = dark ? "236,232,255" : "38,34,64";
+
+      for (const p of particles) {
+        if (advance) {
+          p.angle += p.speed * (100 / p.radius);
+          p.radius += (p.baseRadius - p.radius) * 0.03;
+          p.y = Math.sin(p.angle * 2 + t) * (p.baseRadius * 0.1) * Math.cos(p.phase + t);
         }
+        const z = Math.sin(p.angle) * p.radius;
+        const x = Math.cos(p.angle) * p.radius;
+        const scale = fov / (cameraZ + z);
+        if (scale < 0) continue;
+        let sx = cx + x * scale;
+        let sy = cy + (p.y * tiltCos - z * tiltSin) * scale;
+        const dx = sx - m.px, dy = sy - m.py;
+        const d = Math.hypot(dx, dy);
+        let grow = 1, glow = 0;
+        if (d < 120) {
+          const f = (120 - d) / 120;
+          sx += dx * f * 0.3;
+          sy += dy * f * 0.3;
+          grow = 1 + f * 1.5;
+          glow = f * 0.5;
+        }
+        const alpha = Math.min(1, Math.max(0.1, Math.min(1, scale * 0.9)) * (dark ? 0.75 : 0.55) + glow);
+        ctx.fillStyle = `rgba(${rgb},${alpha})`;
+        ctx.beginPath();
+        ctx.arc(sx, sy, Math.max(0.8, p.mass * scale * 1.1 * grow), 0, Math.PI * 2);
+        ctx.fill();
       }
     };
-    const loop = (now: number) => {
-      draw(now);
+
+    const loop = () => {
+      frame(true);
       raf = requestAnimationFrame(loop);
     };
     const start = () => {
@@ -94,17 +109,32 @@ export function DotField() {
       running = false;
       cancelAnimationFrame(raf);
     };
+    const resize = () => {
+      const r = canvas.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = r.width;
+      h = r.height;
+      canvas.width = Math.floor(w * dpr);
+      canvas.height = Math.floor(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      init();
+      if (!running) frame(false);
+    };
     const onMove = (e: PointerEvent) => {
       if (coarse || e.pointerType === "touch") return;
       const r = canvas.getBoundingClientRect();
       const x = e.clientX - r.left, y = e.clientY - r.top;
-      const inside = x >= -40 && y >= -40 && x <= r.width + 40 && y <= r.height + 40;
-      pointer.active = inside;
-      if (inside) { pointer.tx = x; pointer.ty = y; }
+      if (y < 0 || y > r.height) return onLeave();
+      m.px = x;
+      m.py = y;
+      m.tx = (x - r.width / 2) * 0.06;
+      m.ty = (y - r.height / 2) * 0.06;
     };
-    const onLeave = () => { pointer.active = false; t0 = performance.now() - 4000; };
+    const onLeave = () => {
+      m.tx = m.ty = 0;
+      m.px = m.py = -1e4;
+    };
 
-    readTheme();
     resize();
     const ro = new ResizeObserver(resize);
     ro.observe(canvas);
@@ -113,7 +143,10 @@ export function DotField() {
       visible ? start() : stop();
     });
     io.observe(canvas);
-    const mo = new MutationObserver(() => { readTheme(); if (!running) draw(performance.now()); });
+    const mo = new MutationObserver(() => {
+      dark = document.documentElement.dataset.theme !== "light";
+      if (!running) frame(false);
+    });
     mo.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
     const onVis = () => (document.hidden ? stop() : start());
     document.addEventListener("visibilitychange", onVis);
@@ -122,67 +155,31 @@ export function DotField() {
     start();
     return () => {
       stop();
-      ro.disconnect(); io.disconnect(); mo.disconnect();
+      ro.disconnect();
+      io.disconnect();
+      mo.disconnect();
       document.removeEventListener("visibilitychange", onVis);
       window.removeEventListener("pointermove", onMove);
       document.documentElement.removeEventListener("pointerleave", onLeave);
     };
   }, []);
-  return <canvas ref={canvasRef} className="dot-field" aria-hidden="true" />;
+  return <canvas ref={canvasRef} className="vortex" aria-hidden="true" />;
 }
 
-/**
- * One delegated pointer listener drives three effects via CSS custom properties:
- * .spotlight (border + fill glow at --mx/--my), .tilt (3D tilt via --rx/--ry)
- * and .magnetic (pulls toward the pointer via --tx/--ty).
- */
-export function usePointerEffects() {
+/** Pointer position for `.spotlight` surfaces (border + fill glow). */
+export function useSpotlight() {
   useEffect(() => {
     const fine = window.matchMedia("(hover: hover) and (pointer: fine)");
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let magnet: HTMLElement | null = null;
-    let tilt: HTMLElement | null = null;
-    const reset = (el: HTMLElement | null, props: string[]) =>
-      el && props.forEach((p) => el.style.removeProperty(p));
     const onMove = (e: PointerEvent) => {
-      if (!fine.matches) return;
-      const target = e.target instanceof Element ? e.target : null;
-      const spot = target?.closest<HTMLElement>(".spotlight");
-      if (spot) {
-        const r = spot.getBoundingClientRect();
-        spot.style.setProperty("--mx", `${e.clientX - r.left}px`);
-        spot.style.setProperty("--my", `${e.clientY - r.top}px`);
-      }
-      if (reduce.matches) return;
-      const t = target?.closest<HTMLElement>(".tilt") ?? null;
-      if (t !== tilt) { reset(tilt, ["--rx", "--ry"]); tilt = t; }
-      if (t) {
-        const r = t.getBoundingClientRect();
-        const px = (e.clientX - r.left) / r.width - 0.5;
-        const py = (e.clientY - r.top) / r.height - 0.5;
-        t.style.setProperty("--rx", `${(-py * 7).toFixed(2)}deg`);
-        t.style.setProperty("--ry", `${(px * 9).toFixed(2)}deg`);
-      }
-      const m = target?.closest<HTMLElement>(".magnetic") ?? null;
-      if (m !== magnet) { reset(magnet, ["--tx", "--ty"]); magnet = m; }
-      if (m) {
-        const r = m.getBoundingClientRect();
-        const x = e.clientX - (r.left + r.width / 2);
-        const y = e.clientY - (r.top + r.height / 2);
-        m.style.setProperty("--tx", `${(x * 0.22).toFixed(1)}px`);
-        m.style.setProperty("--ty", `${(y * 0.3).toFixed(1)}px`);
-      }
-    };
-    const onLeave = () => {
-      reset(tilt, ["--rx", "--ry"]); reset(magnet, ["--tx", "--ty"]);
-      tilt = magnet = null;
+      if (!fine.matches || !(e.target instanceof Element)) return;
+      const spot = e.target.closest<HTMLElement>(".spotlight");
+      if (!spot) return;
+      const r = spot.getBoundingClientRect();
+      spot.style.setProperty("--mx", `${e.clientX - r.left}px`);
+      spot.style.setProperty("--my", `${e.clientY - r.top}px`);
     };
     window.addEventListener("pointermove", onMove, { passive: true });
-    document.documentElement.addEventListener("pointerleave", onLeave);
-    return () => {
-      window.removeEventListener("pointermove", onMove);
-      document.documentElement.removeEventListener("pointerleave", onLeave);
-    };
+    return () => window.removeEventListener("pointermove", onMove);
   }, []);
 }
 
@@ -190,26 +187,4 @@ export function ScrollProgress() {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 140, damping: 30, mass: 0.3 });
   return <motion.div className="scroll-progress" style={{ scaleX }} aria-hidden="true" />;
-}
-
-export function Marquee({ items }: { items: readonly string[] }) {
-  // Reduced motion is handled in CSS so the prerendered markup stays identical.
-  const row = (hidden: boolean) => (
-    <div className="marquee-row" aria-hidden={hidden || undefined}>
-      {items.map((t) => (
-        <span key={t}>
-          {t}
-          <i>✳</i>
-        </span>
-      ))}
-    </div>
-  );
-  return (
-    <div className="marquee">
-      <div className="marquee-track">
-        {row(false)}
-        {row(true)}
-      </div>
-    </div>
-  );
 }

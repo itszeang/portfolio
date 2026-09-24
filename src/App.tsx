@@ -47,10 +47,9 @@ import {
   Phone,
 } from "./components/visuals";
 import {
-  DotField,
-  Marquee,
+  ParticleVortex,
   ScrollProgress,
-  usePointerEffects,
+  useSpotlight,
 } from "./components/effects";
 import { projects, experience, certificates, type Project } from "./data";
 
@@ -305,7 +304,7 @@ function Header() {
           </button>
           <a
             href="#iletisim"
-            className="header-contact magnetic"
+            className="header-contact"
             onClick={() => setMenu(false)}
           >
             Birlikte çalışalım <ArrowUpRight size={15} />
@@ -333,22 +332,10 @@ function Hero({ open }: { open: (p: Project) => void }) {
   return (
     <div className="hero-stage">
     <div className="hero-bg" aria-hidden="true">
-      <div className="aurora">
-        <span />
-        <span />
-        <span />
-      </div>
-      <DotField />
+      <ParticleVortex />
+      <div className="grain" />
     </div>
     <section id="baslangic" className="hero shell">
-      <div className="hero-top">
-        <span className="mono eyebrow">
-          YENİ FİKİRLERE VE İŞ BİRLİKLERİNE AÇIK
-        </span>
-        <span className="mono hero-location">
-          TÜRKİYE · DÜNYAYA AÇIK
-        </span>
-      </div>
       <div className="hero-grid">
         <div className="hero-copy">
           <motion.div
@@ -378,7 +365,7 @@ function Hero({ open }: { open: (p: Project) => void }) {
               <br className="desktop-br" /> Fikirden tasarıma, koddan yayına.
             </p>
             <div className="hero-buttons">
-              <a className="button button-blue button-shine magnetic" href="#projeler">
+              <a className="button button-blue button-primary" href="#projeler">
                 Projelerimi keşfet <ArrowDown size={18} />
               </a>
               <a className="text-link" href="#hakkimda">
@@ -386,10 +373,6 @@ function Hero({ open }: { open: (p: Project) => void }) {
               </a>
             </div>
           </Reveal>
-          <div className="hero-signoff mono">
-            <span className="mini-cross">+</span> TASARIMI DÜŞÜNÜR. SİSTEMİ
-            KURAR. ÜRÜNÜ YAYINA ALIR.
-          </div>
         </div>
         <motion.div
           className="hero-showcase glass spotlight"
@@ -397,13 +380,7 @@ function Hero({ open }: { open: (p: Project) => void }) {
           animate={{ opacity: 1, y: 0, rotate: 0 }}
           transition={{ duration: 1, delay: 0.2, ease }}
         >
-          <div className="showcase-top mono">
-            <span>
-              <span className="tiny-square" /> ÜRÜN GÜNLÜĞÜ
-            </span>
-            <span>2026 — SEÇKİ</span>
-          </div>
-          <div className="hero-art tilt" aria-live="polite">
+          <div className="hero-art" aria-live="polite">
             <AnimatePresence mode="wait">
               <motion.div
                 key={item.id}
@@ -429,7 +406,6 @@ function Hero({ open }: { open: (p: Project) => void }) {
               <strong>{item.name}</strong>
               <span>{item.kind}</span>
             </div>
-            <span className="mono">0{selected + 1} / 03</span>
           </div>
           <div className="showcase-tabs" aria-label="Öne çıkan proje seçimi">
             {selectedProjects.map((p, i) => (
@@ -438,7 +414,6 @@ function Hero({ open }: { open: (p: Project) => void }) {
                 aria-pressed={i === selected}
                 onClick={() => setSelected(i)}
               >
-                <span className="tab-number mono">0{i + 1}</span>
                 {p.name}
                 {selected === i && (
                   <motion.span layoutId="hero-tab" className="tab-line" />
@@ -447,18 +422,6 @@ function Hero({ open }: { open: (p: Project) => void }) {
             ))}
           </div>
         </motion.div>
-      </div>
-      <div className="hero-bottom">
-        <span className="mono scroll-note">
-          KEŞFETMEK İÇİN KAYDIR
-        </span>
-        <div className="craft-tags">
-          <span>Ürün geliştirme</span>
-          <i />
-          <span>Yapay zekâ</span>
-          <i />
-          <span>Web & mobil</span>
-        </div>
       </div>
     </section>
     </div>
@@ -575,7 +538,7 @@ function Projects({ open }: { open: (p: Project) => void }) {
             <Reveal key={p.id} className="project-card">
               <article className="glass spotlight">
                 <button
-                  className={`project-art tilt ${p.id}`}
+                  className={`project-art ${p.id}`}
                   onClick={() => open(p)}
                   aria-label={`${p.name} projesinin detaylarını aç`}
                 >
@@ -1016,7 +979,7 @@ function Contact() {
 
 export default function App() {
   const [project, setProject] = useState<Project | null>(null);
-  usePointerEffects();
+  useSpotlight();
   return (
     <MotionConfig reducedMotion="user">
       <ScrollProgress />
@@ -1026,17 +989,6 @@ export default function App() {
       <Header />
       <main>
         <Hero open={setProject} />
-        <Marquee
-          items={[
-            "SaaS platformları",
-            "Yapay zekâ & RAG",
-            "React · TypeScript",
-            "Python · FastAPI",
-            "Mobil uygulamalar",
-            "Ürün tasarımı",
-            "Yayına alma",
-          ]}
-        />
         <Projects open={setProject} />
         <Approach />
         <Experience />

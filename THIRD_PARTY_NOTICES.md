@@ -9,6 +9,8 @@
 - Text Reveal — Dillion Verma / Magic UI: https://21st.dev/@dillionverma/components/text-reveal — kaynak https://magicui.design/r/text-reveal.json
 - Background Paths — Kokonut UI: https://21st.dev/@kokonutd/components/background-paths — kaynak https://kokonutui.com/r/background-paths.json
 
+- Aether Vortex — 21st.dev (kullanıcının paylaştığı bileşen kodu). `src/components/effects.tsx` içindeki `ParticleVortex` yalnızca accretion disk modunu alır; Tailwind/shadcn, kontrol butonları ve başlık kaldırıldı, şeffaf tuval, tema bağlantısı ve hareket azaltma eklendi. Lisansı bileşenin 21st.dev sayfasından doğrulanmalıdır.
+
 21st.dev bileşen sayfalarında MIT olarak listelenir. Magic UI lisansı: https://github.com/magicuidesign/magicui/blob/main/LICENSE.md . Kokonut UI lisansı: https://github.com/kokonut-labs/kokonutui/blob/main/LICENSE . Ücretli Aceternity Pro bileşeni alınmamıştır.
 
 MIT License
