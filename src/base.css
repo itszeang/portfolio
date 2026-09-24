@@ -1,0 +1,14 @@
+/* Tasarım yok: yalnızca okunabilirlik için yazı tipi ve satır genişliği. */
+body {
+  font-family: "Geist Variable", system-ui, sans-serif;
+  line-height: 1.6;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 24px 16px 64px;
+}
+img {
+  max-width: 220px;
+  height: auto;
+  display: inline-block;
+  margin: 0 8px 8px 0;
+}

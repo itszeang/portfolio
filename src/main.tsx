@@ -3,7 +3,8 @@ import ReactDOM from "react-dom/client";
 import "@fontsource-variable/geist";
 import "@fontsource-variable/geist-mono";
 import App from "./App";
-import "./style.css";
+import "./base.css";
+
 const root = document.getElementById("root")!;
 const app = (
   <React.StrictMode>
