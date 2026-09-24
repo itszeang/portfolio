@@ -22,12 +22,17 @@ Derleme `dist/` klasörüne çıkar. 5173 portunda mevcut önizleme çalışıyo
 
 Bu Codex oturumunun Windows sandbox'ında `dev` komutunun bağımlılık taraması üst dizin erişimi nedeniyle engellendi. Üretim derlemesi ve `preview` doğrulandı. Aynı hatayı görürsen `npm.cmd run build` ardından `npm.cmd run preview` kullan; kaynak değişikliğinden sonra yeniden derle ve tarayıcıyı yenile. `ONIZLE.cmd` bu iki adımı çalıştırır. Geliştirme sunucusunun normal Windows terminalinde çalışması ayrıca doğrulanmalıdır.
 
+## Ön render (JS'siz içerik) ve SEO
+
+`npm run build` önce istemci paketini derler, sonra `src/entry-server.tsx` ile sayfayı sunucu tarafında render eder ve `scripts/prerender.mjs` bu HTML'i `dist/index.html` içine yazar. Tarayıcı bu HTML'i `hydrateRoot` ile devralır. Böylece JavaScript çalıştırmayan tarayıcılar, bağlantı önizlemeleri ve tarayıcı botları tüm içeriği görür. `index.html` içinde canonical, Open Graph/Twitter etiketleri, `og.png` ve Person yapılandırılmış verisi; `public/` içinde `robots.txt` ve `sitemap.xml` bulunur.
+
 ## İçerik ve tasarım
 
 - `src/data.ts`: projeler, deneyim ve sertifikalar.
 - `src/App.tsx`: Türkçe sayfa bölümleri, proje filtreleri ve detay penceresi.
 - `src/style.css`: renkler, tipografi, açık/koyu tema ve responsive düzen.
 - `src/components/motion.tsx`: 21st.dev üzerinden seçilen dört animasyonun uyarlaması.
+- `src/components/effects.tsx`: imleçle tepki veren nokta alanı (hero), spotlight kenar ışığı, 3D eğim ve manyetik butonlar için tek pointer dinleyicisi, kaydırma çubuğu ve kayan şerit. Hepsi hareket azaltma tercihine uyar; nokta alanı ekran dışında ve arka plan sekmesinde durur.
 - `public/images/`: orijinal portfolyodaki altı gerçek ReviewMS ekran görüntüsünün WebP sürümleri. Ürün ekranlarının kendi İngilizce metinleri korunmuştur; site arayüzü Türkçedir.
 
 Hero: satır girişleri ve değiştirilebilir ürün vitrini. Projeler: kaydırmaya bağlı perspektif, kategori filtreleri ve ekran galerisi. Yaklaşım: etkileşimli dört adım. Deneyim: dolan zaman çizgisi. Hakkımda: kelime bazlı görünürlük ve teknoloji sekmeleri. İletişim: başlığın üstünde sınırlandırılmış SVG çizgileri ve e-posta kopyalama. Üst logo, işlevsiz dekoratif oklar ve yeşil durum noktaları kaldırıldı. Remotion tanıtımı, bileşen dosyası ve npm bağımlılıkları kaldırıldı.

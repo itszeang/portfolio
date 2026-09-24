@@ -46,6 +46,12 @@ import {
   ArkunVisual,
   Phone,
 } from "./components/visuals";
+import {
+  DotField,
+  Marquee,
+  ScrollProgress,
+  usePointerEffects,
+} from "./components/effects";
 import { projects, experience, certificates, type Project } from "./data";
 
 const nav = [
@@ -217,14 +223,19 @@ function ProjectDialog({
 function Header() {
   const [menu, setMenu] = useState(false);
   const [active, setActive] = useState("");
-  const [dark, setDark] = useState(() => {
-    try {
-      return localStorage.getItem("portfolio-theme-v2") !== "light";
-    } catch {
-      return true;
-    }
-  });
+  const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  // Starts dark to match the prerendered HTML; the inline script in index.html
+  // has already applied the stored theme, which is read after hydration.
+  const [dark, setDark] = useState(true);
+  const themeReady = useRef(false);
+  useEffect(() => {
+    if (!themeReady.current) return;
     document.documentElement.dataset.theme = dark ? "dark" : "light";
     try {
       localStorage.setItem("portfolio-theme-v2", dark ? "dark" : "light");
@@ -232,6 +243,10 @@ function Header() {
       /* Storage is optional. */
     }
   }, [dark]);
+  useEffect(() => {
+    themeReady.current = true;
+    setDark(document.documentElement.dataset.theme !== "light");
+  }, []);
   useEffect(() => {
     const io = new IntersectionObserver(
       (entries) =>
@@ -255,7 +270,7 @@ function Header() {
     return () => window.removeEventListener("keydown", close);
   }, [menu]);
   return (
-    <header className="header">
+    <header className={scrolled || menu ? "header scrolled" : "header"}>
       <div className="shell header-inner">
         <nav
           id="main-nav"
@@ -269,7 +284,14 @@ function Header() {
               aria-current={active === id ? "location" : undefined}
               onClick={() => setMenu(false)}
             >
-              {label}
+              {active === id && (
+                <motion.span
+                  layoutId="nav-pill"
+                  className="nav-pill"
+                  transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                />
+              )}
+              <span className="nav-label">{label}</span>
             </a>
           ))}
         </nav>
@@ -283,7 +305,7 @@ function Header() {
           </button>
           <a
             href="#iletisim"
-            className="header-contact"
+            className="header-contact magnetic"
             onClick={() => setMenu(false)}
           >
             Birlikte çalışalım <ArrowUpRight size={15} />
@@ -309,6 +331,15 @@ function Hero({ open }: { open: (p: Project) => void }) {
   const selectedProjects = [projects[0], projects[2], projects[3]];
   const item = selectedProjects[selected];
   return (
+    <div className="hero-stage">
+    <div className="hero-bg" aria-hidden="true">
+      <div className="aurora">
+        <span />
+        <span />
+        <span />
+      </div>
+      <DotField />
+    </div>
     <section id="baslangic" className="hero shell">
       <div className="hero-top">
         <span className="mono eyebrow">
@@ -347,7 +378,7 @@ function Hero({ open }: { open: (p: Project) => void }) {
               <br className="desktop-br" /> Fikirden tasarıma, koddan yayına.
             </p>
             <div className="hero-buttons">
-              <a className="button button-blue" href="#projeler">
+              <a className="button button-blue button-shine magnetic" href="#projeler">
                 Projelerimi keşfet <ArrowDown size={18} />
               </a>
               <a className="text-link" href="#hakkimda">
@@ -361,7 +392,7 @@ function Hero({ open }: { open: (p: Project) => void }) {
           </div>
         </div>
         <motion.div
-          className="hero-showcase"
+          className="hero-showcase glass spotlight"
           initial={reduce ? false : { opacity: 0, y: 35, rotate: 2 }}
           animate={{ opacity: 1, y: 0, rotate: 0 }}
           transition={{ duration: 1, delay: 0.2, ease }}
@@ -372,7 +403,7 @@ function Hero({ open }: { open: (p: Project) => void }) {
             </span>
             <span>2026 — SEÇKİ</span>
           </div>
-          <div className="hero-art" aria-live="polite">
+          <div className="hero-art tilt" aria-live="polite">
             <AnimatePresence mode="wait">
               <motion.div
                 key={item.id}
@@ -430,6 +461,7 @@ function Hero({ open }: { open: (p: Project) => void }) {
         </div>
       </div>
     </section>
+    </div>
   );
 }
 
@@ -469,7 +501,14 @@ function Projects({ open }: { open: (p: Project) => void }) {
                 onClick={() => setFilter(f)}
                 aria-pressed={filter === f}
               >
-                {f}
+                {filter === f && (
+                  <motion.span
+                    layoutId="filter-pill"
+                    className="filter-pill"
+                    transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                  />
+                )}
+                <span className="filter-label">{f}</span>
               </button>
             ))}
           </div>
@@ -485,7 +524,7 @@ function Projects({ open }: { open: (p: Project) => void }) {
       <div className="project-list" aria-live="polite">
         {(filter === "Tümü" || filter === "SaaS & Web") && (
           <ScrollPanel>
-            <article className="featured-project">
+            <article className="featured-project spotlight">
               <div className="featured-copy">
                 <div className="project-top">
                   <span className="mono">/ 01</span>
@@ -534,9 +573,9 @@ function Projects({ open }: { open: (p: Project) => void }) {
         <div className="project-grid">
           {visible.map((p) => (
             <Reveal key={p.id} className="project-card">
-              <article>
+              <article className="glass spotlight">
                 <button
-                  className={`project-art ${p.id}`}
+                  className={`project-art tilt ${p.id}`}
                   onClick={() => open(p)}
                   aria-label={`${p.name} projesinin detaylarını aç`}
                 >
@@ -663,7 +702,7 @@ function Approach() {
               </button>
             ))}
           </div>
-          <div className="process-stage">
+          <div className="process-stage spotlight">
             <div className="process-stage-label mono">
               BİR ÜRÜNÜN YOLCULUĞU <span>0{step + 1} / 04</span>
             </div>
@@ -977,14 +1016,27 @@ function Contact() {
 
 export default function App() {
   const [project, setProject] = useState<Project | null>(null);
+  usePointerEffects();
   return (
     <MotionConfig reducedMotion="user">
+      <ScrollProgress />
       <a className="skip-link" href="#projeler">
         Projelere geç
       </a>
       <Header />
       <main>
         <Hero open={setProject} />
+        <Marquee
+          items={[
+            "SaaS platformları",
+            "Yapay zekâ & RAG",
+            "React · TypeScript",
+            "Python · FastAPI",
+            "Mobil uygulamalar",
+            "Ürün tasarımı",
+            "Yayına alma",
+          ]}
+        />
         <Projects open={setProject} />
         <Approach />
         <Experience />
