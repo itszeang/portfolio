@@ -17,6 +17,15 @@ export const site = {
   copyright: "© 2026 Burak Alp Yahşi",
 };
 
+// --- Hero ---------------------------------------------------------------------
+// Görseldeki birbirine uzanan iki ele bağlı: aradaki boşluk tek bir tık.
+export const hero = {
+  lines: ["Fikrinle ürün arasında", "bir tık var."],
+  copy: "Web siteleri, yapay zekâ otomasyonları ve mobil uygulamalar geliştiriyorum.",
+  copySecondLine: "Tasarımdan yayına kadar yanındayım.",
+  cta: "Fikrini anlat",
+};
+
 // --- Kişi -------------------------------------------------------------------
 export const person = {
   name: "Burak Alp Yahşi",
@@ -57,90 +66,71 @@ export const socials = [
 
 // --- Hizmetler ----------------------------------------------------------------
 export const servicesIntro = {
-  title: "Ne yapıyorum?",
-  subtitle: "İşine göre seç.",
-  lead: "Küçük bir siteden uçtan uca ürüne. Hepsi tek elden, yayına kadar.",
+  title: "Fikri, çalışan bir ürüne",
+  subtitle: "dönüştürüyorum.",
+  lead: "Claude ve Codex destekli geliştirme süreciyle hızlı prototip, temiz uygulama ve ölçülebilir sonuç.",
 };
 
 export const services = [
-  {
-    id: "web",
-    name: "Web siteleri",
-    tagline: "İşletmen Google'da bulunsun, telefonda hızlı açılsın.",
-    description:
-      "Mobil öncelikli, hızlı ve arama motorlarına hazır siteler. Ziyaretçiyi tek dokunuşla aramaya, WhatsApp'a ya da yol tarifine götürür.",
-    includes: [
-      "Mobil uyumlu tek veya çok sayfalı site",
-      "WhatsApp, arama ve harita butonları",
-      "Google İşletme profiliyle bağlantı",
-      "Temel SEO ve paylaşım önizlemeleri",
-      "Alan adı ve yayın kurulumu",
-    ],
-    for: "Esnaf, klinikler, danışmanlar ve küçük işletmeler",
-    project: "boyut",
-  },
   {
     id: "ai",
     name: "Yapay zekâ otomasyonları",
     tagline: "Tekrarlayan işi yapay zekâya devret.",
     description:
-      "Gelen mesajları yanıtlayan, belgeleri okuyan ve veriyi doğru yere işleyen akışlar. Mevcut araçlarınla birlikte çalışır.",
+      "Tekrarlanan iş akışlarını, veriyi ve kullandığınız araçları birbirine bağlayan özel otomasyonlar.",
     includes: [
       "WhatsApp ve e-posta yanıt asistanları",
       "Fatura, form ve belge okuma",
       "Kendi belgelerinle çalışan, kaynak gösteren asistan",
       "Tablo, CRM ve takvim entegrasyonları",
-      "Otomatik raporlama",
     ],
-    for: "Yoğun mesaj ve evrak trafiği olan ekipler",
-    project: "scholar",
+    project: null,
+  },
+  {
+    id: "web",
+    name: "Web siteleri ve web uygulamaları",
+    tagline: "Markanı doğru anlatan, gerçek bir ihtiyacı çözen siteler.",
+    description:
+      "Markayı doğru anlatan kurumsal siteler, landing page'ler ve gerçek bir ihtiyacı çözen web ürünleri.",
+    includes: [
+      "Mobil uyumlu kurumsal site ve landing page",
+      "WhatsApp, arama ve harita bağlantıları",
+      "Temel SEO ve paylaşım önizlemeleri",
+      "Alan adı ve yayın kurulumu",
+    ],
+    project: "boyut",
   },
   {
     id: "randevu",
     name: "Randevu sistemleri",
     tagline: "Telefon trafiğini online takvime çevir.",
     description:
-      "Müşterinin boş saati görüp kendisinin randevu aldığı, hatırlatmaların otomatik gittiği bir sistem.",
+      "Müsaitlik, rezervasyon, hatırlatma ve yönetim süreçlerini tek akışta birleştiren sistemler.",
     includes: [
       "Online randevu sayfası",
       "SMS veya WhatsApp hatırlatmaları",
       "Personel ve hizmet bazlı takvim",
-      "Yönetim paneli ve günlük görünüm",
-      "Google Takvim eşitlemesi",
+      "Yönetim paneli",
     ],
-    for: "Kuaför, güzellik salonu, klinik, danışmanlık",
     project: null,
   },
   {
-    id: "nfc",
-    name: "NFC yorum kartları",
-    tagline: "Masadaki karttan Google yorumuna tek dokunuş.",
+    id: "mobil",
+    name: "Mobil uygulamalar",
+    tagline: "Cepte hızlı, günlük kullanıma hazır.",
     description:
-      "Müşteri telefonunu karta yaklaştırır, yorum sayfası açılır. Kartı değiştirmeden bağlantıyı güncelleyebilir, kaç kez okutulduğunu görebilirsin.",
-    includes: [
-      "Logolu NFC ve QR kartlar",
-      "Kartı değiştirmeden bağlantı güncelleme",
-      "Okutma ve etkileşim analitiği",
-      "Web paneli ve mobil uygulama",
-    ],
-    for: "Müşteriyle yüz yüze çalışan her işletme",
+      "iOS ve Android için hızlı, anlaşılır ve günlük kullanıma hazır mobil ürün deneyimleri.",
+    includes: ["iOS ve Android", "Bildirimler", "Üyelik ve profil", "Mağaza yayın süreci"],
     project: "reviewms",
   },
   {
-    id: "urun",
-    name: "Ürün ve SaaS geliştirme",
-    tagline: "Fikrini çalışan ilk sürüme taşırım.",
+    id: "panel",
+    name: "İç araçlar ve dashboardlar",
+    tagline: "Operasyonu görünür kıl.",
     description:
-      "Ürün tasarımından yayına kadar uçtan uca geliştirme. Önce en küçük işe yarar sürüm, sonra gerçek kullanımla büyüme.",
-    includes: [
-      "Ürün akışı ve arayüz tasarımı",
-      "Web ve mobil uygulama",
-      "Üyelik, yetkilendirme ve ödeme",
-      "Yapay zekâ özellikleri",
-      "Yayına alma ve bakım",
-    ],
-    for: "Girişimler ve iç araç ihtiyacı olan şirketler",
-    project: "arkun",
+      "Operasyonları görünür kılan yönetim panelleri, veri ekranları ve ekibe özel üretkenlik araçları.",
+    includes: ["Yönetim panelleri", "Veri ekranları ve raporlama", "Yetkilendirme", "Ekibe özel araçlar"],
+    project: null,
   },
 ] as const;
 
@@ -212,69 +202,7 @@ export const projects = [
       "Mobil için geometri ve doku optimizasyonu",
     ],
     tags: ["WebGL", "Fotogrametri", "Sanal tur"],
-    links: [{ label: "Siteyi ziyaret et", href: "https://boyutatla.com" }],
-    images: [],
-    imageSize: null,
-  },
-  {
-    id: "scholar",
-    name: "OfflineScholar",
-    kind: "Yapay zekâ · Masaüstü",
-    category: "Yapay zekâ",
-    featured: false,
-    status: "Kaynak kodu açık",
-    headline: "Bilgi senin. Kontrol sende.",
-    description: "Bilgi senin. Kontrol sende.",
-    summary:
-      "Kendi belgelerinle konuştuğun, yerel çalışan ve kaynak gösteren akademik asistan.",
-    longSummary: "",
-    problem:
-      "Akademik belgeler arasında arama yaparken gizliliği ve kaynak izlenebilirliğini korumak.",
-    solution:
-      "Yerel modeller, hibrit arama ve atıflı yanıt üretimini birleştirdim. Yetersiz kanıt durumunda güvenli geri dönüşü akışın parçası yaptım.",
-    role: "Yapay zekâ, arayüz ve masaüstü paketleme",
-    details: [
-      "BM25 + vektör arama + yeniden sıralama",
-      "Soru-cevap, özet ve literatür taraması",
-      "FastAPI, React, Tauri ve Ollama",
-    ],
-    tags: ["Python", "RAG", "Tauri"],
-    links: [
-      {
-        label: "Kaynak kodunu incele",
-        href: "https://github.com/itszeang/local-ai-academic-assistant",
-      },
-    ],
-    images: [],
-    imageSize: null,
-  },
-  {
-    id: "arkun",
-    name: "ARKUN",
-    kind: "ERP · Bitirme projesi",
-    category: "SaaS & Web",
-    featured: false,
-    status: "Demo yayında",
-    headline: "Karmaşık üretim. Net bir sistem.",
-    description: "Karmaşık üretim. Net bir sistem.",
-    summary:
-      "Savunma ve havacılık üretimi için izlenebilirlik ve kalite süreçlerine odaklanan ERP.",
-    longSummary: "",
-    problem:
-      "Üretimde kalite, revizyon, kalibrasyon ve parça izlenebilirliğini birlikte ele almak.",
-    solution:
-      "Üretimin dijital ikizini temel alan modüler bir ERP bitirme projesi geliştirdim. Kalite uyumunu destekleyen kontroller ve iki dilli paneller tasarladım.",
-    role: "Sistem tasarımı ve uçtan uca geliştirme",
-    details: [
-      "Kalibrasyon ve revizyon kontrolleri",
-      "IIoT tabanlı parça izlenebilirliği",
-      "Yapay zekâ destekli teklif modülü",
-    ],
-    tags: ["Next.js", "Dijital ikiz", "İzlenebilirlik"],
-    links: [
-      { label: "Demoyu incele", href: "https://arkunnext-gen.vercel.app" },
-      { label: "Kaynak kodu", href: "https://github.com/burakalpyahsi/arkunnext-gen" },
-    ],
+    links: [{ label: "Siteyi ziyaret et", href: "https://www.boyutatla.com" }],
     images: [],
     imageSize: null,
   },
@@ -283,10 +211,9 @@ export type Project = (typeof projects)[number];
 
 export const otherWork = {
   title: "Diğer çalışmalar",
-  summary: "Sky-Cart, yerel RAG ve arayüz deneyleri",
+  summary: "Sky-Cart ve arayüz deneyleri",
   links: [
     { label: "Sky-Cart — E-ticaret", href: "https://github.com/burakalpyahsi/Sky-Cart" },
-    { label: "Yerel RAG altyapısı", href: "https://github.com/itszeang/local-rag-backend" },
     { label: "Diğer kod çalışmaları", href: "https://github.com/burakalpyahsi?tab=repositories" },
   ],
 };
@@ -368,7 +295,7 @@ export const education = {
   program: "Yönetim Bilişim Sistemleri · İngilizce Lisans",
   years: "2021 — 2026",
   gpa: "Genel not ortalaması: 3,21 / 4,00",
-  note: "Mezun · Bitirme projesi: ARKUN",
+  note: "Mezun",
 };
 
 export const certificates = [
@@ -440,10 +367,7 @@ export const archive = {
   noteFooter: "Öğren. Üret. Geliştir.",
   learning: "Öğrenmeye devam.",
   reviewmsCard: "Bir dokunuş. Yeni bir bağlantı.",
-  scholarCard: ["Kaynağıyla birlikte.", "Belgelerinde ara. Bağlantıları keşfet."],
-  arkunModules: ["Üretim", "Kalite", "İzlenebilirlik", "Revizyon"],
   approachStageLabel: "Bir ürünün yolculuğu",
   aboutNoteLabel: "Not defteri / 2026",
-  scholarDocument: ["araştırma.pdf", "Kaynak belge"],
   reviewmsKind: "SaaS platformu · web + mobil",
 };
