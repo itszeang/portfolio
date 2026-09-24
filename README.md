@@ -28,7 +28,7 @@ Bu Codex oturumunun Windows sandbox'ında `dev` komutunun bağımlılık taramas
 
 ## İçerik ve tasarım
 
-- `src/data.ts`: projeler, deneyim ve sertifikalar.
+- `src/data.ts`: hizmet kategorileri, projeler, deneyim ve sertifikalar. Hizmet metinleri, maddeleri ve örnek proje bağlantıları `services` dizisindedir.
 - `src/App.tsx`: Türkçe sayfa bölümleri, proje filtreleri ve detay penceresi.
 - `src/style.css`: renkler, tipografi, açık/koyu tema ve responsive düzen.
 - `src/components/motion.tsx`: 21st.dev üzerinden seçilen dört animasyonun uyarlaması.

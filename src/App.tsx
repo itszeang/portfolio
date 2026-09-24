@@ -32,6 +32,11 @@ import {
   Send,
   Mail,
   Phone as PhoneIcon,
+  Globe,
+  Bot,
+  CalendarCheck,
+  Nfc,
+  Rocket,
 } from "lucide-react";
 import {
   BackgroundPaths,
@@ -54,9 +59,16 @@ import {
   useSpotlight,
 } from "./components/effects";
 import { Dock, XLogo } from "./components/dock";
-import { projects, experience, certificates, type Project } from "./data";
+import {
+  projects,
+  experience,
+  certificates,
+  services,
+  type Project,
+} from "./data";
 
 const nav = [
+  ["hizmetler", "Hizmetler"],
   ["projeler", "Projeler"],
   ["yaklasim", "Yaklaşımım"],
   ["deneyim", "Deneyim"],
@@ -69,19 +81,8 @@ const visualMap: Record<string, () => ReactNode> = {
   arkun: () => <ArkunVisual />,
 };
 
-function SectionLabel({
-  number,
-  children,
-}: {
-  number: string;
-  children: ReactNode;
-}) {
-  return (
-    <div className="section-label mono">
-      <span>{number}</span>
-      <span>{children}</span>
-    </div>
-  );
+function SectionLabel({ children }: { children: ReactNode }) {
+  return <div className="section-label">{children}</div>;
 }
 function External({
   href,
@@ -371,8 +372,8 @@ function Hero({ open }: { open: (p: Project) => void }) {
               <a className="button button-blue button-primary" href="#projeler">
                 Projelerimi keşfet <ArrowDown size={18} />
               </a>
-              <a className="text-link" href="#hakkimda">
-                Biraz da ben <ArrowUpRight size={16} />
+              <a className="text-link" href="#hizmetler">
+                Hizmetler <ArrowUpRight size={16} />
               </a>
             </div>
           </Reveal>
@@ -431,6 +432,146 @@ function Hero({ open }: { open: (p: Project) => void }) {
   );
 }
 
+const serviceIcons: Record<string, typeof Globe> = {
+  web: Globe,
+  ai: Bot,
+  randevu: CalendarCheck,
+  nfc: Nfc,
+  urun: Rocket,
+};
+
+function Services({ open }: { open: (p: Project) => void }) {
+  const [active, setActive] = useState(0);
+  const tabs = useRef<(HTMLButtonElement | null)[]>([]);
+  const onKey = (e: React.KeyboardEvent) => {
+    const keys: Record<string, number> = {
+      ArrowDown: 1,
+      ArrowRight: 1,
+      ArrowUp: -1,
+      ArrowLeft: -1,
+    };
+    let next = active;
+    if (e.key in keys) next = (active + keys[e.key] + services.length) % services.length;
+    else if (e.key === "Home") next = 0;
+    else if (e.key === "End") next = services.length - 1;
+    else return;
+    e.preventDefault();
+    setActive(next);
+    tabs.current[next]?.focus();
+  };
+  return (
+    <section id="hizmetler" className="services section shell">
+      <Reveal>
+        <SectionLabel>Hizmetler</SectionLabel>
+        <div className="section-heading">
+          <h2>
+            Ne yapıyorum?
+            <br />
+            <span className="muted">İşine göre seç.</span>
+          </h2>
+          <p>
+            Küçük bir siteden uçtan uca ürüne.
+            <br />
+            Hepsi tek elden, yayına kadar.
+          </p>
+        </div>
+      </Reveal>
+      <Reveal className="services-grid">
+        <div
+          className="service-tabs"
+          role="tablist"
+          aria-label="Hizmet kategorileri"
+          aria-orientation="vertical"
+          onKeyDown={onKey}
+        >
+          {services.map((sv, i) => {
+            const Icon = serviceIcons[sv.id];
+            const selected = i === active;
+            return (
+              <button
+                key={sv.id}
+                ref={(el) => {
+                  tabs.current[i] = el;
+                }}
+                role="tab"
+                id={`service-tab-${sv.id}`}
+                aria-selected={selected}
+                aria-controls={`service-panel-${sv.id}`}
+                tabIndex={selected ? 0 : -1}
+                className="service-tab"
+                onClick={() => setActive(i)}
+              >
+                {selected && (
+                  <motion.span
+                    layoutId="service-pill"
+                    className="service-pill"
+                    transition={{ type: "spring", stiffness: 380, damping: 34 }}
+                  />
+                )}
+                <span className="service-tab-icon">
+                  <Icon size={18} strokeWidth={1.75} />
+                </span>
+                <span className="service-tab-label">{sv.name}</span>
+              </button>
+            );
+          })}
+        </div>
+        <div className="service-stage glass spotlight">
+          {services.map((sv, i) => {
+            const Icon = serviceIcons[sv.id];
+            const example = sv.project
+              ? projects.find((p) => p.id === sv.project)
+              : undefined;
+            return (
+              <div
+                key={sv.id}
+                role="tabpanel"
+                id={`service-panel-${sv.id}`}
+                aria-labelledby={`service-tab-${sv.id}`}
+                className="service-panel"
+                hidden={i !== active}
+              >
+                <div className="service-head">
+                  <span className="service-icon">
+                    <Icon size={24} strokeWidth={1.6} />
+                  </span>
+                  <h3>{sv.name}</h3>
+                </div>
+                <p className="service-tagline">{sv.tagline}</p>
+                <p className="service-description">{sv.description}</p>
+                <ul className="service-includes">
+                  {sv.includes.map((it) => (
+                    <li key={it}>
+                      <Check size={16} />
+                      {it}
+                    </li>
+                  ))}
+                </ul>
+                <p className="service-for">
+                  <span>Kimler için:</span> {sv.for}
+                </p>
+                <div className="service-actions">
+                  <a
+                    className="button button-primary"
+                    href={`mailto:hello@burakalpyahsi.com?subject=${encodeURIComponent(sv.name + " hakkında")}`}
+                  >
+                    Teklif iste <ArrowUpRight size={17} />
+                  </a>
+                  {example && (
+                    <button className="text-link" onClick={() => open(example)}>
+                      Örnek: {example.name} <ArrowUpRight size={15} />
+                    </button>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </Reveal>
+    </section>
+  );
+}
+
 function Projects({ open }: { open: (p: Project) => void }) {
   const [filter, setFilter] = useState("Tümü");
   const filters = ["Tümü", "SaaS & Web", "Yapay zekâ", "3D deneyim"];
@@ -446,7 +587,7 @@ function Projects({ open }: { open: (p: Project) => void }) {
   return (
     <section id="projeler" className="projects section shell">
       <Reveal>
-        <SectionLabel number="01">SEÇİLMİŞ PROJELER</SectionLabel>
+        <SectionLabel>Projeler</SectionLabel>
         <div className="section-heading">
           <h2>
             Fikir güzel.
@@ -623,7 +764,7 @@ function Approach() {
     <section className="approach-wrap" id="yaklasim">
       <div className="shell section">
         <Reveal>
-          <SectionLabel number="02">ÇALIŞMA YAKLAŞIMIM</SectionLabel>
+          <SectionLabel>Yaklaşımım</SectionLabel>
           <div className="section-heading">
             <h2>
               İyi fikirden,
@@ -708,7 +849,7 @@ function Experience() {
     <section id="deneyim" className="section shell experience-section">
       <div className="experience-intro">
         <Reveal>
-          <SectionLabel number="03">DENEYİM</SectionLabel>
+          <SectionLabel>Deneyim</SectionLabel>
           <h2>
             Farklı alanlar.
             <br />
@@ -779,7 +920,7 @@ function About() {
       <h2 className="sr-only">Hakkımda</h2>
       <div className="section shell">
         <Reveal>
-          <SectionLabel number="04">BİRAZ DA BEN</SectionLabel>
+          <SectionLabel>Hakkımda</SectionLabel>
         </Reveal>
         <div className="about-grid">
           <div>
@@ -927,7 +1068,7 @@ function Contact() {
     <footer id="iletisim" className="contact-wrap">
       <div className="shell contact">
         <div className="contact-top">
-          <SectionLabel number="05">SIRADAKİ FİKİR</SectionLabel>
+          <SectionLabel>İletişim</SectionLabel>
           <span className="availability">
             İş birliklerine açığım
           </span>
@@ -1009,6 +1150,7 @@ export default function App() {
       <Header />
       <main>
         <Hero open={setProject} />
+        <Services open={setProject} />
         <Projects open={setProject} />
         <Approach />
         <Experience />
