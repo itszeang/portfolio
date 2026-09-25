@@ -11,7 +11,7 @@ import { useEffect, useSyncExternalStore } from "react";
  * The measurement ID is public by nature (it ships in every page), so it lives
  * in code; NEXT_PUBLIC_GA_ID can still override it, e.g. for a test property.
  */
-const GA_ID = process.env.NEXT_PUBLIC_GA_ID ?? "G-RYMPF101ZF";
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID ?? "G-P3GSG48S0S";
 const KEY = "analytics-consent";
 const EVENT = "analytics-consent-change";
 
