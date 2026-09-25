@@ -7,7 +7,9 @@ import {
   useTransform,
   type MotionValue,
 } from "motion/react";
-import { useRef, type ReactNode, type RefObject } from "react";
+import { useRef, useSyncExternalStore, type ReactNode, type RefObject } from "react";
+
+const noopSubscribe = () => () => {};
 
 const MAX_BLUR = 8;
 const MIN_OPACITY = 0.25;
@@ -21,7 +23,10 @@ const MIN_OPACITY = 0.25;
  * Measured from the element's edges (not its centre), so it behaves the same
  * for a one-line heading and a section taller than the viewport.
  */
-export function useScrollFocus(ref: RefObject<HTMLElement | null>): {
+export function useScrollFocus(
+  ref: RefObject<HTMLElement | null>,
+  { enter: withEnter = true }: { enter?: boolean } = {},
+): {
   filter: MotionValue<string>;
   opacity: MotionValue<number>;
 } {
@@ -34,7 +39,9 @@ export function useScrollFocus(ref: RefObject<HTMLElement | null>): {
     offset: ["end 32%", "end start"],
   });
   // 0 = fully in focus, 1 = fully out of focus.
-  const amount = useTransform([enter, exit], ([a, b]: number[]) => Math.max(1 - a, b));
+  const amount = useTransform([enter, exit], ([a, b]: number[]) =>
+    withEnter ? Math.max(1 - a, b) : b,
+  );
   // "none" at rest matters: any filter value, even blur(0px), would stop the
   // glass cards inside from blurring the backdrop behind them.
   const filter = useTransform(amount, (v) => (v < 0.02 ? "none" : `blur(${(v * MAX_BLUR).toFixed(2)}px)`));
@@ -45,15 +52,36 @@ export function useScrollFocus(ref: RefObject<HTMLElement | null>): {
 export function ScrollFocus({
   children,
   className,
+  enter = true,
 }: {
   children: ReactNode;
   className?: string;
+  /**
+   * Set to false for content that is already on screen when the page opens
+   * (the hero): it then only softens on the way out, never on load.
+   */
+  enter?: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
-  const { filter, opacity } = useScrollFocus(ref);
+  const { filter, opacity } = useScrollFocus(ref, { enter });
+  // Scroll progress only exists in the browser. Before the first client
+  // measurement the values read 0 progress, which means "fully blurred", and
+  // that state would be baked into the server HTML: the whole page, hero
+  // included, arrived blurred and faded until JavaScript caught up (and
+  // stayed that way where it was slow or failed). So the effect is only
+  // attached after mount; until then everything renders sharp.
+  const mounted = useSyncExternalStore(
+    noopSubscribe,
+    () => true,
+    () => false,
+  );
   return (
-    <motion.div className={className} ref={ref} style={reduce ? undefined : { filter, opacity }}>
+    <motion.div
+      className={className}
+      ref={ref}
+      style={reduce || !mounted ? undefined : { filter, opacity }}
+    >
       {children}
     </motion.div>
   );
