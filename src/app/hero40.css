@@ -169,6 +169,18 @@
   line-height: 1;
 }
 
+/* SVG arrow instead of the "↗" character, which iOS draws as an emoji. */
+.hero40 .cta-arrow {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero40 .primary-cta:hover .cta-arrow {
+  transform: translate(2px, -2px);
+}
+
 .hero40 .dither-layer {
   position: absolute;
   z-index: 1;

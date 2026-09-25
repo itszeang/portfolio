@@ -1,4 +1,5 @@
 import DitherReveal from "@/components/originkit/dither-reveal";
+import { ArrowUpRight } from "lucide-react";
 import { archive, contact, hero } from "@/content";
 import "@/app/hero40.css";
 
@@ -30,7 +31,7 @@ export function Hero40() {
           </p>
           <a className="primary-cta" href={mail}>
             {hero.cta}
-            <span aria-hidden="true">↗</span>
+            <ArrowUpRight aria-hidden="true" className="cta-arrow" strokeWidth={2} />
           </a>
         </section>
 

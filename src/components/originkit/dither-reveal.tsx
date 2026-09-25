@@ -113,9 +113,12 @@ function __OriginkitBase_DitherReveal(props: DitherRevealProps) {
     const canvas = canvasRef.current;
     const container = containerRef.current;
     if (!canvas || !container) return;
+    // Premultiplied output (the browser default). With a non-premultiplied
+    // buffer some GPUs and Safari composite fully transparent pixels as if
+    // their colour were still there, which washed the whole hero pink.
     const gl = canvas.getContext("webgl", {
       antialias: false,
-      premultipliedAlpha: false,
+      premultipliedAlpha: true,
     });
     if (!gl) return;
 
@@ -437,7 +440,8 @@ void main() {
     // Under the pointer the dots melt into a smooth shade of the same pink,
     // instead of revealing the photo's skin tone, which clashed with it.
     vec3 smoothColor = mix(ditherDark, ditherLight, smoothstep(0.35, 0.95, gray));
-    gl_FragColor = vec4(mix(ditherColor, smoothColor, revealAmount), finalAlpha);
+    vec3 rgb = mix(ditherColor, smoothColor, revealAmount);
+    gl_FragColor = vec4(rgb * finalAlpha, finalAlpha);
 }
 `;
 
