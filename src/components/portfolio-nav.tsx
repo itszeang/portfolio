@@ -57,7 +57,7 @@ export function PortfolioNav() {
         <GlassCard {...glassProps} className="portfolio-glass" radius={16}>
           <nav aria-label="Ana menü" className="flex items-center justify-between gap-5">
             <a
-              className="text-sm font-semibold tracking-[-0.02em]"
+              className="-my-3 inline-flex min-h-11 items-center text-sm font-semibold tracking-[-0.02em]"
               href="#baslangic"
               onClick={closeExpandedNav}
             >
@@ -76,7 +76,7 @@ export function PortfolioNav() {
               ))}
             </div>
             <a
-              className="inline-flex items-center gap-2 text-sm font-medium text-white"
+              className="-my-3 inline-flex min-h-11 items-center gap-2 text-sm font-medium text-white"
               href="#iletisim"
               onClick={closeExpandedNav}
             >
@@ -104,7 +104,7 @@ export function PortfolioNav() {
         >
           <button
             aria-label="Menüyü aç"
-            className="flex size-5 items-center justify-center text-white/88 transition-colors hover:text-white focus-visible:text-white"
+            className="-m-3 flex size-11 items-center justify-center text-white/88 transition-colors hover:text-white focus-visible:text-white"
             onClick={() => setManuallyExpanded(true)}
             type="button"
           >

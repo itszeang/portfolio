@@ -21,7 +21,8 @@ const CHIPS: Chip[] = [
   { label: "Tailwind CSS", slug: "tailwindcss", bg: "#2BBCF5", fg: "#ffffff" },
   { label: "Python", slug: "python", bg: "#3776AB", fg: "#ffffff" },
   { label: "FastAPI", slug: "fastapi", bg: "#009688", fg: "#ffffff" },
-  { label: "OpenAI", slug: "openai", bg: "#111111", fg: "#ffffff" },
+  // Simple Icons dropped the OpenAI mark (its CDN now 404s), so it is served locally.
+  { label: "OpenAI", slug: "openai", iconUrl: "/logos/openai.svg", bg: "#111111", fg: "#ffffff" },
   { label: "Hugging Face", slug: "huggingface", bg: "#FFD21E", fg: "#0a0a0a" },
   { label: "Tauri", slug: "tauri", bg: "#24C8DB", fg: "#0a0a0a" },
   { label: "Vercel", slug: "vercel", bg: "#0a0a0a", fg: "#ffffff" },

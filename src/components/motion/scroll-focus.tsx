@@ -86,3 +86,44 @@ export function ScrollFocus({
     </motion.div>
   );
 }
+
+/**
+ * Same focus pull, but published as CSS variables (--focus-filter,
+ * --focus-opacity) instead of being applied to the wrapper itself, so the
+ * children pick which layers blur and fade.
+ *
+ * Needed for the hero: filter + opacity on the whole hero put its WebGL
+ * canvas inside a filtered, translucent layer. Safari composites that badly:
+ * the blur could stay stuck after scrolling back up, and the translucent
+ * hero let the pink backdrop behind it wash the black background pink.
+ * With variables the hero stays opaque and the canvas is never filtered.
+ */
+export function ScrollFocusVars({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const reduce = useReducedMotion();
+  const { filter, opacity } = useScrollFocus(ref, { enter: false });
+  const mounted = useSyncExternalStore(
+    noopSubscribe,
+    () => true,
+    () => false,
+  );
+  return (
+    <motion.div
+      className={className}
+      ref={ref}
+      style={
+        reduce || !mounted
+          ? undefined
+          : ({ "--focus-filter": filter, "--focus-opacity": opacity } as Record<string, MotionValue>)
+      }
+    >
+      {children}
+    </motion.div>
+  );
+}

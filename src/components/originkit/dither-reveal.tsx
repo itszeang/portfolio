@@ -3,7 +3,7 @@
 // Originkit — props baked into the default export.
 "use client";
 
-import { useEffect, useRef, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 
 const DEFAULT_IMAGE =
   "https://plus.unsplash.com/premium_photo-1726099913477-291d8ca697f8?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8YWVzdGhldGljJTIwY29sb3JmdWwlMjBwb3J0cmFpdCUyMGZ1dHVyaXN0aWN8ZW58MHx8MHx8fDA%3D";
@@ -106,6 +106,8 @@ function __OriginkitBase_DitherReveal(props: DitherRevealProps) {
   const liveRef = useRef(S);
   liveRef.current = S;
   const inViewRef = useRef(true);
+  // Bumped when the browser hands back a lost WebGL context, to rebuild.
+  const [glEpoch, setGlEpoch] = useState(0);
 
   const imgUrl = imageURL(image) || DEFAULT_IMAGE;
 
@@ -121,6 +123,23 @@ function __OriginkitBase_DitherReveal(props: DitherRevealProps) {
       premultipliedAlpha: true,
     });
     if (!gl) return;
+
+    // Safari drops WebGL contexts under GPU pressure, on GPU switches and
+    // around fullscreen. Without this the hands vanished for good; now the
+    // context is restored and the effect rebuilt from scratch.
+    let lost = false;
+    const onLost = (e: Event) => {
+      e.preventDefault();
+      lost = true;
+    };
+    const onRestored = () => setGlEpoch((n) => n + 1);
+    canvas.addEventListener("webglcontextlost", onLost);
+    canvas.addEventListener("webglcontextrestored", onRestored);
+    const unlisten = () => {
+      canvas.removeEventListener("webglcontextlost", onLost);
+      canvas.removeEventListener("webglcontextrestored", onRestored);
+    };
+    if (gl.isContextLost()) return unlisten;
 
     function compile(type: number, source: string) {
       const sh = gl!.createShader(type)!;
@@ -236,15 +255,23 @@ function __OriginkitBase_DitherReveal(props: DitherRevealProps) {
     container.addEventListener("pointerenter", onEnter);
     container.addEventListener("pointerleave", onLeave);
 
+    // Sized inside the render loop, right before drawing: resizing clears the
+    // canvas, and doing it from a ResizeObserver left blank frames in between
+    // (Safari's fullscreen animation resizes many times in a row).
     function resize() {
       const dpr = Math.min(window.devicePixelRatio || 1, 3);
-      canvas!.width = Math.max(1, Math.floor(container!.clientWidth * dpr));
-      canvas!.height = Math.max(1, Math.floor(container!.clientHeight * dpr));
-      gl!.viewport(0, 0, canvas!.width, canvas!.height);
+      const w = Math.max(1, Math.floor(container!.clientWidth * dpr));
+      const h = Math.max(1, Math.floor(container!.clientHeight * dpr));
+      if (canvas!.width !== w || canvas!.height !== h) {
+        canvas!.width = w;
+        canvas!.height = h;
+      }
+      // The drawing buffer, not the canvas, is what actually gets drawn: the
+      // browser may silently give a smaller one for a huge canvas (large
+      // fullscreen displays), and a viewport sized to the canvas then blew
+      // the hands up past the screen edges.
+      gl!.viewport(0, 0, gl!.drawingBufferWidth, gl!.drawingBufferHeight);
     }
-    resize();
-    const ro = new ResizeObserver(resize);
-    ro.observe(container);
 
     const io = new IntersectionObserver(
       ([entry]) => (inViewRef.current = entry.isIntersecting),
@@ -257,7 +284,8 @@ function __OriginkitBase_DitherReveal(props: DitherRevealProps) {
     function render() {
       raf = requestAnimationFrame(render);
       const L = liveRef.current;
-      if (!inViewRef.current) return;
+      if (lost || !inViewRef.current) return;
+      resize();
 
       const now = performance.now();
       mouse.active += (mouse.target - mouse.active) * 0.08;
@@ -273,7 +301,10 @@ function __OriginkitBase_DitherReveal(props: DitherRevealProps) {
       gl!.uniform1f(uWaveFrequency, L.waveFrequency);
       gl!.uniform1f(uWaveAmplitude, L.waveAmplitude);
       gl!.uniform1f(uWaveMargin, L.waveMargin);
-      gl!.uniform1f(uCanvasAspect, canvas!.width / canvas!.height);
+      gl!.uniform1f(
+        uCanvasAspect,
+        gl!.drawingBufferWidth / Math.max(1, gl!.drawingBufferHeight),
+      );
       gl!.uniform1f(uImageAspect, imgAspect);
       gl!.uniform2f(
         uResolution,
@@ -288,8 +319,8 @@ function __OriginkitBase_DitherReveal(props: DitherRevealProps) {
 
     return () => {
       cancelAnimationFrame(raf);
-      ro.disconnect();
       io.disconnect();
+      unlisten();
       img.onload = null;
       img.onerror = null;
       container.removeEventListener("pointermove", onMove);
@@ -299,7 +330,7 @@ function __OriginkitBase_DitherReveal(props: DitherRevealProps) {
       gl.deleteBuffer(buffer);
       gl.deleteTexture(texture);
     };
-  }, [imgUrl]);
+  }, [imgUrl, glEpoch]);
 
   return (
     <div

@@ -310,3 +310,8 @@ body {
     outline-offset: 4px;
   }
 }
+
+/* Cookie banner is in the static HTML; hidden before paint once a choice is stored. */
+html[data-consent] .consent-banner {
+  display: none;
+}

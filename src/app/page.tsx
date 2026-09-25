@@ -1,10 +1,11 @@
+import { CookiePreferencesButton } from "@/components/analytics";
 import { PortfolioNav } from "@/components/portfolio-nav";
 import { PresentationBackdrop } from "@/components/presentation-backdrop";
 import { Hero40 } from "@/components/hero40";
 import { MaskedWords } from "@/components/motion/masked-words";
 import { MotionProvider } from "@/components/motion/motion-provider";
 import { ProjectShowcase } from "@/components/motion/project-showcase";
-import { ScrollFocus } from "@/components/motion/scroll-focus";
+import { ScrollFocus, ScrollFocusVars } from "@/components/motion/scroll-focus";
 import { ServicesIndex } from "@/components/motion/services-index";
 import { AboutSection } from "@/components/rbp/about-section";
 import { ContactCard } from "@/components/rbp/contact-card";
@@ -24,9 +25,9 @@ export default function Home() {
         <div className="fixed inset-x-0 top-4 z-50 px-4 sm:px-7 lg:px-10">
           <PortfolioNav />
         </div>
-        <ScrollFocus className="relative z-20" enter={false}>
+        <ScrollFocusVars className="relative z-20">
           <Hero40 />
-        </ScrollFocus>
+        </ScrollFocusVars>
         <PresentationBackdrop />
         <div
           aria-hidden="true"
@@ -96,8 +97,9 @@ export default function Home() {
             <ContactCard />
           </ScrollFocus>
 
-          <footer className="flex items-center justify-end px-2 py-9 text-xs text-white/46">
-            <a className="transition-colors hover:text-white" href="#baslangic">
+          <footer className="flex items-center justify-end gap-6 px-2 py-9 text-xs text-white/46">
+            <CookiePreferencesButton className="min-h-11 transition-colors hover:text-white" />
+            <a className="inline-flex min-h-11 items-center transition-colors hover:text-white" href="#baslangic">
               Başa dön
             </a>
           </footer>

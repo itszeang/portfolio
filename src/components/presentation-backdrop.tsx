@@ -1,7 +1,35 @@
 "use client";
 
-import { PixelLiquidBg } from "@/components/pixel-liquid-bg";
+import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
+
+// three.js (~800 KB) is only needed for this fluid, which sits hidden behind
+// the opaque hero on load. It is fetched once the browser is idle and only
+// started on the first scroll, so it stays off the critical path: on mobile
+// it was holding the hero text back by several seconds.
+const loadFluid = () => import("@/components/pixel-liquid-bg");
+const PixelLiquidBg = dynamic(() => loadFluid().then((m) => m.PixelLiquidBg), { ssr: false });
+
+function subscribeFirstScroll(cb: () => void) {
+  window.addEventListener("scroll", cb, { once: true, passive: true });
+  return () => window.removeEventListener("scroll", cb);
+}
+
+function useFluidReady() {
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    const start = () => setReady(true);
+    // Reloaded mid-page: the fluid is already meant to be visible.
+    if (window.scrollY > 0) {
+      start();
+      return;
+    }
+    const idle = window.requestIdleCallback ?? ((fn: () => void) => window.setTimeout(fn, 1500));
+    idle(() => void loadFluid());
+    return subscribeFirstScroll(start);
+  }, []);
+  return ready;
+}
 
 const BACKDROP_BLUR = 24;
 // While a two-colour glow is showing, the fluid steps back so the corner
@@ -67,26 +95,29 @@ export function PresentationBackdrop() {
     return () => observer.disconnect();
   }, []);
 
+  const fluidReady = useFluidReady();
   const glowing = Boolean(tone.glowA && tone.glowB);
   const brightness = tone.brightness * (glowing ? FLUID_DIM_UNDER_GLOW : 1);
 
   return (
     <>
-      <PixelLiquidBg
-        aria-hidden="true"
-        className="presentation-backdrop fixed inset-0 h-[100dvh] w-full"
-        pixelSize={16}
-        resolution={0.34}
-        style={{
-          background: "#000",
-          // The blur matches the glass cards' frost, so the fluid reads as the
-          // same soft light everywhere instead of hard pixels between the cards.
-          filter: `hue-rotate(${tone.hue}deg) saturate(${tone.saturate}) brightness(${brightness}) blur(${BACKDROP_BLUR}px)`,
-          // Sections can switch the fluid off entirely (the services index
-          // reads best on plain black).
-          opacity: tone.off ? 0 : 1,
-        }}
-      />
+      {fluidReady && (
+        <PixelLiquidBg
+          aria-hidden="true"
+          className="presentation-backdrop fixed inset-0 h-[100dvh] w-full"
+          pixelSize={16}
+          resolution={0.34}
+          style={{
+            background: "#000",
+            // The blur matches the glass cards' frost, so the fluid reads as the
+            // same soft light everywhere instead of hard pixels between the cards.
+            filter: `hue-rotate(${tone.hue}deg) saturate(${tone.saturate}) brightness(${brightness}) blur(${BACKDROP_BLUR}px)`,
+            // Sections can switch the fluid off entirely (the services index
+            // reads best on plain black).
+            opacity: tone.off ? 0 : 1,
+          }}
+        />
+      )}
       <div aria-hidden="true" className="pointer-events-none fixed inset-0 h-[100dvh] w-full">
         <div
           className="backdrop-glow backdrop-glow-a absolute inset-0"

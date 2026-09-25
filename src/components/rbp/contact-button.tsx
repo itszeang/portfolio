@@ -46,7 +46,8 @@ export function ContactButton(): ReactNode {
       onFocus={() => setOpen(true)}
       onBlur={() => setOpen(false)}
       aria-label={
-        copied ? "E-posta kopyalandı" : open ? `${EMAIL} adresini kopyala` : "E-postayı göster"
+        // Starts with the visible text so voice control ("click İletişim") finds it.
+        copied ? "E-posta kopyalandı" : open ? `${EMAIL} adresini kopyala` : "İletişim: e-postayı göster"
       }
       transition={{ layout: { duration: 0.55, ease: EASE } }}
       style={{ borderRadius: 12 }}
