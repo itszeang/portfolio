@@ -24,7 +24,7 @@ export default function Home() {
         <div className="fixed inset-x-0 top-4 z-50 px-4 sm:px-7 lg:px-10">
           <PortfolioNav />
         </div>
-        <ScrollFocus className="relative z-20">
+        <ScrollFocus className="relative z-20" enter={false}>
           <Hero40 />
         </ScrollFocus>
         <PresentationBackdrop />

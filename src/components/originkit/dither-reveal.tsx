@@ -184,7 +184,9 @@ function __OriginkitBase_DitherReveal(props: DitherRevealProps) {
       0,
       gl.RGBA,
       gl.UNSIGNED_BYTE,
-      new Uint8Array([20, 20, 20, 255]),
+      // Transparent until the image arrives. An opaque placeholder here
+      // painted the whole hero as one flat pink field while it loaded.
+      new Uint8Array([0, 0, 0, 0]),
     );
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
