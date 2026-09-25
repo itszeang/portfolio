@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useMotionValue, useReducedMotion, useSpring } from "motion/react";
+import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 /**
@@ -17,6 +18,8 @@ type Service = {
   name: string;
   description: string;
   includes: readonly string[];
+  /** The service's own page (/hizmetler/...); the whole row links there. */
+  href?: string;
 };
 
 type Art = { a: string; b: string; base: string; line: string; mark: string; tools: string };
@@ -268,7 +271,7 @@ export function ServicesIndex({ services }: { services: readonly Service[] }) {
           const art = ART[s.id] ?? ART.ai;
           return (
             <li
-              className="grid cursor-default gap-1 border-t border-white/10 px-3 py-4 text-white outline-none last:border-b md:grid-cols-[minmax(0,1.15fr)_minmax(0,0.75fr)_minmax(0,1.6fr)] md:gap-6 md:border-t-0 md:py-3.5 md:last:border-b-0"
+              className="relative grid cursor-default gap-1 border-t border-white/10 px-3 py-4 text-white outline-none last:border-b md:grid-cols-[minmax(0,1.15fr)_minmax(0,0.75fr)_minmax(0,1.6fr)] md:gap-6 md:border-t-0 md:py-3.5 md:last:border-b-0"
               key={s.id}
               onFocus={() => {
                 const row = rowRefs.current[i];
@@ -285,7 +288,18 @@ export function ServicesIndex({ services }: { services: readonly Service[] }) {
               }}
               tabIndex={canHover ? 0 : undefined}
             >
-              <span className="font-medium">{upper(s.name)}</span>
+              {s.href ? (
+                // The link's ::after covers the row, so the whole row is clickable
+                // while the name stays the link's accessible text.
+                <Link
+                  className="font-medium outline-none after:absolute after:inset-0 after:cursor-pointer after:content-['']"
+                  href={s.href}
+                >
+                  {upper(s.name)}
+                </Link>
+              ) : (
+                <span className="font-medium">{upper(s.name)}</span>
+              )}
               <span className="text-white/55 md:text-white">{art.tools.toUpperCase()}</span>
               <span className="text-white/70 md:text-white">{upper(s.includes.slice(0, 3).join(", "))}</span>
             </li>

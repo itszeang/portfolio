@@ -1,4 +1,4 @@
-import { contact, person, projects, services, site, socials } from "@/content";
+import { contact, person, projects, servicePages, services, site, socials } from "@/content";
 
 // /llms.txt (llmstxt.org): a plain-Markdown summary for AI assistants and AI
 // search. Built from content.ts so it never drifts from the page itself.
@@ -15,7 +15,11 @@ export function GET() {
     "",
     "## Hizmetler",
     "",
-    ...services.map((s) => `- [${s.name}](${url("/#hizmetler")}): ${s.description} Kapsam: ${s.includes.join(", ")}.`),
+    ...services.map((s) => {
+      const page = servicePages.find((p) => p.id === s.id);
+      const link = url(page ? `/hizmetler/${page.slug}` : "/#hizmetler");
+      return `- [${s.name}](${link}): ${s.description} Kapsam: ${s.includes.join(", ")}.`;
+    }),
     "",
     "## Projeler",
     "",

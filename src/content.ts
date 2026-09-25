@@ -7,9 +7,11 @@
 // --- Site ve SEO ------------------------------------------------------------
 export const site = {
   url: "https://www.burakalpyahsi.com/",
-  title: "Burak Alp Yahşi — Fikirden ürüne",
+  // Arama sonucunda görünen başlık ve açıklama. Hizmet sayfalarının hedeflediği
+  // kelimeler (kurumsal web sitesi, yapay zekâ otomasyonu...) burada da geçer.
+  title: "Burak Alp Yahşi — Web Sitesi ve Yapay Zekâ Otomasyonu",
   description:
-    "Burak Alp Yahşi. Fikirleri çalışan ürünlere dönüştürüyorum. SaaS platformları, yapay zekâ araçları ve dijital deneyimler.",
+    "Kurumsal web sitesi, yapay zekâ otomasyonu, online randevu sistemi ve mobil uygulama geliştiriyorum. Fikirden tasarıma, koddan yayına tek elden.",
   ogDescription:
     "SaaS, yapay zekâ ve dijital deneyimler. Seçilmiş projeler, çalışma yaklaşımım ve deneyimlerim.",
   ogImage: "/og.png",
@@ -357,6 +359,194 @@ export const ui = {
     { id: "hakkimda", label: "Hakkımda" },
   ],
 };
+
+// --- Hizmet sayfaları (/hizmetler/...) -----------------------------------------
+// Her hizmetin kendi sayfası; her sayfa tek bir aranan kelimeyi hedefler
+// (Semrush, Türkiye verisi, Eylül 2026). `id`, yukarıdaki `services` ile eşleşir.
+// Fiyat, süre gibi kesin rakamlar bilinçli olarak yazılmadı; eklemek istersen
+// buraya ekle.
+export const servicePages = [
+  {
+    id: "web",
+    slug: "kurumsal-web-sitesi",
+    keyword: "kurumsal web sitesi", // ~590 arama/ay, zorluk %8
+    title: "Kurumsal Web Sitesi Yaptırma",
+    description:
+      "Markanı doğru anlatan, mobil uyumlu ve hızlı kurumsal web sitesi. Tasarım, SEO, alan adı ve yayın kurulumu dahil; fikirden yayına tek elden.",
+    h1: "Kurumsal web sitesi",
+    lead: "Markanı doğru anlatan, telefonda da hızlı açılan ve Google'da bulunabilen bir web sitesi. Tasarımdan yayına kadar her adımı ben üstleniyorum.",
+    body: [
+      "Bir kurumsal web sitesinin işi, ziyaretçiye birkaç saniye içinde ne yaptığını, neden güvenilir olduğunu ve seninle nasıl iletişime geçeceğini anlatmak. Hazır tema yerine işine göre tasarlanmış, hafif ve hızlı bir site kuruyorum.",
+      "Site; WhatsApp, telefon ve harita bağlantılarıyla gelir. Paylaşıldığında düzgün bir önizleme görünür, arama motorlarının okuyabileceği şekilde işaretlenir. Alan adı bağlama ve yayına alma süreci de dahil.",
+      "Kurumsal site, landing page ya da gerçek bir ihtiyacı çözen bir web uygulaması; kapsamı ilk görüşmede birlikte netleştiriyoruz.",
+    ],
+    audience: [
+      "Web sitesi olmayan ya da sitesi güncel olmayan işletmeler",
+      "Yeni bir ürün veya hizmet için landing page isteyenler",
+      "Sosyal medyadan gelen ilgiyi siteye taşımak isteyen markalar",
+    ],
+    faq: [
+      {
+        q: "Web sitesi yaptırma fiyatı neye göre belirleniyor?",
+        a: "Sayfa sayısı, özel tasarım ihtiyacı, içerik yönetimi ve entegrasyonlar (randevu, form, ödeme gibi) fiyatı belirler. İhtiyacını dinledikten sonra kapsamı ve fiyatı net olarak paylaşıyorum.",
+      },
+      {
+        q: "Site mobil uyumlu olacak mı?",
+        a: "Evet. Tasarıma telefondan başlıyorum; site her ekran boyutunda düzgün görünür ve hızlı açılır.",
+      },
+      {
+        q: "SEO çalışması dahil mi?",
+        a: "Temel SEO dahil: sayfa başlıkları ve açıklamaları, site haritası, yapısal veri, paylaşım önizlemeleri ve Google Search Console kurulumu.",
+      },
+      {
+        q: "Alan adı ve yayın kurulumu kimde?",
+        a: "Alan adını bağlama ve siteyi yayına alma işini ben yapıyorum. Alan adı senin adına kayıtlı kalır.",
+      },
+    ],
+    related: "boyut",
+  },
+  {
+    id: "ai",
+    slug: "yapay-zeka-otomasyonu",
+    keyword: "yapay zeka otomasyon", // ~320 arama/ay, zorluk %19
+    title: "Yapay Zekâ Otomasyonu ve WhatsApp Asistanı",
+    description:
+      "Tekrarlayan işleri yapay zekâya devret: WhatsApp ve e-posta yanıt asistanları, fatura ve belge okuma, CRM ve takvim entegrasyonları.",
+    h1: "Yapay zekâ otomasyonu",
+    lead: "Her gün elle yapılan, tekrarlayan işleri yapay zekâya devrediyorum: müşteri mesajlarını yanıtlayan asistanlar, belgeleri okuyan akışlar, birbirine bağlanan araçlar.",
+    body: [
+      "Otomasyonun değeri, ekibin zamanını geri vermesinde. Önce hangi işin tekrar ettiğini ve nerede zaman kaybedildiğini birlikte buluyoruz; sonra o işi yapan, senin araçlarınla konuşan bir akış kuruyorum.",
+      "WhatsApp ve e-posta için yanıt asistanları, gelen fatura ve formlardan veri çıkaran akışlar, kendi belgelerinle çalışan ve cevabının kaynağını gösteren bir asistan bunlardan bazıları. Akışlar Google Sheets, CRM ve takvim gibi kullandığın araçlara bağlanır.",
+      "Python, OpenAI ve FastAPI ile çalışıyorum. Asistanın neyi bilip neyi bilmediğini kontrol altında tutuyor, hassas verinin nereye gittiğini baştan netleştiriyorum.",
+    ],
+    audience: [
+      "Gün boyu WhatsApp ve e-postada aynı soruları yanıtlayan işletmeler",
+      "Fatura, form ve belgeleri elle sisteme giren ekipler",
+      "Dağınık araçlarını tek bir akışta birleştirmek isteyenler",
+    ],
+    faq: [
+      {
+        q: "WhatsApp otomasyonu nasıl çalışıyor?",
+        a: "Gelen mesajları, senin belirlediğin bilgi ve kurallarla yanıtlayan bir asistan kuruyorum. Asistanın bilmediği ya da insan gerektiren konular sana ya da ekibine aktarılır.",
+      },
+      {
+        q: "Yapay zekâ yanlış bilgi verirse ne olur?",
+        a: "Asistan yalnızca senin verdiğin kaynaklardan cevap verecek şekilde kuruluyor ve cevabının kaynağını gösterebiliyor. Emin olmadığı durumda soruyu bir insana devreder.",
+      },
+      {
+        q: "Hangi araçlarla entegre olabilir?",
+        a: "Google Sheets, e-posta, takvim, CRM'ler ve API'si olan çoğu araçla. Kullandığın araçları ilk görüşmede birlikte listeliyoruz.",
+      },
+    ],
+    related: null,
+  },
+  {
+    id: "randevu",
+    slug: "online-randevu-sistemi",
+    keyword: "online randevu sistemi",
+    title: "Online Randevu Sistemi Kurulumu",
+    description:
+      "Telefon trafiğini online takvime çevir: randevu sayfası, SMS veya WhatsApp hatırlatmaları, personel ve hizmet bazlı takvim, yönetim paneli.",
+    h1: "Online randevu sistemi",
+    lead: "Müşterilerin sana telefon etmeden, uygun saati görüp randevu alabildiği; hatırlatmaların kendiliğinden gittiği bir randevu sistemi kuruyorum.",
+    body: [
+      "Randevuyu telefonla ya da mesajla yönetmek hem zaman alır hem de unutulan randevulara yol açar. Online randevu sistemiyle müsaitlik, rezervasyon ve hatırlatma tek akışta birleşir.",
+      "Müşteri hizmeti ve personeli seçer, boş saatleri görür ve randevusunu alır. Randevudan önce SMS veya WhatsApp ile hatırlatma gider. Sen de hangi gün kimin geleceğini yönetim panelinden görürsün.",
+      "Sistemi hazır bir kalıba sığdırmak yerine işletmenin çalışma şekline göre kuruyorum: hizmet süreleri, molalar, birden fazla personel ya da şube gibi ayrıntılar dahil.",
+    ],
+    audience: [
+      "Kuaför, güzellik merkezi ve klinik gibi randevuyla çalışan işletmeler",
+      "Danışmanlık ve eğitim veren serbest çalışanlar",
+      "Telefonla randevu almaktan yorulan ekipler",
+    ],
+    faq: [
+      {
+        q: "Hatırlatmalar nasıl gönderiliyor?",
+        a: "Randevudan önce, belirlediğin zamanda SMS veya WhatsApp üzerinden otomatik hatırlatma gider.",
+      },
+      {
+        q: "Birden fazla personel ve hizmet olabilir mi?",
+        a: "Evet. Her personelin kendi takvimi ve verebildiği hizmetler ayrı ayrı tanımlanabilir.",
+      },
+      {
+        q: "Mevcut web siteme eklenebilir mi?",
+        a: "Evet. Randevu sayfası mevcut sitene bağlanabilir ya da kendi alan adında ayrı bir sayfa olarak çalışabilir.",
+      },
+    ],
+    related: null,
+  },
+  {
+    id: "mobil",
+    slug: "mobil-uygulama-gelistirme",
+    keyword: "mobil uygulama yaptırma",
+    title: "Mobil Uygulama Geliştirme (iOS ve Android)",
+    description:
+      "iOS ve Android için hızlı, anlaşılır mobil uygulamalar: bildirimler, üyelik ve profil, web paneli ve mağaza yayın süreci dahil.",
+    h1: "Mobil uygulama geliştirme",
+    lead: "iOS ve Android için hızlı, anlaşılır ve günlük kullanıma hazır mobil uygulamalar geliştiriyorum; mağazada yayına alınmasına kadar.",
+    body: [
+      "İyi bir mobil uygulama, kullanıcının aradığını birkaç dokunuşta bulabildiği uygulamadır. Önce akışı ve ekranları tasarlıyor, sonra iOS ve Android'de aynı deneyimi veren uygulamayı geliştiriyorum.",
+      "Üyelik ve profil, bildirimler ve uygulamayı yönettiğin bir web paneli gerektiğinde projeye dahil. Uygulamanın App Store ve Google Play'de yayına alınma süreci de benden.",
+      "ReviewMS'te bu yaklaşımla NFC kartlarını yöneten bir mobil uygulama ve web paneli geliştirdim.",
+    ],
+    audience: [
+      "Müşterisine uygulama üzerinden hizmet vermek isteyen işletmeler",
+      "Bir fikri mobil ürün olarak test etmek isteyen girişimler",
+      "Web ürününü mobile taşımak isteyen ekipler",
+    ],
+    faq: [
+      {
+        q: "Mobil uygulama yaptırma fiyatı neye göre değişiyor?",
+        a: "Ekran sayısı, üyelik ve ödeme gibi özellikler, web paneli ihtiyacı ve entegrasyonlar fiyatı belirler. Kapsamı birlikte netleştirdikten sonra fiyatı paylaşıyorum.",
+      },
+      {
+        q: "iOS ve Android için ayrı ayrı mı geliştiriliyor?",
+        a: "Projenin ihtiyacına göre karar veriyoruz. Çoğu projede iki platformda da çalışan tek bir kod tabanı süreyi ve bakım maliyetini düşürür.",
+      },
+      {
+        q: "Mağazada yayına alma dahil mi?",
+        a: "Evet. App Store ve Google Play başvuru ve yayın süreci dahil.",
+      },
+    ],
+    related: "reviewms",
+  },
+  {
+    id: "panel",
+    slug: "yonetim-paneli-ozel-yazilim",
+    keyword: "özel yazılım geliştirme",
+    title: "Yönetim Paneli ve Özel Yazılım Geliştirme",
+    description:
+      "Operasyonu görünür kılan yönetim panelleri, veri ekranları, raporlama ve ekibe özel araçlar. Excel'le yürüyen süreçleri tek bir sisteme taşı.",
+    h1: "Yönetim paneli ve özel yazılım",
+    lead: "Excel dosyalarıyla, kâğıt formlarla ya da birbirinden kopuk araçlarla yürüyen süreçleri, ekibine özel tek bir sisteme taşıyorum.",
+    body: [
+      "Her işletmenin kendine özgü bir çalışma şekli var ve hazır yazılımlar buna her zaman uymuyor. Özel bir yönetim paneliyle veriler tek yerde toplanır, kimin neyi görebileceği yetkilendirmeyle belirlenir.",
+      "Veri ekranları ve raporlarla operasyon görünür hâle gelir: hangi işin nerede beklediği, hangi göstergenin nereye gittiği bir bakışta anlaşılır.",
+      "Hagat Savunma Teknolojileri'nde üretim operatörlerinin kâğıt formlarını web tabanlı bir ölçüm kayıt sistemine taşıdım. Benzer dönüşümleri React ve Python ile kuruyorum.",
+    ],
+    audience: [
+      "Süreçlerini Excel ve kâğıt formlarla yürüten ekipler",
+      "Verisini tek ekranda görmek isteyen yöneticiler",
+      "Hazır yazılımların ihtiyacını karşılamadığı işletmeler",
+    ],
+    faq: [
+      {
+        q: "Hazır bir yazılım yerine neden özel yazılım?",
+        a: "Hazır yazılım işini ona uydurmanı ister; özel yazılım ise senin çalışma şekline göre kurulur. Gereksiz özellik yoktur, eksik olan eklenir.",
+      },
+      {
+        q: "Mevcut verilerim taşınabilir mi?",
+        a: "Evet. Excel, Google Sheets ya da mevcut sistemlerindeki veriler yeni sisteme aktarılabilir.",
+      },
+      {
+        q: "Kimin neyi göreceğini belirleyebilir miyim?",
+        a: "Evet. Rol ve yetkilendirme ile her kullanıcı yalnızca işi için gereken ekranları ve verileri görür.",
+      },
+    ],
+    related: null,
+  },
+] as const;
+export type ServicePage = (typeof servicePages)[number];
 
 // --- Arşiv: önceki tasarımlarda kullanılıp çıkarılan metinler -----------------
 // Yeni tasarımda işine yararsa buradan al; kullanılmıyorsa silebilirsin.

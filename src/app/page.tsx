@@ -13,6 +13,7 @@ import {
   otherWork,
   projects,
   projectsIntro,
+  servicePages,
   services,
   servicesIntro,
 } from "@/content";
@@ -53,7 +54,12 @@ export default function Home() {
                 </p>
               </div>
               <div className="mt-14 sm:mt-20">
-                <ServicesIndex services={services} />
+                <ServicesIndex
+                  services={services.map((s) => {
+                    const page = servicePages.find((p) => p.id === s.id);
+                    return page ? { ...s, href: `/hizmetler/${page.slug}` } : s;
+                  })}
+                />
               </div>
             </ScrollFocus>
           </section>
