@@ -575,6 +575,16 @@ export const demos = [
     accent: "#D9486F",
     surface: "#EAEFF1",
   },
+  {
+    slug: "nara-asistan",
+    service: "ai",
+    name: "Nara mesaj asistanı",
+    kind: "Yapay zekâ mesaj asistanı",
+    sector: "Güzellik",
+    summary: "Fiyat soranlara cevap veren, takvime bakıp randevu oluşturan ve bilmediğini ekibe devreden asistan.",
+    accent: "#9FB19A",
+    surface: "#2B1830",
+  },
 ] as const;
 export type Demo = (typeof demos)[number];
 
