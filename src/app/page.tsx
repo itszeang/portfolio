@@ -1,4 +1,5 @@
 import { CookiePreferencesButton } from "@/components/analytics";
+import { DemoCard } from "@/components/demo-card";
 import { PortfolioNav } from "@/components/portfolio-nav";
 import { PresentationBackdrop } from "@/components/presentation-backdrop";
 import { Hero40 } from "@/components/hero40";
@@ -10,6 +11,7 @@ import { ServicesIndex } from "@/components/motion/services-index";
 import { AboutSection } from "@/components/rbp/about-section";
 import { ContactCard } from "@/components/rbp/contact-card";
 import {
+  demos,
   otherWork,
   projects,
   projectsIntro,
@@ -80,6 +82,15 @@ export default function Home() {
             <div className="mt-10">
               <ProjectShowcase projects={projects} />
             </div>
+            <ScrollFocus className="mt-12">
+              <h3 className="text-sm font-medium tracking-[-0.01em] text-white/80">Örnek çalışmalar</h3>
+              <p className="mt-1 text-xs text-white/50">Uydurma işletmeler için yaptığım, açıp kullanabileceğin örnekler.</p>
+              <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {demos.map((d) => (
+                  <DemoCard demo={d} key={d.slug} />
+                ))}
+              </div>
+            </ScrollFocus>
             <ScrollFocus className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-white/12 pt-6 text-sm text-white/60">
               <span className="text-white/80">{otherWork.title}</span>
               {otherWork.links.map((l) => (

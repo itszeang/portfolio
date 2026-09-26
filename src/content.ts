@@ -550,6 +550,34 @@ export const servicePages = [
 ] as const;
 export type ServicePage = (typeof servicePages)[number];
 
+// --- Örnek çalışmalar (demolar) -------------------------------------------------
+// Her örnek, gösterdiği hizmetin sayfasında ve ana sayfadaki portföy ızgarasında
+// listelenir. Adresi: /hizmetler/<hizmet sayfası>/<slug>. İşletmeler uydurmadır;
+// her demo sayfasında bu açıkça yazar ve Google'da dizine eklenmez.
+export const demos = [
+  {
+    slug: "nara-studio",
+    service: "web",
+    name: "Nara Studio",
+    kind: "Güzellik stüdyosu web sitesi",
+    sector: "Güzellik",
+    summary: "Günün boş saatlerini gösteren, fiyat ve süreleri tek bakışta anlatan bir stüdyo sitesi.",
+    accent: "#D9486F",
+    surface: "#EAEFF1",
+  },
+  {
+    slug: "nara-randevu",
+    service: "randevu",
+    name: "Nara Studio randevu",
+    kind: "Online randevu sistemi",
+    sector: "Güzellik",
+    summary: "Hizmet, gün ve saat seçip randevu alma; işletme için günlük takvim ve doluluk paneli.",
+    accent: "#D9486F",
+    surface: "#EAEFF1",
+  },
+] as const;
+export type Demo = (typeof demos)[number];
+
 // --- Arşiv: önceki tasarımlarda kullanılıp çıkarılan metinler -----------------
 // Yeni tasarımda işine yararsa buradan al; kullanılmıyorsa silebilirsin.
 export const archive = {

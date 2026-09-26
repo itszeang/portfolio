@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowUpRight } from "lucide-react";
-import { approach, contact, person, projects, servicePages, services, site } from "@/content";
+import { DemoCard } from "@/components/demo-card";
+import { approach, contact, demos, person, projects, servicePages, services, site } from "@/content";
 
 /**
  * One landing page per service, each aimed at a single search term (see
@@ -48,6 +49,7 @@ export default async function ServicePage({ params }: Props) {
   const service = services.find((s) => s.id === page.id)!;
   const project = page.related ? projects.find((p) => p.id === page.related) : undefined;
   const others = servicePages.filter((p) => p.slug !== page.slug);
+  const examples = demos.filter((d) => d.service === page.id);
   const url = new URL(`/hizmetler/${page.slug}`, site.url).toString();
   const mail = `mailto:${contact.email}?subject=${encodeURIComponent(`${page.h1} hakkında`)}`;
 
@@ -160,6 +162,22 @@ export default async function ServicePage({ params }: Props) {
             ))}
           </div>
         </section>
+
+        {examples.length > 0 && (
+          <section aria-labelledby="ornekler" className="mt-16">
+            <h2 className="text-2xl font-medium tracking-[-0.03em] sm:text-3xl" id="ornekler">
+              Örnek çalışmalar
+            </h2>
+            <p className="mt-3 text-sm leading-6 text-white/60">
+              Uydurma işletmeler için yaptığım, açıp kullanabileceğin çalışan örnekler.
+            </p>
+            <div className="mt-6 grid gap-3 sm:grid-cols-2">
+              {examples.map((d) => (
+                <DemoCard demo={d} key={d.slug} />
+              ))}
+            </div>
+          </section>
+        )}
 
         <section aria-labelledby="neler-dahil" className="mt-16">
           <h2 className="text-2xl font-medium tracking-[-0.03em] sm:text-3xl" id="neler-dahil">
