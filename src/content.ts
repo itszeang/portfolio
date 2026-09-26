@@ -95,12 +95,13 @@ export const services = [
     name: "Web siteleri ve web uygulamaları",
     tagline: "Markanı doğru anlatan, gerçek bir ihtiyacı çözen siteler.",
     description:
-      "Markayı doğru anlatan kurumsal siteler, landing page'ler ve gerçek bir ihtiyacı çözen web ürünleri.",
+      "Markayı doğru anlatan kurumsal siteler, landing page'ler ve yönetim paneli gibi gerçek bir ihtiyacı çözen web uygulamaları.",
     includes: [
       "Mobil uyumlu kurumsal site ve landing page",
       "WhatsApp, arama ve harita bağlantıları",
       "Temel SEO ve paylaşım önizlemeleri",
       "Alan adı ve yayın kurulumu",
+      "Yönetim paneli ve müşteri portalı",
     ],
     project: "boyut",
   },
@@ -126,15 +127,6 @@ export const services = [
       "iOS ve Android için hızlı, anlaşılır ve günlük kullanıma hazır mobil ürün deneyimleri.",
     includes: ["iOS ve Android", "Bildirimler", "Üyelik ve profil", "Mağaza yayın süreci"],
     project: "reviewms",
-  },
-  {
-    id: "panel",
-    name: "İç araçlar ve dashboardlar",
-    tagline: "Operasyonu görünür kıl.",
-    description:
-      "Operasyonları görünür kılan yönetim panelleri, veri ekranları ve ekibe özel üretkenlik araçları.",
-    includes: ["Yönetim panelleri", "Veri ekranları ve raporlama", "Yetkilendirme", "Ekibe özel araçlar"],
-    project: null,
   },
 ] as const;
 
@@ -380,7 +372,7 @@ export const servicePages = [
     body: [
       "Bir kurumsal web sitesinin işi, ziyaretçiye birkaç saniye içinde ne yaptığını, neden güvenilir olduğunu ve seninle nasıl iletişime geçeceğini anlatmak. Hazır tema yerine işine göre tasarlanmış, hafif ve hızlı bir site kuruyorum.",
       "Site; WhatsApp, telefon ve harita bağlantılarıyla gelir. Paylaşıldığında düzgün bir önizleme görünür, arama motorlarının okuyabileceği şekilde işaretlenir. Alan adı bağlama ve yayına alma süreci de dahil.",
-      "Kurumsal site, landing page ya da gerçek bir ihtiyacı çözen bir web uygulaması; kapsamı ilk görüşmede birlikte netleştiriyoruz.",
+      "Kurumsal site, landing page ya da siparişleri, müşterileri ve stokları tek ekranda toplayan bir yönetim paneli gibi bir web uygulaması; kapsamı ilk görüşmede birlikte netleştiriyoruz.",
     ],
     audience: [
       "Web sitesi olmayan ya da sitesi güncel olmayan işletmeler",
@@ -403,6 +395,10 @@ export const servicePages = [
       {
         q: "Alan adı ve yayın kurulumu kimde?",
         a: "Alan adını bağlama ve siteyi yayına alma işini ben yapıyorum. Alan adı senin adına kayıtlı kalır.",
+      },
+      {
+        q: "Yönetim paneli ya da özel bir web uygulaması da yapıyor musun?",
+        a: "Evet. Excel ve kâğıt formlarla yürüyen süreçleri, ekibine özel ve yetkilendirmeli bir web paneline taşıyorum. Hagat Savunma Teknolojileri'nde üretim ölçüm kayıtlarını bu şekilde dijitale taşıdım.",
       },
     ],
     related: "boyut",
@@ -512,43 +508,17 @@ export const servicePages = [
     ],
     related: "reviewms",
   },
-  {
-    id: "panel",
-    slug: "yonetim-paneli-ozel-yazilim",
-    keyword: "özel yazılım geliştirme",
-    title: "Yönetim Paneli ve Özel Yazılım Geliştirme",
-    description:
-      "Operasyonu görünür kılan yönetim panelleri, veri ekranları, raporlama ve ekibe özel araçlar. Excel'le yürüyen süreçleri tek bir sisteme taşı.",
-    h1: "Yönetim paneli ve özel yazılım",
-    lead: "Excel dosyalarıyla, kâğıt formlarla ya da birbirinden kopuk araçlarla yürüyen süreçleri, ekibine özel tek bir sisteme taşıyorum.",
-    body: [
-      "Her işletmenin kendine özgü bir çalışma şekli var ve hazır yazılımlar buna her zaman uymuyor. Özel bir yönetim paneliyle veriler tek yerde toplanır, kimin neyi görebileceği yetkilendirmeyle belirlenir.",
-      "Veri ekranları ve raporlarla operasyon görünür hâle gelir: hangi işin nerede beklediği, hangi göstergenin nereye gittiği bir bakışta anlaşılır.",
-      "Hagat Savunma Teknolojileri'nde üretim operatörlerinin kâğıt formlarını web tabanlı bir ölçüm kayıt sistemine taşıdım. Benzer dönüşümleri React ve Python ile kuruyorum.",
-    ],
-    audience: [
-      "Süreçlerini Excel ve kâğıt formlarla yürüten ekipler",
-      "Verisini tek ekranda görmek isteyen yöneticiler",
-      "Hazır yazılımların ihtiyacını karşılamadığı işletmeler",
-    ],
-    faq: [
-      {
-        q: "Hazır bir yazılım yerine neden özel yazılım?",
-        a: "Hazır yazılım işini ona uydurmanı ister; özel yazılım ise senin çalışma şekline göre kurulur. Gereksiz özellik yoktur, eksik olan eklenir.",
-      },
-      {
-        q: "Mevcut verilerim taşınabilir mi?",
-        a: "Evet. Excel, Google Sheets ya da mevcut sistemlerindeki veriler yeni sisteme aktarılabilir.",
-      },
-      {
-        q: "Kimin neyi göreceğini belirleyebilir miyim?",
-        a: "Evet. Rol ve yetkilendirme ile her kullanıcı yalnızca işi için gereken ekranları ve verileri görür.",
-      },
-    ],
-    related: null,
-  },
 ] as const;
 export type ServicePage = (typeof servicePages)[number];
+
+// --- Sektörler ------------------------------------------------------------------
+// Web sitesi örnekleri sektöre göre gruplanır. Yeni bir sektörün ilk örneği
+// eklendiğinde buraya da ekle; örneği olmayan sektör hiçbir yerde görünmez.
+export const sectors = [
+  { id: "guzellik", name: "Güzellik ve bakım" },
+  { id: "hukuk", name: "Hukuk ve danışmanlık" },
+  { id: "insaat", name: "İnşaat, mimarlık ve emlak" },
+] as const;
 
 // --- Örnek çalışmalar (demolar) -------------------------------------------------
 // Her örnek, gösterdiği hizmetin sayfasında ve ana sayfadaki portföy ızgarasında
@@ -560,7 +530,7 @@ export const demos = [
     service: "web",
     name: "Nara Studio",
     kind: "Güzellik stüdyosu web sitesi",
-    sector: "Güzellik",
+    sector: "guzellik",
     summary: "Günün boş saatlerini gösteren, fiyat ve süreleri tek bakışta anlatan bir stüdyo sitesi.",
     accent: "#D9486F",
     surface: "#EAEFF1",
@@ -570,7 +540,7 @@ export const demos = [
     service: "randevu",
     name: "Nara Studio randevu",
     kind: "Online randevu sistemi",
-    sector: "Güzellik",
+    sector: "guzellik",
     summary: "Hizmet, gün ve saat seçip randevu alma; işletme için günlük takvim ve doluluk paneli.",
     accent: "#D9486F",
     surface: "#EAEFF1",
@@ -580,7 +550,7 @@ export const demos = [
     service: "ai",
     name: "Nara mesaj asistanı",
     kind: "Yapay zekâ mesaj asistanı",
-    sector: "Güzellik",
+    sector: "guzellik",
     summary: "Fiyat soranlara cevap veren, takvime bakıp randevu oluşturan ve bilmediğini ekibe devreden asistan.",
     accent: "#9FB19A",
     surface: "#2B1830",

@@ -31,7 +31,6 @@ const ART: Record<string, Art> = {
   web: { a: "#18c7b0", b: "#2a5cff", base: "#04121a", line: "#a8fff1", mark: "WEB", tools: "Next.js · React" },
   randevu: { a: "#ffb020", b: "#ff3b3b", base: "#1a0a04", line: "#ffe0a3", mark: "RDV", tools: "Next.js · TypeScript" },
   mobil: { a: "#e8227a", b: "#8a2bff", base: "#12041a", line: "#ffc2e6", mark: "APP", tools: "iOS · Android" },
-  panel: { a: "#3dd6ff", b: "#43e08a", base: "#03141a", line: "#c4fff0", mark: "OPS", tools: "React · Python" },
 };
 
 const PREVIEW_W = 300;

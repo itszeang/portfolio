@@ -13,6 +13,14 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  // The "iç araçlar ve dashboardlar" service was folded into web apps; its
+  // page was already submitted to Google, so it moves permanently.
+  async redirects() {
+    return [
+      { source: "/hizmetler/yonetim-paneli-ozel-yazilim", destination: "/hizmetler/kurumsal-web-sitesi", permanent: true },
+      { source: "/hizmetler/yonetim-paneli-ozel-yazilim/:rest*", destination: "/hizmetler/kurumsal-web-sitesi", permanent: true },
+    ];
+  },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },

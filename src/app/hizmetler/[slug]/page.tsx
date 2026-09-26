@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowUpRight } from "lucide-react";
 import { DemoCard } from "@/components/demo-card";
-import { approach, contact, demos, person, projects, servicePages, services, site } from "@/content";
+import { approach, contact, demos, person, projects, sectors, servicePages, services, site } from "@/content";
 
 /**
  * One landing page per service, each aimed at a single search term (see
@@ -171,11 +171,28 @@ export default async function ServicePage({ params }: Props) {
             <p className="mt-3 text-sm leading-6 text-white/60">
               Uydurma işletmeler için yaptığım, açıp kullanabileceğin çalışan örnekler.
             </p>
-            <div className="mt-6 grid gap-3 sm:grid-cols-2">
-              {examples.map((d) => (
-                <DemoCard demo={d} key={d.slug} />
-              ))}
-            </div>
+            {page.id === "web" ? (
+              // Websites grow by sector, so they are grouped under one.
+              sectors
+                .map((s) => ({ s, list: examples.filter((d) => d.sector === s.id) }))
+                .filter((g) => g.list.length > 0)
+                .map(({ s, list }) => (
+                  <div className="mt-6" key={s.id}>
+                    <h3 className="font-mono text-xs tracking-[0.06em] text-white/50">{s.name.toLocaleUpperCase("tr")}</h3>
+                    <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                      {list.map((d) => (
+                        <DemoCard demo={d} key={d.slug} />
+                      ))}
+                    </div>
+                  </div>
+                ))
+            ) : (
+              <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                {examples.map((d) => (
+                  <DemoCard demo={d} key={d.slug} />
+                ))}
+              </div>
+            )}
           </section>
         )}
 

@@ -11,7 +11,6 @@ import {
   Bot,
   CalendarCheck,
   Globe,
-  LayoutDashboard,
   Smartphone,
   type LucideIcon,
 } from "lucide-react";
@@ -24,7 +23,6 @@ const ICONS: Record<string, LucideIcon> = {
   web: Globe,
   randevu: CalendarCheck,
   mobil: Smartphone,
-  panel: LayoutDashboard,
 };
 
 type Service = { id: string; name: string; description: string; tagline: string };
