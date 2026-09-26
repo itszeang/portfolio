@@ -64,6 +64,8 @@ export const socials = [
   { label: "GitHub", handle: "burakalpyahsi", href: "https://github.com/burakalpyahsi" },
   { label: "GitHub (ikinci hesap)", handle: "itszeang", href: "https://github.com/itszeang" },
   { label: "X", handle: "@itszeang", href: "https://x.com/itszeang" },
+  { label: "LinkedIn", handle: "burakalpyahsi", href: "https://www.linkedin.com/in/burakalpyahsi/" },
+  { label: "Instagram", handle: "@burakalpyahsi", href: "https://www.instagram.com/burakalpyahsi/" },
 ];
 
 // --- Hizmetler ----------------------------------------------------------------
