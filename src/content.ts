@@ -148,8 +148,9 @@ export const projects = [
     id: "reviewms",
     // false yapınca ana sayfadan, hizmet sayfalarından ve llms.txt'den kalkar.
     visible: true,
-    // Ana sayfadaki örnek ızgarasında hangi süzgeçte ve kaçıncı sırada durduğu.
-    grid: { service: "mobil", position: 6 },
+    // Ana sayfadaki örnek ızgarasında hangi süzgeçlerde ve kaçıncı sırada durduğu
+    // (hem web sitesi hem mobil uygulaması olan bir ürün).
+    grid: { services: ["web", "mobil"], position: 6 },
     name: "ReviewMS",
     kind: "SaaS · Web + Mobil",
     category: "SaaS & Web",
@@ -393,7 +394,7 @@ export const servicePages = [
         a: "Evet. Excel ve kâğıt formlarla yürüyen süreçleri, ekibine özel ve yetkilendirmeli bir web paneline taşıyorum. Hagat Savunma Teknolojileri'nde üretim ölçüm kayıtlarını bu şekilde dijitale taşıdım.",
       },
     ],
-    related: null,
+    related: "reviewms",
   },
   {
     id: "ai",
@@ -517,6 +518,8 @@ export const sectors = [
 // Her örnek, gösterdiği hizmetin sayfasında ve ana sayfadaki portföy ızgarasında
 // bu sırayla listelenir; en güçlü görseller başta. Kart görseli:
 // public/images/ornekler/<slug>.webp (1440×900 ekran görüntüsü, 1200 px).
+// `frames` > 1 ise sayfanın aşağısından kareler de var: <slug>-2.webp … ve
+// kart, ekranda yukarı çıktıkça site aşağı kayıyormuş gibi bunlara geçer.
 // Adresi: /hizmetler/<hizmet sayfası>/<slug>. İşletmeler uydurmadır;
 // her demo sayfasında bu açıkça yazar ve Google'da dizine eklenmez.
 export const demos = [
@@ -529,6 +532,7 @@ export const demos = [
     summary: "Fix menünün mezelerini tepsiden seçtiren, QR menüsü ve haftalık doluluğu olan meyhane sitesi.",
     accent: "#B3243B",
     surface: "#EDF1EF",
+    frames: 5,
   },
   {
     slug: "esik-emlak",
@@ -539,6 +543,7 @@ export const demos = [
     summary: "İlanları aylık gerçek maliyet ve işe yol süresiyle sıralayan, kredi hesaplı emlak sitesi.",
     accent: "#6B7A2E",
     surface: "#F2D544",
+    frames: 5,
   },
   {
     slug: "nara-studio",
@@ -549,6 +554,7 @@ export const demos = [
     summary: "Günün boş saatlerini gösteren, fiyat ve süreleri tek bakışta anlatan bir stüdyo sitesi.",
     accent: "#D9486F",
     surface: "#EAEFF1",
+    frames: 5,
   },
   {
     slug: "ferah-ilgaz-hukuk",
@@ -559,6 +565,7 @@ export const demos = [
     summary: "Ziyaretçiyi kendi cümlesiyle doğru hukuk alanına yönlendiren, reklam yasağına uygun büro sitesi.",
     accent: "#6E1F2A",
     surface: "#FAFAF8",
+    frames: 5,
   },
   {
     slug: "doksan-hali-saha",
@@ -569,6 +576,7 @@ export const demos = [
     summary: "Saatlik saha kiralama, kapora ve 24 saat iptal kuralı, sabit saat indirimi; maçtan sonra kadro ve kişi başı ücret.",
     accent: "#FF6A13",
     surface: "#1E8C45",
+    frames: 5,
   },
   {
     slug: "mine-dis",
@@ -579,6 +587,7 @@ export const demos = [
     summary: "Ağrıyan dişi şemada işaretletip aciliyete göre saat öneren, sağlık bilgisini açık rızayla alan randevu akışı.",
     accent: "#2D4BE0",
     surface: "#F2F4F9",
+    frames: 5,
   },
   {
     slug: "etut-mimarlik",
@@ -589,6 +598,7 @@ export const demos = [
     summary: "Projeleri gerçek ölçekli, gezilebilir planlarla ve önce/sonra kaydırıcısıyla anlatan mimarlık sitesi.",
     accent: "#E4572E",
     surface: "#0E2A47",
+    frames: 5,
   },
   {
     slug: "sinekkaydi-berber",
@@ -599,6 +609,7 @@ export const demos = [
     summary: "Dükkandaki sırayı canlı gösteren, sırası yaklaşınca yola çıkmayı söyleyen ve üç dokunuşta randevu alan berber uygulaması.",
     accent: "#E4412F",
     surface: "#CFE8DD",
+    frames: 5,
   },
   {
     slug: "lodos-masa",
@@ -609,6 +620,7 @@ export const demos = [
     summary: "Salon planından masa seçilen rezervasyon; işletme için gecenin tüm masalarını gösteren salon defteri.",
     accent: "#177E89",
     surface: "#1F3B34",
+    frames: 1,
   },
   {
     slug: "mizan-fatura",
@@ -619,6 +631,7 @@ export const demos = [
     summary: "Faturayı okuyup mahsup fişini dolduran; emin olmadığı yeri kurşun kalemle yazıp onayınızı bekleyen ön muhasebe asistanı.",
     accent: "#1F3A93",
     surface: "#2C4234",
+    frames: 1,
   },
   {
     slug: "kirpi-gelen-kutusu",
@@ -629,6 +642,7 @@ export const demos = [
     summary: "E-postaları önceliğe göre sıralayan, siparişe bakıp yanıt taslağı yazan, oltalamayı ve satış fırsatını ayıran asistan.",
     accent: "#C4A075",
     surface: "#A99F93",
+    frames: 5,
   },
   {
     slug: "pusula-el-kitabi",
@@ -639,6 +653,7 @@ export const demos = [
     summary: "Personel el kitabına sorulan soruyu ilgili maddeyi vurgulayarak cevaplayan, kitapta olmayanı uydurmayan asistan.",
     accent: "#2B4C9B",
     surface: "#E6D9BD",
+    frames: 1,
   },
   {
     slug: "nara-randevu",
@@ -649,6 +664,7 @@ export const demos = [
     summary: "Hizmet, gün ve saat seçip randevu alma; işletme için günlük takvim ve doluluk paneli.",
     accent: "#D9486F",
     surface: "#EAEFF1",
+    frames: 1,
   },
   {
     slug: "nara-asistan",
@@ -659,6 +675,7 @@ export const demos = [
     summary: "Fiyat soranlara cevap veren, takvime bakıp randevu oluşturan ve bilmediğini ekibe devreden asistan.",
     accent: "#9FB19A",
     surface: "#2B1830",
+    frames: 1,
   },
 ] as const;
 export type Demo = (typeof demos)[number];

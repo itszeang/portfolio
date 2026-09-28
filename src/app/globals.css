@@ -12,6 +12,12 @@ html {
   background: #000;
   scroll-behavior: smooth;
   scroll-padding-top: 1rem;
+  /* ScrollFocus switches its filter between none and blur while you scroll,
+     which moves the containing block of positioned elements inside it. Chrome's
+     scroll anchoring read that as content moving and pulled the page back
+     hundreds of pixels. Nothing here loads in above the fold late, so
+     anchoring has nothing to protect. */
+  overflow-anchor: none;
 }
 
 body {
