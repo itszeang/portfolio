@@ -3,6 +3,8 @@
 // Adapted from DavidHDev/rbp-portfolio (React Bits Pro portfolio template).
 // License (template README): free to use in personal and commercial projects;
 // the template itself may not be resold or redistributed.
+// Local change: Matter's wheel and touch listeners are removed so the page
+// keeps scrolling over the box; chips stay draggable with a mouse.
 import { RotateCcw } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
@@ -128,16 +130,19 @@ export function Stack(): ReactNode {
 
       const mouse = Mouse.create(container);
 
-      const wheelTarget = mouse.element as HTMLElement & {
-        mousewheel?: EventListener;
+      // Matter binds its handlers to the element and calls preventDefault in
+      // the wheel and touch ones, which traps page scrolling over the box.
+      // The handlers live on the mouse object, not on the element.
+      const handlers = mouse as typeof mouse & {
+        mousewheel: EventListener;
+        mousemove: EventListener;
+        mousedown: EventListener;
+        mouseup: EventListener;
       };
-      if (wheelTarget.mousewheel) {
-        wheelTarget.removeEventListener("wheel", wheelTarget.mousewheel);
-        wheelTarget.removeEventListener(
-          "DOMMouseScroll",
-          wheelTarget.mousewheel
-        );
-      }
+      container.removeEventListener("wheel", handlers.mousewheel);
+      container.removeEventListener("touchmove", handlers.mousemove);
+      container.removeEventListener("touchstart", handlers.mousedown);
+      container.removeEventListener("touchend", handlers.mouseup);
 
       const mouseConstraint = MouseConstraint.create(engine, {
         mouse,
@@ -244,7 +249,6 @@ export function Stack(): ReactNode {
         <div
           ref={containerRef}
           className="absolute inset-0 cursor-grab select-none"
-          style={{ touchAction: "none" }}
         >
           {CHIPS.map((chip, i) => (
             <div

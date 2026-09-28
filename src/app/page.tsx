@@ -4,7 +4,6 @@ import { PresentationBackdrop } from "@/components/presentation-backdrop";
 import { Hero40 } from "@/components/hero40";
 import { MaskedWords } from "@/components/motion/masked-words";
 import { MotionProvider } from "@/components/motion/motion-provider";
-import { ProjectShowcase } from "@/components/motion/project-showcase";
 import { ScrollFocus, ScrollFocusVars } from "@/components/motion/scroll-focus";
 import { ServicesIndex } from "@/components/motion/services-index";
 import { WorkGrid } from "@/components/work-grid";
@@ -12,7 +11,6 @@ import { AboutSection } from "@/components/rbp/about-section";
 import { ContactCard } from "@/components/rbp/contact-card";
 import {
   otherWork,
-  projects,
   projectsIntro,
   servicePages,
   services,
@@ -73,25 +71,11 @@ export default function Home() {
                 className="block text-balance text-4xl font-medium tracking-[-0.035em] sm:text-6xl"
                 text={`${projectsIntro.title} ${projectsIntro.subtitle}`}
               />
-              <p className="mt-5 max-w-[54ch] text-base leading-7 text-pink-50/70 sm:text-lg">
-                {projectsIntro.lead}
-              </p>
+              <p className="mt-5 max-w-[58ch] text-base leading-7 text-pink-50/70 sm:text-lg">{projectsIntro.examples.lead}</p>
             </div>
             </ScrollFocus>
-            <div className="mt-10">
-              <ProjectShowcase projects={projects} />
-            </div>
-            <ScrollFocus className="mt-16 border-t border-white/12 pt-14 sm:mt-20 sm:pt-20">
-              <div className="max-w-2xl">
-                <h3 className="text-3xl font-medium tracking-[-0.035em] sm:text-5xl" id="ornekler">
-                  Örnek çalışmalar
-                </h3>
-                <p className="mt-4 max-w-[58ch] text-base leading-7 text-pink-50/70">
-                  Kurgusal işletmeler için tasarlayıp geliştirdiğim siteler, randevu sistemleri ve yapay zekâ
-                  asistanları. Her biri tarayıcıda açılıp denenebilir.
-                </p>
-              </div>
-              <div className="mt-8">
+            <ScrollFocus className="mt-10 sm:mt-12">
+              <div id="ornekler">
                 <WorkGrid />
               </div>
             </ScrollFocus>

@@ -3,7 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowUpRight } from "lucide-react";
 import { DemoCard } from "@/components/demo-card";
-import { approach, contact, demos, person, projects, sectors, servicePages, services, site } from "@/content";
+import { ProjectCard } from "@/components/project-card";
+import { approach, contact, demos, person, sectors, servicePages, services, site, visibleProjects } from "@/content";
 
 /**
  * One landing page per service, each aimed at a single search term (see
@@ -47,7 +48,7 @@ export default async function ServicePage({ params }: Props) {
   const page = pageFor((await params).slug);
   if (!page) notFound();
   const service = services.find((s) => s.id === page.id)!;
-  const project = page.related ? projects.find((p) => p.id === page.related) : undefined;
+  const project = page.related ? visibleProjects.find((p) => p.id === page.related) : undefined;
   const others = servicePages.filter((p) => p.slug !== page.slug);
   const examples = demos.filter((d) => d.service === page.id);
   const url = new URL(`/hizmetler/${page.slug}`, site.url).toString();
@@ -249,20 +250,10 @@ export default async function ServicePage({ params }: Props) {
             <h2 className="text-2xl font-medium tracking-[-0.03em] sm:text-3xl" id="ornek-proje">
               Örnek proje: {project.name}
             </h2>
-            <p className="mt-5 text-base leading-8 text-white/72">
-              {project.summary} {project.solution}
-            </p>
-            {project.links[0] && (
-              <a
-                className="mt-5 inline-flex min-h-11 items-center gap-1.5 text-sm text-[#ff85b3] transition-colors hover:text-white"
-                href={project.links[0].href}
-                rel="noreferrer"
-                target="_blank"
-              >
-                {project.links[0].label}
-                <ArrowUpRight aria-hidden="true" className="size-4" />
-              </a>
-            )}
+            <p className="mt-5 text-base leading-8 text-white/72">{project.solution}</p>
+            <div className="mt-6 sm:w-[calc(50%-0.5rem)]">
+              <ProjectCard project={project} sizes="(min-width: 640px) 360px, 100vw" />
+            </div>
           </section>
         )}
 

@@ -74,7 +74,7 @@ export default function RootLayout({
   return (
     // suppressHydrationWarning: CONSENT_SCRIPT sets data-consent on <html>
     // before React hydrates.
-    <html className="dark" lang="tr" suppressHydrationWarning>
+    <html className="dark" data-scroll-behavior="smooth" lang="tr" suppressHydrationWarning>
       <body className={`${GeistSans.variable} ${GeistMono.variable}`}>
         {CONSENT_SCRIPT && <script dangerouslySetInnerHTML={{ __html: CONSENT_SCRIPT }} />}
         <script

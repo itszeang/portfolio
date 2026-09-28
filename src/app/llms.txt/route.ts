@@ -1,4 +1,4 @@
-import { contact, person, projects, servicePages, services, site, socials } from "@/content";
+import { contact, demos, person, servicePages, services, site, socials, visibleProjects } from "@/content";
 
 // /llms.txt (llmstxt.org): a plain-Markdown summary for AI assistants and AI
 // search. Built from content.ts so it never drifts from the page itself.
@@ -21,11 +21,24 @@ export function GET() {
       return `- [${s.name}](${link}): ${s.description} Kapsam: ${s.includes.join(", ")}.`;
     }),
     "",
-    "## Projeler",
+    ...(visibleProjects.length
+      ? [
+          "## Projeler",
+          "",
+          ...visibleProjects.map((p) => {
+            const link = p.links[0]?.href ?? url("/#projeler");
+            return `- [${p.name}](${link}): ${p.summary} ${p.kind}. Rolüm: ${p.role}.`;
+          }),
+          "",
+        ]
+      : []),
+    "## Örnek çalışmalar",
     "",
-    ...projects.map((p) => {
-      const link = p.links[0]?.href ?? url("/#projeler");
-      return `- [${p.name}](${link}): ${p.summary} ${p.kind}. Rolüm: ${p.role}.`;
+    "Kurgusal işletmeler için yapılmış, tarayıcıda denenebilir örnekler.",
+    "",
+    ...demos.map((d) => {
+      const page = servicePages.find((p) => p.id === d.service);
+      return `- [${d.name}](${url(page ? `/hizmetler/${page.slug}/${d.slug}` : "/#projeler")}): ${d.kind}. ${d.summary}`;
     }),
     "",
     "## İletişim",

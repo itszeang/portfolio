@@ -126,7 +126,7 @@ export const services = [
     description:
       "iOS ve Android için hızlı, anlaşılır ve günlük kullanıma hazır mobil ürün deneyimleri.",
     includes: ["iOS ve Android", "Bildirimler", "Üyelik ve profil", "Mağaza yayın süreci"],
-    project: "reviewms",
+    project: null,
   },
 ] as const;
 
@@ -136,11 +136,20 @@ export const projectsIntro = {
   subtitle: "Çalışanı daha güzel.",
   lead: "Gerçek ihtiyaçlardan yola çıkan, uçtan uca geliştirdiğim ürünler.",
   filters: ["Tümü", "SaaS & Web", "Yapay zekâ"],
+  // Örnek çalışmalar ızgarası; görünür proje yokken bölümün tek içeriği budur.
+  examples: {
+    title: "Örnek çalışmalar",
+    lead: "Yayındaki ürünüm ReviewMS ve kurgusal işletmeler için tasarlayıp geliştirdiğim siteler, randevu sistemleri, yapay zekâ asistanları. Örneklerin her biri tarayıcıda açılıp denenebilir.",
+  },
 };
 
 export const projects = [
   {
     id: "reviewms",
+    // false yapınca ana sayfadan, hizmet sayfalarından ve llms.txt'den kalkar.
+    visible: true,
+    // Ana sayfadaki örnek ızgarasında hangi süzgeçte ve kaçıncı sırada durduğu.
+    grid: { service: "mobil", position: 6 },
     name: "ReviewMS",
     kind: "SaaS · Web + Mobil",
     category: "SaaS & Web",
@@ -174,9 +183,19 @@ export const projects = [
       { src: "/images/reviewms-6.webp", alt: "ReviewMS mobil uygulaması — İçgörüler" },
     ],
     imageSize: { width: 520, height: 1127 },
+    // reviewms.com'dan 1440×900 ekran görüntüleri (1200 px); ana sayfadaki
+    // galeri kartı kaydırdıkça bunlar arasında geçer.
+    siteImages: [
+      { src: "/images/reviewms-site-1.webp", alt: "reviewms.com ana sayfası: Bir dokunuş. Ölçülebilir bir deneyim." },
+      { src: "/images/reviewms-site-2.webp", alt: "reviewms.com: Kartı değil, temas noktasını yönetin." },
+      { src: "/images/reviewms-site-3.webp", alt: "reviewms.com: Yönetim ve içgörü tek panelde." },
+      { src: "/images/reviewms-site-4.webp", alt: "reviewms.com: Her dokunuşun devamını görün." },
+      { src: "/images/reviewms-site-5.webp", alt: "reviewms.com: Kartınız sizde. Kontrolü de sizde." },
+    ],
   },
 ];
 export type Project = (typeof projects)[number];
+export const visibleProjects = projects.filter((p) => p.visible);
 
 export const otherWork = {
   title: "Diğer çalışmalar",
@@ -374,7 +393,7 @@ export const servicePages = [
         a: "Evet. Excel ve kâğıt formlarla yürüyen süreçleri, ekibine özel ve yetkilendirmeli bir web paneline taşıyorum. Hagat Savunma Teknolojileri'nde üretim ölçüm kayıtlarını bu şekilde dijitale taşıdım.",
       },
     ],
-    related: "reviewms",
+    related: null,
   },
   {
     id: "ai",

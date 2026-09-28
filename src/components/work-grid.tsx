@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { DemoCard } from "@/components/demo-card";
-import { demos } from "@/content";
+import { ProjectCard } from "@/components/project-card";
+import { type Demo, demos, type Project, visibleProjects } from "@/content";
 
 const FILTERS = [
   { id: "all", label: "Tümü" },
@@ -13,12 +14,19 @@ const FILTERS = [
 ] as const;
 
 type FilterId = (typeof FILTERS)[number]["id"];
+type Item = { key: string; service: string; demo?: Demo; project?: Project };
 
-/** Homepage grid of every demo, filterable by the service it shows. */
+// Demos in content order, with my own products dropped in at their grid position.
+const items: Item[] = demos.map((d) => ({ key: d.slug, service: d.service, demo: d }));
+for (const p of visibleProjects) items.splice(p.grid.position - 1, 0, { key: p.id, service: p.grid.service, project: p });
+
+const CARD = "(min-width: 1024px) 30vw, (min-width: 640px) 46vw, 100vw";
+
+/** Homepage grid of every demo and product, filterable by the service it shows. */
 export function WorkGrid() {
   const [filter, setFilter] = useState<FilterId>("all");
-  const count = (id: FilterId) => (id === "all" ? demos.length : demos.filter((d) => d.service === id).length);
-  const shown = filter === "all" ? demos : demos.filter((d) => d.service === filter);
+  const count = (id: FilterId) => (id === "all" ? items.length : items.filter((i) => i.service === id).length);
+  const shown = filter === "all" ? items : items.filter((i) => i.service === filter);
 
   return (
     <div>
@@ -41,12 +49,12 @@ export function WorkGrid() {
         ))}
       </div>
       <p aria-live="polite" className="sr-only">
-        {shown.length} örnek gösteriliyor
+        {shown.length} çalışma gösteriliyor
       </p>
       <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {shown.map((d) => (
-          <li key={d.slug}>
-            <DemoCard demo={d} sizes="(min-width: 1024px) 30vw, (min-width: 640px) 46vw, 100vw" />
+        {shown.map((i) => (
+          <li key={i.key}>
+            {i.demo ? <DemoCard demo={i.demo} sizes={CARD} /> : i.project ? <ProjectCard project={i.project} sizes={CARD} /> : null}
           </li>
         ))}
       </ul>
