@@ -1,27 +1,22 @@
 "use client";
 
 import { Highlighter } from "@/components/magicui/highlighter";
-import { BellRing, FolderCheck, Paperclip, ShieldAlert, Trash2 } from "lucide-react";
+import { ArrowRight, BellRing, Check, CornerDownRight, FolderCheck, Inbox, Paperclip, RotateCcw, ShieldAlert, Trash2 } from "lucide-react";
 import { LayoutGroup, MotionConfig, motion } from "motion/react";
-import { Fragment, useRef, useState } from "react";
-import { type Mail, mails, type Mark, type Tray, trays } from "./mail";
+import { Fragment, useEffect, useRef, useState } from "react";
+import { type Mail, mails, type Mark, nightMinute, type Tray, trays } from "./mail";
 
 type Status = "open" | "sent" | "mine" | "trash";
 type Tone = "samimi" | "resmi";
 
+/** Fired by the page's "Postayı ayıkla" links, so they can sort the inbox from outside it. */
+export const SORT_EVENT = "kirpi:sort";
+
 const tl = (n: number) => `${n.toLocaleString("tr-TR")} ₺`;
-// Where each envelope lies in the unsorted pile.
-const pile = [
-  { x: -120, y: 18, r: -9 },
-  { x: 96, y: -10, r: 7 },
-  { x: -34, y: -22, r: -3 },
-  { x: 150, y: 30, r: 12 },
-  { x: -170, y: -12, r: 5 },
-  { x: 40, y: 26, r: -6 },
-  { x: -70, y: 40, r: 10 },
-  { x: 10, y: -4, r: 2 },
-];
-const tape = "polygon(1.5% 0,98.5% 0,100% 25%,98% 50%,100% 75%,98.5% 100%,1.5% 100%,0 75%,2% 50%,0 25%)";
+const byTime = (a: Mail, b: Mail) => nightMinute(a.time) - nightMinute(b.time);
+const ordered = [...mails].sort(byTime);
+const toneOf = (t: Tray) => trays.find((x) => x.id === t)!.tone;
+const clock = (t: string) => t.replace(":", ".");
 
 export function KirpiApp() {
   const [sorted, setSorted] = useState(false);
@@ -30,13 +25,22 @@ export function KirpiApp() {
   const [tone, setTone] = useState<Record<string, Tone>>({});
   const [edits, setEdits] = useState<Record<string, string>>({});
   const [quotes, setQuotes] = useState<string[]>([]);
-  const desk = useRef<HTMLDivElement>(null);
+  const desk = useRef<HTMLElement>(null);
 
   const st = (m: Mail) => status[m.id] ?? "open";
   const mail = mails.find((m) => m.id === selected) ?? null;
+  const replyable = mails.filter((m) => m.draft).length;
   const sent = mails.filter((m) => st(m) === "sent").length;
-  const byTray = (t: Tray) => mails.filter((m) => m.tray === t).sort((a, b) => a.time.localeCompare(b.time));
-  const needsYou = byTray("hemen").length + byTray("karar").length;
+  const byTray = (t: Tray) => mails.filter((m) => m.tray === t).sort(byTime);
+
+  useEffect(() => {
+    const onSort = () => {
+      setSorted(true);
+      setSelected((s) => s ?? "m1");
+    };
+    window.addEventListener(SORT_EVENT, onSort);
+    return () => window.removeEventListener(SORT_EVENT, onSort);
+  }, []);
 
   function sort() {
     setSorted(true);
@@ -44,107 +48,88 @@ export function KirpiApp() {
   }
   function open(id: string) {
     setSelected(id);
-    // On a phone the letter opens below the shelves.
+    // Below the desktop layout the open mail sits under the shelves.
     if (window.matchMedia("(max-width: 1023px)").matches) {
       const smooth = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      requestAnimationFrame(() =>
-        desk.current?.scrollIntoView({
-          behavior: smooth ? "smooth" : "auto",
-          block: "start",
-        }),
-      );
+      requestAnimationFrame(() => desk.current?.scrollIntoView({ behavior: smooth ? "smooth" : "auto", block: "start" }));
     }
   }
 
   return (
     <MotionConfig reducedMotion="user">
-      <header className="mx-auto flex max-w-6xl flex-wrap items-baseline justify-between gap-x-6 gap-y-1 px-5 pt-7 sm:px-8">
-        <p className="flex items-baseline gap-3">
-          <span className="font-[family-name:var(--kp-display)] text-3xl">Kirpi</span>
-          <span className="font-[family-name:var(--kp-mono)] text-xs">seramik atölyesi · Avanos</span>
-        </p>
-        <p className="font-[family-name:var(--kp-mono)] text-xs">
-          gönderilen: {sent}
-          <span className="hidden sm:inline"> · asistan simülasyonu, gerçek e-posta yok</span>
-        </p>
-      </header>
+      <div className="overflow-hidden rounded-[22px] border border-[var(--kp-line)] bg-white text-left shadow-[0_50px_100px_-50px_rgba(26,21,18,.5)]">
+        <div className="flex items-center justify-between gap-4 border-b border-[var(--kp-line)] bg-[var(--kp-panel)] px-4 py-3 sm:px-6">
+          <p className="flex items-center gap-2 text-sm font-semibold">
+            <Inbox aria-hidden="true" className="size-4" /> Gelen kutusu
+            <span className="hidden font-normal text-[var(--kp-muted)] sm:inline">· Kirpi Seramik</span>
+          </p>
+          <p aria-live="polite" className="font-[family-name:var(--kp-mono)] text-xs text-[var(--kp-muted)] tabular-nums">
+            gönderilen {sent}/{replyable}
+          </p>
+        </div>
 
-      <main className="pb-24">
         <LayoutGroup>
-          <section className={`mx-auto max-w-6xl px-5 pt-10 sm:px-8 ${sorted ? "" : "lg:grid lg:grid-cols-2 lg:items-center lg:gap-8"}`}>
+          {!sorted ? (
             <div>
-              <h1 className={`max-w-[16ch] font-[family-name:var(--kp-display)] text-[clamp(2.4rem,6.4vw,5rem)] leading-[0.98] ${sorted ? "" : "lg:text-[clamp(2.4rem,4.4vw,4rem)]"}`}>Sabah postası: sekiz mektup.</h1>
-              <p aria-live="polite" className="mt-5 max-w-[46ch] text-lg leading-8">
-                {sorted
-                  ? `Hepsi rafında. ${needsYou} tanesine bugün sizin bakmanız gerekiyor; kalanların cevabı yazıldı ya da cevap gerekmiyor.`
-                  : "Asistan hepsini okudu, sipariş defterine baktı ve cevapları yazdı. Hiçbiri siz onaylamadan gitmez."}
-              </p>
-            </div>
-
-            {!sorted && (
-              <div aria-label="Ayıklanmamış posta" className="mt-10 lg:mt-0" role="group">
-                {/* Offsets shrink with the screen so the pile never spills past the edges. */}
-                <div aria-hidden="true" className="relative mx-auto h-[230px] max-w-[560px] [--s:0.42] sm:h-[290px] sm:[--s:0.85] lg:[--s:0.75]">
-                  {mails.map((m, i) => (
-                    <motion.div
-                      className="absolute top-1/2 left-1/2 w-[min(68vw,260px)]"
-                      key={m.id}
-                      layoutId={m.id}
-                      style={{
-                        x: `calc(-50% + ${pile[i].x}px * var(--s))`,
-                        y: `calc(-50% + ${pile[i].y}px * var(--s))`,
-                        rotate: pile[i].r,
-                        zIndex: i,
-                      }}
-                    >
-                      <Envelope mail={m} status="open" />
-                    </motion.div>
-                  ))}
-                </div>
-                <div className="mt-6 flex justify-center">
-                  <button
-                    className="min-h-14 rounded-[6px] bg-[var(--kp-tenmoku)] px-10 text-lg font-bold text-[var(--kp-plaster)] shadow-[0_3px_0_#000] transition-transform active:translate-y-[3px] active:shadow-none"
-                    onClick={sort}
-                    type="button"
-                  >
-                    Ayıkla
-                  </button>
-                </div>
+              <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-4 sm:px-6">
+                <p className="text-sm text-[var(--kp-muted)]">
+                  <b className="font-semibold text-[var(--kp-ink)]">8 yeni e-posta</b> · dün 18.40 – bugün 08.10 · asistan hepsini okudu
+                </p>
+                <button
+                  className="inline-flex min-h-11 items-center gap-2 rounded-full bg-[var(--kp-ink)] px-5 text-sm font-semibold text-white transition-colors hover:bg-black"
+                  onClick={sort}
+                  type="button"
+                >
+                  Rafına ayır <ArrowRight aria-hidden="true" className="size-4" />
+                </button>
               </div>
-            )}
-          </section>
-
-          {sorted && (
-            <section aria-label="Raflar" className="mx-auto mt-10 max-w-6xl px-5 sm:px-8">
-              <div className="grid gap-x-5 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-6">
+              <ul aria-label="Ayıklanmamış e-postalar" className="border-t border-[var(--kp-line)]">
+                {ordered.map((m) => (
+                  <motion.li className="relative border-b border-[var(--kp-line)] bg-white last:border-b-0" key={m.id} layout="position" layoutId={m.id}>
+                    <span className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 px-4 py-3 sm:grid-cols-[auto_minmax(0,14rem)_minmax(0,1fr)_auto] sm:px-6">
+                      <span aria-hidden="true" className="grid size-9 place-items-center rounded-full bg-[var(--kp-panel)] text-sm font-semibold">
+                        {m.from.charAt(0)}
+                      </span>
+                      <span className="min-w-0">
+                        <span className="block truncate text-[15px] font-semibold">{m.from}</span>
+                        <span className="block truncate text-sm text-[var(--kp-muted)] sm:hidden">{m.subject}</span>
+                      </span>
+                      <span className="hidden min-w-0 truncate text-sm text-[var(--kp-muted)] sm:block">{m.subject}</span>
+                      <span className="font-[family-name:var(--kp-mono)] text-xs text-[var(--kp-muted)] tabular-nums">{clock(m.time)}</span>
+                    </span>
+                  </motion.li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <section aria-label="Raflar" className="px-4 py-5 sm:px-6">
+              <div className="grid gap-x-4 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
                 {trays.map((t) => {
                   const list = byTray(t.id);
                   return (
                     <div key={t.id}>
-                      <div className="relative inline-block -rotate-1 bg-[var(--kp-tape)]/90 px-3 py-1.5" style={{ clipPath: tape }}>
-                        <h2 className="font-[family-name:var(--kp-mono)] text-sm font-bold">
-                          {t.name} · {list.length}
-                        </h2>
-                      </div>
-                      <p className="mt-2 text-sm">{t.hint}</p>
-                      <ul className="mt-4 space-y-3 border-b-[10px] border-[var(--kp-clay-dark)] pb-3">
+                      <h3 className="flex items-center gap-2 text-sm font-semibold">
+                        <span aria-hidden="true" className="size-2 rounded-full" style={{ background: t.tone }} />
+                        {t.name}
+                        <span className="font-normal text-[var(--kp-muted)] tabular-nums">{list.length}</span>
+                      </h3>
+                      <p className="mt-1 text-[13px] text-[var(--kp-muted)]">{t.hint}</p>
+                      <ul className="mt-3 space-y-2.5">
                         {list.map((m) => (
                           <li key={m.id}>
                             <motion.button
                               aria-current={selected === m.id}
-                              aria-label={`${m.from}: ${m.subject}, ${m.time}. ${m.note}`}
-                              className={`block w-full rounded-[3px] text-left outline-offset-4 transition-[translate,box-shadow] focus-visible:outline-3 focus-visible:outline-[var(--kp-tenmoku)] ${selected === m.id ? "-translate-y-1 shadow-[0_10px_18px_-8px_rgba(36,26,21,.6)]" : "shadow-[0_2px_4px_rgba(36,26,21,.25)] hover:-translate-y-0.5"}`}
+                              aria-label={`${m.from}: ${m.subject}, ${clock(m.time)}. ${m.note}`}
+                              className={`block w-full rounded-xl border bg-white p-3 text-left transition-[border-color,box-shadow] outline-offset-2 focus-visible:outline-2 focus-visible:outline-[var(--kp-ink)] ${
+                                selected === m.id ? "border-[var(--kp-ink)] shadow-[0_10px_24px_-14px_rgba(26,21,18,.6)]" : "border-[var(--kp-line)] hover:border-[#CFC8BF]"
+                              }`}
+                              layout="position"
                               layoutId={m.id}
                               onClick={() => open(m.id)}
-                              transition={{
-                                type: "spring",
-                                stiffness: 240,
-                                damping: 28,
-                                delay: mails.indexOf(m) * 0.06,
-                              }}
+                              transition={{ type: "spring", stiffness: 260, damping: 30, delay: ordered.indexOf(m) * 0.05 }}
                               type="button"
                             >
-                              <Envelope mail={m} status={st(m)} />
+                              <MailCard mail={m} status={st(m)} />
                             </motion.button>
                           </li>
                         ))}
@@ -153,26 +138,21 @@ export function KirpiApp() {
                   );
                 })}
               </div>
-              <button className="mt-6 font-[family-name:var(--kp-mono)] text-xs underline underline-offset-4" onClick={() => setSorted(false)} type="button">
-                Postayı yeniden karıştır
+              <button className="mt-6 inline-flex min-h-10 items-center gap-1.5 text-sm text-[var(--kp-muted)] hover:text-[var(--kp-ink)]" onClick={() => setSorted(false)} type="button">
+                <RotateCcw aria-hidden="true" className="size-3.5" /> İlk hâline döndür
               </button>
             </section>
           )}
         </LayoutGroup>
 
         {sorted && mail && (
-          <section aria-label="Açık mektup" className="mx-auto mt-14 grid max-w-6xl scroll-mt-4 gap-8 px-5 sm:px-8 lg:grid-cols-2" ref={desk}>
-            <Letter key={mail.id} mail={mail} quoted={quotes.includes(mail.id)} onQuote={() => setQuotes((q) => [...q, mail.id])} trashed={st(mail) === "trash"} />
+          <section aria-label="Açık e-posta" className="grid scroll-mt-4 gap-5 border-t border-[var(--kp-line)] bg-[var(--kp-panel)] p-4 sm:p-6 lg:grid-cols-2" ref={desk}>
+            <Letter key={mail.id} mail={mail} onQuote={() => setQuotes((q) => [...q, mail.id])} quoted={quotes.includes(mail.id)} trashed={st(mail) === "trash"} />
             <Reply
               draft={edits[`${mail.id}:${tone[mail.id] ?? "samimi"}`] ?? mail.draft?.[tone[mail.id] ?? "samimi"] ?? ""}
               key={`r-${mail.id}`}
               mail={mail}
-              onDraft={(v) =>
-                setEdits((e) => ({
-                  ...e,
-                  [`${mail.id}:${tone[mail.id] ?? "samimi"}`]: v,
-                }))
-              }
+              onDraft={(v) => setEdits((e) => ({ ...e, [`${mail.id}:${tone[mail.id] ?? "samimi"}`]: v }))}
               onStatus={(s) => setStatus((x) => ({ ...x, [mail.id]: s }))}
               onTone={(t) => setTone((x) => ({ ...x, [mail.id]: t }))}
               status={st(mail)}
@@ -180,53 +160,49 @@ export function KirpiApp() {
             />
           </section>
         )}
-      </main>
+      </div>
     </MotionConfig>
   );
 }
 
-/** A kraft envelope with an address sticker, a postmark and the assistant's tape note. */
-function Envelope({ mail, status }: { mail: Mail; status: Status }) {
-  const stamp = status === "sent" ? "GÖNDERİLDİ" : status === "trash" ? "ÇÖPE" : mail.phishing ? "AÇMAYIN" : null;
+/** One sorted e-mail: who, what, and the assistant's one line on it. */
+function MailCard({ mail, status }: { mail: Mail; status: Status }) {
+  const badge =
+    status === "sent"
+      ? { text: "Gönderildi", color: "var(--kp-glaze)" }
+      : status === "trash"
+        ? { text: "Çöpte", color: "var(--kp-muted)" }
+        : status === "mine"
+          ? { text: "Siz yazacaksınız", color: "var(--kp-muted)" }
+          : mail.phishing
+            ? { text: "Oltalama", color: "var(--kp-stamp)" }
+            : null;
   return (
-    <span
-      className={`relative block overflow-hidden rounded-[3px] bg-[var(--kp-kraft)] bg-[linear-gradient(115deg,rgba(255,255,255,.14),transparent_40%),repeating-linear-gradient(35deg,rgba(0,0,0,.025)_0_2px,transparent_2px_5px)] p-3 pb-10 ${status === "trash" ? "opacity-60" : ""}`}
-    >
-      <span className="block w-[82%] -rotate-[0.6deg] bg-[var(--kp-plaster)] px-3 py-2 shadow-[0_1px_1px_rgba(0,0,0,.15)]">
-        <span className="block truncate text-[15px] font-bold">{mail.from}</span>
-        <span className="block truncate text-[13px]">{mail.subject}</span>
-      </span>
-      <span
-        aria-hidden="true"
-        className="absolute top-2.5 right-2.5 grid size-12 rotate-12 place-items-center rounded-full border-[1.5px] border-[#6B4A3A]/70 font-[family-name:var(--kp-mono)] text-[10px] leading-tight text-[#6B4A3A]/80"
-      >
-        <span className="text-center">
-          AVANOS
-          <br />
-          {mail.time}
+    <span className={`block ${status === "trash" ? "opacity-55" : ""}`}>
+      <span className="flex items-start justify-between gap-2">
+        <span className="min-w-0">
+          <span className="block truncate text-[15px] font-semibold">{mail.from}</span>
+          <span className="block truncate text-[13px] text-[var(--kp-muted)]">{mail.subject}</span>
         </span>
+        <span className="shrink-0 font-[family-name:var(--kp-mono)] text-[11px] text-[var(--kp-muted)] tabular-nums">{clock(mail.time)}</span>
       </span>
-      <span
-        className="absolute bottom-2 left-3 max-w-[88%] -rotate-1 truncate bg-[var(--kp-tape)]/95 px-2 py-1 font-[family-name:var(--kp-mono)] text-[11px]"
-        style={{ clipPath: tape }}
-      >
+      <span className="mt-2.5 flex items-start gap-1.5 text-[13px] leading-5" style={{ color: toneOf(mail.tray) }}>
+        <CornerDownRight aria-hidden="true" className="mt-0.5 size-3.5 shrink-0" />
         {mail.note}
       </span>
-      {stamp && (
-        <span
-          aria-hidden="true"
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-12 rounded-[4px] border-[3px] border-[var(--kp-stamp)] px-2 py-0.5 font-[family-name:var(--kp-mono)] text-lg font-bold tracking-widest text-[var(--kp-stamp)] mix-blend-multiply"
-        >
-          {stamp}
+      {badge && (
+        <span className="mt-2 inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] font-semibold" style={{ borderColor: badge.color, color: badge.color }}>
+          {status === "sent" && <Check aria-hidden="true" className="size-3" />}
+          {badge.text}
         </span>
       )}
     </span>
   );
 }
 
-/** The e-mail laid on the bench, with the phrases the assistant understood marked in pencil. */
+/** The e-mail itself, with the phrases the assistant understood marked by hand. */
 function Letter({ mail, quoted, onQuote, trashed }: { mail: Mail; quoted: boolean; onQuote: () => void; trashed: boolean }) {
-  const pencil = mail.phishing ? "#B3261E" : "#5B5048";
+  const pencil = mail.phishing ? "#B3261E" : "#6A615A";
   const render = (line: string) => {
     const hits = mail.marks.filter((mk) => line.includes(mk.text)).sort((a, b) => line.indexOf(a.text) - line.indexOf(b.text));
     if (!hits.length) return line;
@@ -236,14 +212,7 @@ function Letter({ mail, quoted, onQuote, trashed }: { mail: Mail; quoted: boolea
       const at = rest.indexOf(mk.text);
       out.push(<Fragment key={`t${i}`}>{rest.slice(0, at)}</Fragment>);
       out.push(
-        <Highlighter
-          action={mk.action}
-          color={mk.action === "highlight" ? "#CFE3D9" : pencil}
-          iterations={1}
-          key={`m${i}`}
-          padding={mk.action === "circle" ? 6 : 2}
-          strokeWidth={1.4}
-        >
+        <Highlighter action={mk.action} color={mk.action === "highlight" ? "#D5E6DF" : pencil} iterations={1} key={`m${i}`} padding={mk.action === "circle" ? 6 : 2} strokeWidth={1.4}>
           {mk.text}
         </Highlighter>,
       );
@@ -254,34 +223,37 @@ function Letter({ mail, quoted, onQuote, trashed }: { mail: Mail; quoted: boolea
   };
 
   return (
-    <article className="relative -rotate-[0.4deg] bg-[var(--kp-plaster)] p-6 shadow-[0_18px_30px_-18px_rgba(36,26,21,.55)] sm:p-8">
-      <p className="font-[family-name:var(--kp-mono)] text-xs">
-        {mail.from} &lt;{mail.address}&gt; · {mail.time}
+    <article className="relative self-start rounded-2xl border border-[var(--kp-line)] bg-white p-5 sm:p-7">
+      <p className="text-[13px] text-[var(--kp-muted)]">
+        <span className="font-semibold text-[var(--kp-ink)]">{mail.from}</span> &lt;{mail.address}&gt; · {clock(mail.time)}
       </p>
-      <h2 className="mt-3 text-xl leading-snug font-bold">{mail.subject}</h2>
+      <h3 className="mt-3 font-[family-name:var(--kp-display)] text-2xl leading-tight font-semibold tracking-[-0.02em]">{mail.subject}</h3>
       <div className={`mt-4 space-y-3 text-[16px] leading-[1.7] ${mail.phishing ? "break-words" : ""}`}>
         {mail.body.map((line, i) => (
           <p key={i}>{render(line)}</p>
         ))}
       </div>
       {mail.attachment && (
-        <p className="mt-4 inline-flex items-center gap-2 font-[family-name:var(--kp-mono)] text-xs">
-          <Paperclip aria-hidden="true" className="size-4" /> {mail.attachment}
+        <p className="mt-4 inline-flex items-center gap-2 rounded-lg border border-[var(--kp-line)] px-2.5 py-1.5 text-[13px]">
+          <Paperclip aria-hidden="true" className="size-3.5" /> {mail.attachment}
         </p>
       )}
 
-      <div className="relative mt-7 bg-[var(--kp-tape)] px-5 py-4" style={{ clipPath: tape }}>
-        <p className="font-[family-name:var(--kp-mono)] text-xs font-bold">Asistanın notu</p>
-        <ul className="mt-2 space-y-1.5 font-[family-name:var(--kp-mono)] text-[13px] leading-5">
+      <div className="mt-6 rounded-xl bg-[var(--kp-panel)] p-4">
+        <p className="text-[13px] font-semibold">Asistanın notu</p>
+        <ul className="mt-2 space-y-1.5 text-[14px] leading-6">
           {mail.understood.map((u) => (
-            <li key={u}>— {u}</li>
+            <li className="flex gap-2" key={u}>
+              <CornerDownRight aria-hidden="true" className="mt-1 size-3.5 shrink-0 text-[var(--kp-muted)]" />
+              {u}
+            </li>
           ))}
         </ul>
         {mail.checked.length > 0 && (
-          <dl className="mt-3 space-y-1 border-t border-dashed border-[var(--kp-tenmoku)]/30 pt-3 font-[family-name:var(--kp-mono)] text-[12px] leading-5">
+          <dl className="mt-3 space-y-1.5 border-t border-[var(--kp-line)] pt-3 text-[13px] leading-5">
             {mail.checked.map((c) => (
-              <div className="grid gap-x-2 sm:grid-cols-[8.5rem_minmax(0,1fr)]" key={c.where}>
-                <dt className="font-bold">{c.where}</dt>
+              <div className="grid gap-x-3 sm:grid-cols-[8.5rem_minmax(0,1fr)]" key={c.where}>
+                <dt className="font-[family-name:var(--kp-mono)] text-[12px] text-[var(--kp-muted)]">{c.where}</dt>
                 <dd>{c.found}</dd>
               </div>
             ))}
@@ -291,22 +263,18 @@ function Letter({ mail, quoted, onQuote, trashed }: { mail: Mail; quoted: boolea
 
       {mail.escalate && (
         <p className="mt-4 flex items-start gap-2 text-sm">
-          <BellRing aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-[var(--kp-stamp)]" /> {mail.escalate}
+          <BellRing aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-[#B45309]" /> {mail.escalate}
         </p>
       )}
       {mail.opportunity && (
-        <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
+        <div aria-live="polite" className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
           <span>
             Tahmini değer <b>{tl(mail.opportunity)}</b>
           </span>
           {quoted ? (
-            <span className="font-bold">Teklif listesinde; yarın 10.00&apos;da hatırlatırım.</span>
+            <span className="font-semibold">Teklif listesinde; yarın 10.00&apos;da hatırlatırım.</span>
           ) : (
-            <button
-              className="min-h-10 rounded-[6px] border-2 border-[var(--kp-tenmoku)] px-4 font-bold hover:bg-[var(--kp-tenmoku)] hover:text-[var(--kp-plaster)]"
-              onClick={onQuote}
-              type="button"
-            >
+            <button className="min-h-10 rounded-full border border-[var(--kp-ink)] px-4 font-semibold hover:bg-[var(--kp-ink)] hover:text-white" onClick={onQuote} type="button">
               Teklif listesine ekle
             </button>
           )}
@@ -315,7 +283,7 @@ function Letter({ mail, quoted, onQuote, trashed }: { mail: Mail; quoted: boolea
       {mail.phishing && !trashed && (
         <span
           aria-hidden="true"
-          className="pointer-events-none absolute top-10 right-6 rotate-[14deg] rounded-[4px] border-[3px] border-[var(--kp-stamp)] px-3 py-1 font-[family-name:var(--kp-mono)] text-xl font-bold tracking-widest text-[var(--kp-stamp)] mix-blend-multiply"
+          className="pointer-events-none absolute top-6 right-5 rotate-[12deg] rounded-[4px] border-[3px] border-[var(--kp-stamp)] px-3 py-1 font-[family-name:var(--kp-mono)] text-lg font-bold tracking-widest text-[var(--kp-stamp)] mix-blend-multiply"
         >
           OLTALAMA
         </span>
@@ -324,7 +292,7 @@ function Letter({ mail, quoted, onQuote, trashed }: { mail: Mail; quoted: boolea
   );
 }
 
-/** The reply on ruled letter paper, or the reason there is none. */
+/** The drafted reply in two tones, or the reason there is none. */
 function Reply({
   mail,
   status,
@@ -342,30 +310,27 @@ function Reply({
   onTone: (t: Tone) => void;
   onDraft: (v: string) => void;
 }) {
+  const panel = "self-start rounded-2xl border border-[var(--kp-line)] bg-white p-5 sm:p-7";
   if (mail.phishing) {
     return (
-      <div className="self-start bg-[var(--kp-plaster)] p-6 sm:p-8">
-        <p className="flex items-center gap-2 text-lg font-bold">
-          <ShieldAlert aria-hidden="true" className="size-5 text-[var(--kp-stamp)]" /> Bu mektuba cevap yazmadım.
+      <div className={panel}>
+        <p className="flex items-center gap-2 text-lg font-semibold">
+          <ShieldAlert aria-hidden="true" className="size-5 text-[var(--kp-stamp)]" /> Bu e-postaya cevap yazmadım.
         </p>
         <ul className="mt-4 space-y-2">
           {mail.phishing.map((r) => (
-            <li className="border-l-[3px] border-[var(--kp-stamp)] pl-3" key={r}>
+            <li className="border-l-2 border-[var(--kp-stamp)] pl-3" key={r}>
               {r}
             </li>
           ))}
         </ul>
-        <p className="mt-4 text-sm">Bağlantıya tıklamayın. Şüpheniz varsa pazar yerine kendi uygulamasından girin.</p>
+        <p className="mt-4 text-sm text-[var(--kp-muted)]">Bağlantıya tıklamayın. Şüpheniz varsa pazar yerine kendi uygulamasından girin.</p>
         {status === "trash" ? (
-          <p aria-live="polite" className="mt-5 font-bold">
+          <p aria-live="polite" className="mt-5 font-semibold">
             Çöpe atıldı.
           </p>
         ) : (
-          <button
-            className="mt-5 inline-flex min-h-12 items-center gap-2 rounded-[6px] bg-[var(--kp-stamp)] px-6 font-bold text-white"
-            onClick={() => onStatus("trash")}
-            type="button"
-          >
+          <button className="mt-5 inline-flex min-h-11 items-center gap-2 rounded-full bg-[var(--kp-stamp)] px-5 text-sm font-semibold text-white hover:bg-[#961F18]" onClick={() => onStatus("trash")} type="button">
             <Trash2 aria-hidden="true" className="size-4" /> Çöpe at
           </button>
         )}
@@ -374,81 +339,70 @@ function Reply({
   }
   if (mail.noReply) {
     return (
-      <div className="self-start bg-[var(--kp-plaster)] p-6 sm:p-8">
-        <p className="flex items-center gap-2 text-lg font-bold">
-          <FolderCheck aria-hidden="true" className="size-5 text-[var(--kp-celadon)]" /> {mail.noReply}
+      <div className={panel}>
+        <p className="flex items-center gap-2 text-lg font-semibold">
+          <FolderCheck aria-hidden="true" className="size-5 text-[var(--kp-glaze)]" /> {mail.noReply}
         </p>
       </div>
     );
   }
   return (
-    <div className="self-start">
-      <div aria-label="Cevabın tonu" className="flex gap-1 pl-4" role="group">
-        {(
-          [
-            ["samimi", "Samimi"],
-            ["resmi", "Resmî"],
-          ] as const
-        ).map(([k, l]) => (
-          <button
-            aria-pressed={tone === k}
-            className={`min-h-10 rounded-t-[6px] px-4 font-[family-name:var(--kp-mono)] text-xs font-bold transition-colors ${tone === k ? "bg-[var(--kp-plaster)]" : "bg-[var(--kp-tape)] hover:bg-[var(--kp-plaster)]/80"}`}
-            disabled={status !== "open"}
-            key={k}
-            onClick={() => onTone(k)}
-            type="button"
-          >
-            {l}
-          </button>
-        ))}
-      </div>
-      <div className="relative bg-[var(--kp-plaster)] p-6 shadow-[0_18px_30px_-18px_rgba(36,26,21,.55)] sm:p-8">
-        <label className="font-[family-name:var(--kp-mono)] text-xs" htmlFor="kp-reply">
-          Cevap · {mail.from}
+    <div className={panel}>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <label className="text-[13px] font-semibold" htmlFor="kp-reply">
+          Cevap taslağı · {mail.from}
         </label>
-        <textarea
-          className="mt-3 block min-h-[336px] w-full resize-y bg-[repeating-linear-gradient(to_bottom,transparent_0,transparent_27px,rgba(36,26,21,.14)_27px,rgba(36,26,21,.14)_28px)] bg-local text-[16px] leading-[28px] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--kp-tenmoku)] read-only:cursor-default"
-          id="kp-reply"
-          onChange={(e) => onDraft(e.target.value)}
-          readOnly={status !== "open"}
-          value={draft}
-        />
-        {status === "sent" && (
-          <motion.span
-            animate={{ opacity: 0.9, scale: 1 }}
-            aria-hidden="true"
-            className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-[10deg] rounded-[6px] border-4 border-[var(--kp-stamp)] px-4 py-1 font-[family-name:var(--kp-mono)] text-3xl font-bold tracking-widest text-[var(--kp-stamp)] mix-blend-multiply"
-            initial={{ opacity: 0, scale: 1.7 }}
-            transition={{ type: "spring", stiffness: 520, damping: 26 }}
-          >
-            GÖNDERİLDİ
-          </motion.span>
-        )}
-        <div aria-live="polite" className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3">
-          {status === "open" && (
-            <>
-              <button
-                className="min-h-12 rounded-[6px] bg-[var(--kp-tenmoku)] px-7 font-bold text-[var(--kp-plaster)] shadow-[0_3px_0_#000] active:translate-y-[3px] active:shadow-none"
-                onClick={() => onStatus("sent")}
-                type="button"
-              >
-                Gönder
-              </button>
-              <button className="min-h-12 font-bold underline underline-offset-4" onClick={() => onStatus("mine")} type="button">
-                Ben yazarım
-              </button>
-            </>
-          )}
-          {status === "sent" && <p className="font-bold">Gönderildi. (Örnek; gerçek bir e-posta gitmedi.)</p>}
-          {status === "mine" && (
-            <p>
-              Taslağı kenara koydum; bu cevabı siz yazacaksınız.{" "}
-              <button className="font-bold underline underline-offset-4" onClick={() => onStatus("open")} type="button">
-                Taslağı geri getir
-              </button>
-            </p>
-          )}
+        <div aria-label="Cevabın tonu" className="inline-flex rounded-full border border-[var(--kp-line)] p-0.5" role="group">
+          {(
+            [
+              ["samimi", "Samimi"],
+              ["resmi", "Resmî"],
+            ] as const
+          ).map(([k, l]) => (
+            <button
+              aria-pressed={tone === k}
+              className={`min-h-9 rounded-full px-3.5 text-[13px] font-semibold transition-colors disabled:cursor-not-allowed ${tone === k ? "bg-[var(--kp-ink)] text-white" : "text-[var(--kp-muted)] hover:text-[var(--kp-ink)]"}`}
+              disabled={status !== "open"}
+              key={k}
+              onClick={() => onTone(k)}
+              type="button"
+            >
+              {l}
+            </button>
+          ))}
         </div>
+      </div>
+      <textarea
+        className="mt-4 block min-h-[320px] w-full resize-y rounded-xl border border-[var(--kp-line)] bg-[var(--kp-panel)]/40 p-4 text-[15px] leading-7 focus-visible:border-[var(--kp-ink)] focus-visible:outline-none read-only:cursor-default read-only:opacity-70"
+        id="kp-reply"
+        onChange={(e) => onDraft(e.target.value)}
+        readOnly={status !== "open"}
+        value={draft}
+      />
+      <div aria-live="polite" className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-3">
+        {status === "open" && (
+          <>
+            <button className="inline-flex min-h-11 items-center gap-2 rounded-full bg-[var(--kp-ink)] px-6 text-sm font-semibold text-white hover:bg-black" onClick={() => onStatus("sent")} type="button">
+              Onayla ve gönder
+            </button>
+            <button className="min-h-11 text-sm font-semibold underline underline-offset-4" onClick={() => onStatus("mine")} type="button">
+              Ben yazarım
+            </button>
+          </>
+        )}
+        {status === "sent" && (
+          <p className="flex items-center gap-2 font-semibold text-[var(--kp-glaze)]">
+            <Check aria-hidden="true" className="size-4" /> Gönderildi. (Örnek; gerçek bir e-posta gitmedi.)
+          </p>
+        )}
+        {status === "mine" && (
+          <p className="text-sm">
+            Taslağı kenara koydum; bu cevabı siz yazacaksınız.{" "}
+            <button className="font-semibold underline underline-offset-4" onClick={() => onStatus("open")} type="button">
+              Taslağı geri getir
+            </button>
+          </p>
+        )}
       </div>
     </div>
   );

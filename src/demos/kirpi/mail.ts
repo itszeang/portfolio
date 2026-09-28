@@ -1,16 +1,23 @@
 // Kirpi Seramik: a fictional two-person pottery workshop in Avanos, and a
-// simulated inbox assistant for the "yapay zekâ otomasyonu" demo. Each e-mail
-// carries what the assistant understood, where it looked and a draft in two
-// tones. Nothing is sent: approving a draft only stamps it as sent.
+// simulated inbox assistant for the "yapay zekâ otomasyonu" demo. The mail came
+// in between closing time and the next morning; each one carries what the
+// assistant understood, where it looked and a draft in two tones. Nothing is
+// sent: approving a draft only marks it as sent.
 
 /** The four shelves the morning post is sorted onto. */
 export type Tray = "hemen" | "hazir" | "karar" | "dokunma";
-export const trays: { id: Tray; name: string; hint: string }[] = [
-  { id: "hemen", name: "Hemen", hint: "Bugün sizin bakmanız gereken" },
-  { id: "hazir", name: "Cevabı hazır", hint: "Okuyup gönderin" },
-  { id: "karar", name: "Karar sizin", hint: "Fiyat ya da iş kararı gerekiyor" },
-  { id: "dokunma", name: "Dokunmayın", hint: "Cevap gerekmiyor ya da tehlikeli" },
+export const trays: { id: Tray; name: string; hint: string; tone: string }[] = [
+  { id: "hemen", name: "Hemen", hint: "Bugün sizin bakmanız gereken", tone: "#B45309" },
+  { id: "hazir", name: "Cevabı hazır", hint: "Okuyup gönderin", tone: "#2F6B5E" },
+  { id: "karar", name: "Karar sizin", hint: "Fiyat ya da iş kararı gerekiyor", tone: "#3949AB" },
+  { id: "dokunma", name: "Dokunmayın", hint: "Cevap gerekmiyor ya da tehlikeli", tone: "#6E655E" },
 ];
+
+/** Minutes after 18.00 the evening before, for placing a mail on the night log. */
+export const nightMinute = (time: string) => {
+  const [h, m] = time.split(":").map(Number);
+  return ((h - 18 + 24) % 24) * 60 + m;
+};
 
 export type Mark = { text: string; action: "circle" | "underline" | "box" | "highlight" | "crossed-off" };
 
@@ -40,7 +47,7 @@ export const mails: Mail[] = [
     from: "Deniz Kaya",
     address: "deniz.k@ornek-posta.com",
     subject: "Kupalardan ikisi kırık geldi",
-    time: "08:12",
+    time: "22:05",
     body: [
       "Merhaba,",
       "Dün teslim alınan KS-10455 numaralı siparişimde 4 kupanın ikisi kırık çıktı. Arkadaşıma hediye olacaktı, gerçekten çok üzüldüm. Fotoğrafları ekliyorum.",
@@ -60,7 +67,7 @@ export const mails: Mail[] = [
       { where: "Sipariş defteri", found: "KS-10455 · 4 × Ege mavisi kupa · 26 Eylül'de teslim" },
       { where: "Raf sayımı", found: "Ege mavisi kupadan 23 adet var" },
     ],
-    escalate: "Ayşe'ye de haber verdim; şikâyetleri o görmek istiyor.",
+    escalate: "Ayşe'ye not bıraktım; şikâyetleri sabah ilk o görüyor.",
     draft: {
       samimi:
         "Merhaba Deniz,\n\nBunu duyduğumuza çok üzüldük, hele hediye olacakken. Kırılan iki kupanın yenilerini bugün özenle paketleyip kargoya veriyoruz; kırıkları geri göndermenize gerek yok. Takip numarası akşam size ulaşır.\n\nAnlayışınız için teşekkürler,\nKirpi Seramik",
@@ -73,7 +80,7 @@ export const mails: Mail[] = [
     from: "Mavi Kahve Kadıköy",
     address: "satinalma@mavikahve.example",
     subject: "Açılış için 120 adet logolu kupa",
-    time: "08:40",
+    time: "08:10",
     body: [
       "Merhabalar,",
       "Kasım ortasında Kadıköy'de açacağımız kafe için logomuzun basılı olduğu 120 adet kupa düşünüyoruz. Fiyat ve teslim süresi hakkında bilgi alabilir miyiz?",
@@ -104,7 +111,7 @@ export const mails: Mail[] = [
     from: "Kirpi Seramik Destek",
     address: "guvenlik@kirpi-seramik-destek.co",
     subject: "[ACİL] Mağaza hesabınız 24 saat içinde kapatılacak",
-    time: "07:55",
+    time: "03:47",
     body: [
       "Sayın satıcı,",
       "Hesabınızda olağandışı hareket tespit edildi. Hesabınızın kapatılmaması için 24 saat içinde aşağıdaki bağlantıdan kimliğinizi ve kart bilgilerinizi doğrulayın.",
@@ -131,7 +138,7 @@ export const mails: Mail[] = [
     from: "Elif Yıldırım",
     address: "elif.yildirim@ornek-posta.com",
     subject: "Siparişim nerede?",
-    time: "09:05",
+    time: "07:58",
     body: ["Merhaba, 21 Eylül'de verdiğim KS-10482 numaralı sipariş hâlâ gelmedi. Bilgi verebilir misiniz?", "Teşekkürler, Elif"],
     tray: "hazir",
     note: "bugün dağıtımda · takip no ekli",
@@ -142,13 +149,13 @@ export const mails: Mail[] = [
     understood: ["Siparişinin nerede olduğunu soruyor."],
     checked: [
       { where: "Sipariş defteri", found: "KS-10482 · 23 Eylül'de kargoya verildi" },
-      { where: "Kargo takibi", found: "Bugün 08.30'da dağıtıma çıktı" },
+      { where: "Kargo takibi", found: "Bugünkü dağıtım listesinde; 08.30'da yola çıkıyor" },
     ],
     draft: {
       samimi:
-        "Merhaba Elif,\n\nGüzel haber: siparişiniz bu sabah 08.30'da dağıtıma çıktı, bugün kapınızda olacak. Takip numaranız 7340 0012 8841.\n\nİyi günlerde kullanın,\nKirpi Seramik",
+        "Merhaba Elif,\n\nGüzel haber: siparişiniz bu sabah 08.30'da dağıtıma çıkıyor, bugün kapınızda olacak. Takip numaranız 7340 0012 8841.\n\nİyi günlerde kullanın,\nKirpi Seramik",
       resmi:
-        "Sayın Elif Yıldırım,\n\nKS-10482 numaralı siparişiniz bugün saat 08.30'da dağıtıma çıkmıştır ve gün içinde teslim edilmesi beklenmektedir. Kargo takip numaranız: 7340 0012 8841.\n\nSaygılarımızla,\nKirpi Seramik",
+        "Sayın Elif Yıldırım,\n\nKS-10482 numaralı siparişiniz bugün saat 08.30'da dağıtıma çıkacak ve gün içinde teslim edilmesi beklenmektedir. Kargo takip numaranız: 7340 0012 8841.\n\nSaygılarımızla,\nKirpi Seramik",
     },
   },
   {
@@ -156,7 +163,7 @@ export const mails: Mail[] = [
     from: "Burak Demir",
     address: "burakdemir@ornek-posta.com",
     subject: "Servis tabağı iadesi",
-    time: "09:18",
+    time: "07:12",
     body: ["Merhaba,", "KS-10391 siparişindeki servis tabağının rengi fotoğraftakinden oldukça farklı. İade etmek istiyorum, nasıl yapabilirim?", "Burak"],
     tray: "hazir",
     note: "14 gün içinde · iade kodu hazır",
@@ -182,7 +189,7 @@ export const mails: Mail[] = [
     from: "Toprak Mimarlık",
     address: "muhasebe@toprakmimarlik.example",
     subject: "Kurumsal fatura rica ediyoruz",
-    time: "09:31",
+    time: "07:40",
     body: ["Merhaba,", "KS-10470 siparişimizin faturasının şirketimiz adına kesilmesini rica ederiz. Unvan ve vergi bilgilerimiz ektedir.", "İyi çalışmalar"],
     attachment: "vergi-levhasi.pdf",
     tray: "hazir",
@@ -203,7 +210,7 @@ export const mails: Mail[] = [
     from: "Pınar (Mutfak Günlükleri)",
     address: "pinar@mutfakgunlukleri.example",
     subject: "Tanıtım iş birliği teklifi",
-    time: "10:02",
+    time: "21:15",
     body: ["Merhaba! Instagram'da 48 bin takipçili bir yemek sayfam var. Ürünlerinizi tariflerimde kullanıp tanıtmak isterim; karşılığında 5 set ürün rica ediyorum.", "Sevgiler, Pınar"],
     tray: "karar",
     note: "ürün karşılığı tanıtım · önce örnek iste",
@@ -223,7 +230,7 @@ export const mails: Mail[] = [
     from: "Anadolu Kil Tedarik",
     address: "fatura@anadolukil.example",
     subject: "Eylül kil siparişi faturası",
-    time: "10:20",
+    time: "18:40",
     body: ["Sayın Kirpi Seramik,", "25 Eylül tarihli 200 kg stoneware kil siparişinize ait e-fatura ektedir.", "İyi çalışmalar"],
     attachment: "AKT2026000000912.pdf",
     tray: "dokunma",
