@@ -169,7 +169,7 @@ export default async function ServicePage({ params }: Props) {
               Örnek çalışmalar
             </h2>
             <p className="mt-3 text-sm leading-6 text-white/60">
-              Uydurma işletmeler için yaptığım, açıp kullanabileceğin çalışan örnekler.
+              Kurgusal işletmeler için tasarlayıp geliştirdiğim, tarayıcıda açıp deneyebileceğin çalışan örnekler.
             </p>
             {page.id === "web" ? (
               // Websites grow by sector, so they are grouped under one.
@@ -179,17 +179,17 @@ export default async function ServicePage({ params }: Props) {
                 .map(({ s, list }) => (
                   <div className="mt-6" key={s.id}>
                     <h3 className="font-mono text-xs tracking-[0.06em] text-white/50">{s.name.toLocaleUpperCase("tr")}</h3>
-                    <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                    <div className="mt-3 grid gap-4 sm:grid-cols-2">
                       {list.map((d) => (
-                        <DemoCard demo={d} key={d.slug} />
+                        <DemoCard demo={d} key={d.slug} sizes="(min-width: 640px) 360px, 100vw" />
                       ))}
                     </div>
                   </div>
                 ))
             ) : (
-              <div className="mt-6 grid gap-3 sm:grid-cols-2">
+              <div className="mt-6 grid gap-4 sm:grid-cols-2">
                 {examples.map((d) => (
-                  <DemoCard demo={d} key={d.slug} />
+                  <DemoCard demo={d} key={d.slug} sizes="(min-width: 640px) 360px, 100vw" />
                 ))}
               </div>
             )}

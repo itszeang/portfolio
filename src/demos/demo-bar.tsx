@@ -7,8 +7,11 @@ import Link from "next/link";
  */
 export function DemoBar({ serviceHref, serviceName }: { serviceHref: string; serviceName: string }) {
   return (
-    <div className="bg-black px-4 py-2 text-center font-[family-name:var(--font-geist-sans)] text-[12px] leading-5 text-white/80">
-      <span className="text-white">Örnek proje.</span> Bu işletme gerçek değil; fiyatlar ve saatler örnektir.{" "}
+    <div
+      className="bg-black px-4 py-2 text-center font-[family-name:var(--font-geist-sans)] text-[12px] leading-5 text-white/80"
+      data-demo-bar=""
+    >
+      <span className="text-white">Örnek proje.</span> Bu işletme gerçek değil; içerik yalnızca örnek amaçlıdır.{" "}
       <Link className="whitespace-nowrap text-[#ff85b3] underline-offset-2 hover:underline" href={serviceHref}>
         ← {serviceName} · Burak Alp Yahşi
       </Link>

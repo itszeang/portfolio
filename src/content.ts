@@ -103,7 +103,7 @@ export const services = [
       "Alan adı ve yayın kurulumu",
       "Yönetim paneli ve müşteri portalı",
     ],
-    project: "boyut",
+    project: null,
   },
   {
     id: "randevu",
@@ -135,7 +135,7 @@ export const projectsIntro = {
   title: "Fikir güzel.",
   subtitle: "Çalışanı daha güzel.",
   lead: "Gerçek ihtiyaçlardan yola çıkan, uçtan uca geliştirdiğim ürünler.",
-  filters: ["Tümü", "SaaS & Web", "Yapay zekâ", "3D deneyim"],
+  filters: ["Tümü", "SaaS & Web", "Yapay zekâ"],
 };
 
 export const projects = [
@@ -174,33 +174,6 @@ export const projects = [
       { src: "/images/reviewms-6.webp", alt: "ReviewMS mobil uygulaması — İçgörüler" },
     ],
     imageSize: { width: 520, height: 1127 },
-  },
-  {
-    id: "boyut",
-    name: "Boyut Atla",
-    kind: "3D · Dijital deneyim",
-    category: "3D deneyim",
-    featured: false,
-    status: "Web yayında",
-    headline: "Mekânın ötesine geç.",
-    description: "Mekânın ötesine geç.",
-    summary:
-      "Fiziksel mekânları, tarayıcıdan keşfedilen 3D sanal turlara dönüştüren stüdyo.",
-    longSummary: "",
-    problem:
-      "Bir mekânı ziyaret etmeden, odaları ve aralarındaki ilişkiyi deneyimleyebilmek.",
-    solution:
-      "360° kamera, LiDAR ve fotogrametri ile elde edilen mekânları web üzerinden gezilebilir deneyimler olarak sunuyorum.",
-    role: "Ürün, web ve 3D deneyim",
-    details: [
-      "3D dijital ikiz ve sanal tur",
-      "Web sitesine gömülebilen deneyim",
-      "Mobil için geometri ve doku optimizasyonu",
-    ],
-    tags: ["WebGL", "Fotogrametri", "Sanal tur"],
-    links: [{ label: "Siteyi ziyaret et", href: "https://www.boyutatla.com" }],
-    images: [],
-    imageSize: null,
   },
 ];
 export type Project = (typeof projects)[number];
@@ -401,7 +374,7 @@ export const servicePages = [
         a: "Evet. Excel ve kâğıt formlarla yürüyen süreçleri, ekibine özel ve yetkilendirmeli bir web paneline taşıyorum. Hagat Savunma Teknolojileri'nde üretim ölçüm kayıtlarını bu şekilde dijitale taşıdım.",
       },
     ],
-    related: "boyut",
+    related: "reviewms",
   },
   {
     id: "ai",
@@ -518,13 +491,36 @@ export const sectors = [
   { id: "guzellik", name: "Güzellik ve bakım" },
   { id: "hukuk", name: "Hukuk ve danışmanlık" },
   { id: "insaat", name: "İnşaat, mimarlık ve emlak" },
+  { id: "restoran", name: "Restoran ve kafe" },
 ] as const;
 
 // --- Örnek çalışmalar (demolar) -------------------------------------------------
 // Her örnek, gösterdiği hizmetin sayfasında ve ana sayfadaki portföy ızgarasında
-// listelenir. Adresi: /hizmetler/<hizmet sayfası>/<slug>. İşletmeler uydurmadır;
+// bu sırayla listelenir; en güçlü görseller başta. Kart görseli:
+// public/images/ornekler/<slug>.webp (1440×900 ekran görüntüsü, 1200 px).
+// Adresi: /hizmetler/<hizmet sayfası>/<slug>. İşletmeler uydurmadır;
 // her demo sayfasında bu açıkça yazar ve Google'da dizine eklenmez.
 export const demos = [
+  {
+    slug: "lodos-meyhane",
+    service: "web",
+    name: "Lodos Meyhane",
+    kind: "Restoran web sitesi",
+    sector: "restoran",
+    summary: "Fix menünün mezelerini tepsiden seçtiren, QR menüsü ve haftalık doluluğu olan meyhane sitesi.",
+    accent: "#B3243B",
+    surface: "#EDF1EF",
+  },
+  {
+    slug: "esik-emlak",
+    service: "web",
+    name: "Eşik Gayrimenkul",
+    kind: "Emlak ofisi web sitesi",
+    sector: "insaat",
+    summary: "İlanları aylık gerçek maliyet ve işe yol süresiyle sıralayan, kredi hesaplı emlak sitesi.",
+    accent: "#6B7A2E",
+    surface: "#F2D544",
+  },
   {
     slug: "nara-studio",
     service: "web",
@@ -534,6 +530,96 @@ export const demos = [
     summary: "Günün boş saatlerini gösteren, fiyat ve süreleri tek bakışta anlatan bir stüdyo sitesi.",
     accent: "#D9486F",
     surface: "#EAEFF1",
+  },
+  {
+    slug: "ferah-ilgaz-hukuk",
+    service: "web",
+    name: "Ferah & Ilgaz Hukuk",
+    kind: "Hukuk bürosu web sitesi",
+    sector: "hukuk",
+    summary: "Ziyaretçiyi kendi cümlesiyle doğru hukuk alanına yönlendiren, reklam yasağına uygun büro sitesi.",
+    accent: "#6E1F2A",
+    surface: "#FAFAF8",
+  },
+  {
+    slug: "doksan-hali-saha",
+    service: "randevu",
+    name: "Doksan halı saha",
+    kind: "Halı saha rezervasyonu",
+    sector: "spor",
+    summary: "Saatlik saha kiralama, kapora ve 24 saat iptal kuralı, sabit saat indirimi; maçtan sonra kadro ve kişi başı ücret.",
+    accent: "#FF6A13",
+    surface: "#1E8C45",
+  },
+  {
+    slug: "mine-dis",
+    service: "randevu",
+    name: "Mine diş polikliniği",
+    kind: "Diş kliniği randevu sistemi",
+    sector: "saglik",
+    summary: "Ağrıyan dişi şemada işaretletip aciliyete göre saat öneren, sağlık bilgisini açık rızayla alan randevu akışı.",
+    accent: "#2D4BE0",
+    surface: "#F2F4F9",
+  },
+  {
+    slug: "etut-mimarlik",
+    service: "web",
+    name: "Etüt Mimarlık",
+    kind: "Mimarlık ofisi web sitesi",
+    sector: "insaat",
+    summary: "Projeleri gerçek ölçekli, gezilebilir planlarla ve önce/sonra kaydırıcısıyla anlatan mimarlık sitesi.",
+    accent: "#E4572E",
+    surface: "#0E2A47",
+  },
+  {
+    slug: "sinekkaydi-berber",
+    service: "randevu",
+    name: "Sinekkaydı berber",
+    kind: "Berber canlı sıra ve randevu",
+    sector: "guzellik",
+    summary: "Dükkandaki sırayı canlı gösteren, sırası yaklaşınca yola çıkmayı söyleyen ve üç dokunuşta randevu alan berber uygulaması.",
+    accent: "#E4412F",
+    surface: "#CFE8DD",
+  },
+  {
+    slug: "lodos-masa",
+    service: "randevu",
+    name: "Lodos masa rezervasyonu",
+    kind: "Restoran masa rezervasyonu",
+    sector: "restoran",
+    summary: "Salon planından masa seçilen rezervasyon; işletme için gecenin tüm masalarını gösteren salon defteri.",
+    accent: "#177E89",
+    surface: "#1F3B34",
+  },
+  {
+    slug: "mizan-fatura",
+    service: "ai",
+    name: "Mizan fatura okuyucu",
+    kind: "Yapay zekâ ile fatura okuma",
+    sector: "muhasebe",
+    summary: "Faturayı okuyup mahsup fişini dolduran; emin olmadığı yeri kurşun kalemle yazıp onayınızı bekleyen ön muhasebe asistanı.",
+    accent: "#1F3A93",
+    surface: "#2C4234",
+  },
+  {
+    slug: "kirpi-gelen-kutusu",
+    service: "ai",
+    name: "Kirpi gelen kutusu asistanı",
+    kind: "E-posta sınıflandırma ve yanıt taslağı",
+    sector: "eticaret",
+    summary: "E-postaları önceliğe göre sıralayan, siparişe bakıp yanıt taslağı yazan, oltalamayı ve satış fırsatını ayıran asistan.",
+    accent: "#C4A075",
+    surface: "#A99F93",
+  },
+  {
+    slug: "pusula-el-kitabi",
+    service: "ai",
+    name: "Pusula el kitabı asistanı",
+    kind: "Kaynak gösteren belge asistanı",
+    sector: "lojistik",
+    summary: "Personel el kitabına sorulan soruyu ilgili maddeyi vurgulayarak cevaplayan, kitapta olmayanı uydurmayan asistan.",
+    accent: "#2B4C9B",
+    surface: "#E6D9BD",
   },
   {
     slug: "nara-randevu",

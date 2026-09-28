@@ -8,6 +8,7 @@ import {
   type MotionValue,
 } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
+import Image from "next/image";
 import { useRef } from "react";
 import { ScrollFocus } from "./scroll-focus";
 
@@ -23,6 +24,7 @@ type Project = {
   longSummary: string;
   tags: readonly string[];
   links: readonly { label: string; href: string }[];
+  images?: readonly { src: string; alt: string }[];
 };
 
 /**
@@ -37,8 +39,12 @@ const ART: Record<
   // glowA lights the page from the top-left, glowB from the bottom-right,
   // the same corners the card paints a and b in; glowB is pushed brighter.
   reviewms: { a: "oklch(0.62 0.2 285)", b: "oklch(0.55 0.22 330)", glowA: "oklch(0.56 0.21 285)", glowB: "oklch(0.68 0.27 335)", mark: "NFC", hue: -73, saturate: 1.1, brightness: 1.15 },
-  boyut: { a: "oklch(0.66 0.13 170)", b: "oklch(0.5 0.15 230)", glowA: "oklch(0.62 0.14 170)", glowB: "oklch(0.62 0.18 232)", mark: "3D", hue: -159, saturate: 1.2, brightness: 1.3 },
 };
+
+// App screens shown in the frame, left to right, and how far each one drops
+// (percent of its own height). The outer two are left out on phones.
+const SCREEN_ORDER = [1, 4, 0, 5, 2];
+const SCREEN_DROP = [18, 8, 0, 8, 18];
 
 function Media({ project, progress }: { project: Project; progress: MotionValue<number> }) {
   const reduce = useReducedMotion();
@@ -52,6 +58,7 @@ function Media({ project, progress }: { project: Project; progress: MotionValue<
   const innerY = useTransform(progress, [0, 1], ["-7%", "7%"]);
   const innerScale = useTransform(progress, [0, 0.5], [1.14, 1]);
   const art = ART[project.id] ?? ART.reviewms;
+  const screens = project.images ?? [];
 
   return (
     <motion.div
@@ -69,11 +76,34 @@ function Media({ project, progress }: { project: Project; progress: MotionValue<
           }}
         />
         <div className="grain absolute inset-0 opacity-40 mix-blend-overlay" />
-        <div className="absolute inset-0 flex items-start justify-end p-[9%]">
-          <span className="text-[clamp(3.5rem,11vw,9rem)] leading-none font-semibold tracking-[-0.06em] text-white/80">
-            {art.mark}
-          </span>
-        </div>
+        {screens.length > 0 ? (
+          <div className="absolute inset-x-0 top-[18%] flex justify-center gap-[2.4%]">
+            {SCREEN_ORDER.map((i, k) =>
+              screens[i] ? (
+                <div
+                  className={`relative w-[24%] shrink-0 overflow-hidden rounded-[clamp(12px,1.9vw,30px)] border border-white/25 bg-white shadow-[0_24px_70px_rgba(0,0,0,0.45)] sm:w-[14%] ${k === 0 || k === 4 ? "hidden sm:block" : ""}`}
+                  key={screens[i].src}
+                  style={{ transform: `translateY(${SCREEN_DROP[k]}%)` }}
+                >
+                  <Image
+                    alt={screens[i].alt}
+                    className="block h-auto w-full"
+                    height={1127}
+                    sizes="(min-width: 640px) 14vw, 24vw"
+                    src={screens[i].src}
+                    width={520}
+                  />
+                </div>
+              ) : null,
+            )}
+          </div>
+        ) : (
+          <div className="absolute inset-0 flex items-start justify-end p-[9%]">
+            <span className="text-[clamp(3.5rem,11vw,9rem)] leading-none font-semibold tracking-[-0.06em] text-white/80">
+              {art.mark}
+            </span>
+          </div>
+        )}
       </motion.div>
     </motion.div>
   );
@@ -83,8 +113,9 @@ function ProjectRow({ project, index }: { project: Project; index: number }) {
   const ref = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  // The large name slides against the scroll direction for a sense of depth.
-  const nameX = useTransform(scrollYProgress, [0, 1], ["6%", "-6%"]);
+  // The large name drifts against the scroll direction for a sense of depth;
+  // it never moves left of its resting place, so the first letter is never clipped.
+  const nameX = useTransform(scrollYProgress, [0, 1], ["5%", "0%"]);
   const tone = ART[project.id] ?? ART.reviewms;
 
   return (
@@ -109,7 +140,7 @@ function ProjectRow({ project, index }: { project: Project; index: number }) {
       <Media progress={scrollYProgress} project={project} />
 
       <motion.h3
-        className="pointer-events-none relative z-10 -mt-[0.55em] text-[clamp(3rem,11vw,9.5rem)] leading-[0.9] font-semibold tracking-[-0.055em] whitespace-nowrap text-white drop-shadow-[0_10px_40px_rgba(0,0,0,0.5)]"
+        className="pointer-events-none relative z-10 mt-6 text-[clamp(3rem,11vw,9.5rem)] leading-[0.9] font-semibold tracking-[-0.055em] whitespace-nowrap text-white drop-shadow-[0_10px_40px_rgba(0,0,0,0.5)]"
         style={reduce ? undefined : { x: nameX }}
       >
         {project.name}

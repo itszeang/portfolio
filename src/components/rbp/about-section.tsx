@@ -4,7 +4,6 @@
 import { ScrollFocus } from "@/components/motion/scroll-focus";
 import { Education } from "@/components/rbp/education";
 import { Experience } from "@/components/rbp/experience";
-import { PolaroidStrip } from "@/components/rbp/polaroid-strip";
 import { Skills } from "@/components/rbp/skills";
 import { Stack } from "@/components/rbp/stack";
 import { person } from "@/content";
@@ -19,11 +18,7 @@ export function AboutSection(): ReactNode {
   return (
     <div className="flex flex-col">
       <section className="mx-auto w-full max-w-312 pt-16 sm:pt-24" data-background-hue="-45" id="hakkimda">
-        <ScrollFocus>
-          <PolaroidStrip />
-        </ScrollFocus>
-
-        <div className="mx-auto w-full max-w-160 px-2 pt-14 pb-12 sm:px-6 sm:pt-20 sm:pb-16">
+        <div className="mx-auto w-full max-w-160 px-2 pb-12 sm:px-6 sm:pb-16">
           <ScrollFocus>
             <div className="rounded-4xl border border-foreground/5 bg-foreground/3 p-8 sm:p-12">
               <h2 className="font-serif text-[1.75rem] font-medium tracking-tight text-foreground sm:text-[2rem]">

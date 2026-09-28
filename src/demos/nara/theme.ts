@@ -1,17 +1,18 @@
-import { Figtree, Young_Serif } from "next/font/google";
+import { Figtree, Newsreader } from "next/font/google";
 import type { CSSProperties } from "react";
 
-// Nara's own type, loaded only on its demo pages.
-export const display = Young_Serif({ subsets: ["latin", "latin-ext"], weight: "400", variable: "--nara-display" });
+// Nara's type for the booking and assistant pages: the same editorial serif and
+// Figtree as the website (see site-theme.ts), under the older variable names.
+export const display = Newsreader({ subsets: ["latin", "latin-ext"], style: ["normal", "italic"], axes: ["opsz"], variable: "--nara-display" });
 export const body = Figtree({ subsets: ["latin", "latin-ext"], variable: "--nara-body" });
 
 /** Palette tokens, applied as CSS variables on each Nara page's root. */
 export const naraVars = {
-  "--nara-bg": "#EAEFF1",
-  "--nara-paper": "#F7F9FA",
-  "--nara-ink": "#2B1830",
-  "--nara-muted": "#6E5F72",
-  "--nara-rose": "#D9486F",
-  "--nara-sage": "#9FB19A",
-  "--nara-butter": "#F1E3A6",
+  "--nara-bg": "#F7F6F3",
+  "--nara-paper": "#FFFFFF",
+  "--nara-ink": "#1A1A1A",
+  "--nara-muted": "#6B6760",
+  "--nara-rose": "#D9486F", // "free now" and the chosen time
+  "--nara-sage": "#E8E6E1", // hairlines and quiet tags
+  "--nara-butter": "#EFECE6", // time chips
 } as CSSProperties;

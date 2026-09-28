@@ -1,5 +1,4 @@
 import { CookiePreferencesButton } from "@/components/analytics";
-import { DemoCard } from "@/components/demo-card";
 import { PortfolioNav } from "@/components/portfolio-nav";
 import { PresentationBackdrop } from "@/components/presentation-backdrop";
 import { Hero40 } from "@/components/hero40";
@@ -8,10 +7,10 @@ import { MotionProvider } from "@/components/motion/motion-provider";
 import { ProjectShowcase } from "@/components/motion/project-showcase";
 import { ScrollFocus, ScrollFocusVars } from "@/components/motion/scroll-focus";
 import { ServicesIndex } from "@/components/motion/services-index";
+import { WorkGrid } from "@/components/work-grid";
 import { AboutSection } from "@/components/rbp/about-section";
 import { ContactCard } from "@/components/rbp/contact-card";
 import {
-  demos,
   otherWork,
   projects,
   projectsIntro,
@@ -82,16 +81,21 @@ export default function Home() {
             <div className="mt-10">
               <ProjectShowcase projects={projects} />
             </div>
-            <ScrollFocus className="mt-12">
-              <h3 className="text-sm font-medium tracking-[-0.01em] text-white/80">Örnek çalışmalar</h3>
-              <p className="mt-1 text-xs text-white/50">Uydurma işletmeler için yaptığım, açıp kullanabileceğin örnekler.</p>
-              <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                {demos.map((d) => (
-                  <DemoCard demo={d} key={d.slug} />
-                ))}
+            <ScrollFocus className="mt-16 border-t border-white/12 pt-14 sm:mt-20 sm:pt-20">
+              <div className="max-w-2xl">
+                <h3 className="text-3xl font-medium tracking-[-0.035em] sm:text-5xl" id="ornekler">
+                  Örnek çalışmalar
+                </h3>
+                <p className="mt-4 max-w-[58ch] text-base leading-7 text-pink-50/70">
+                  Kurgusal işletmeler için tasarlayıp geliştirdiğim siteler, randevu sistemleri ve yapay zekâ
+                  asistanları. Her biri tarayıcıda açılıp denenebilir.
+                </p>
+              </div>
+              <div className="mt-8">
+                <WorkGrid />
               </div>
             </ScrollFocus>
-            <ScrollFocus className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-white/12 pt-6 text-sm text-white/60">
+            <ScrollFocus className="mt-12 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-white/12 pt-6 text-sm text-white/60">
               <span className="text-white/80">{otherWork.title}</span>
               {otherWork.links.map((l) => (
                 <a

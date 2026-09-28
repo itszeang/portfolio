@@ -7,7 +7,6 @@ import {
   type Booking,
   SITE_PATH,
   categories,
-  dayNames,
   dayShort,
   freeSlots,
   hhmm,
@@ -127,9 +126,9 @@ export function NaraBooking() {
 
   return (
     <div className="mx-auto max-w-6xl px-5 pb-24 sm:px-8">
-      <header className="flex flex-wrap items-center justify-between gap-4 py-6">
+      <header className="sticky top-3 z-30 my-4 flex flex-wrap items-center justify-between gap-3 rounded-[28px] bg-white/90 py-2 pr-2 pl-6 shadow-[0_8px_30px_-12px_rgba(0,0,0,.25)] backdrop-blur sm:rounded-full">
         <Link className="font-[family-name:var(--nara-display)] text-2xl tracking-tight" href={SITE_PATH}>
-          Nara<span className="text-[var(--nara-rose)]">.</span>
+          Nara
           <span className="ml-2 font-[family-name:var(--nara-body)] text-sm text-[var(--nara-muted)]">randevu</span>
         </Link>
         <div className="flex rounded-full bg-[var(--nara-paper)] p-1 text-sm" role="tablist">
@@ -337,7 +336,7 @@ export function NaraBooking() {
             )}
           </div>
 
-          <aside className="h-fit rounded-[28px] bg-[var(--nara-paper)] p-6 lg:sticky lg:top-6">
+          <aside className="h-fit border border-[var(--nara-sage)] bg-[var(--nara-paper)] p-6 lg:sticky lg:top-6">
             <p className="font-[family-name:var(--nara-display)] text-xl">Randevun</p>
             <dl className="mt-4 space-y-3 text-sm">
               <Row label="Hizmet" value={service?.name} />
@@ -375,7 +374,7 @@ function Confirmation({ booking, onRestart, onPanel }: { booking: Booking; onRes
         {s.name} · {staff.find((p) => p.id === booking.staffId)?.name}
       </p>
 
-      <div className="mx-auto mt-10 max-w-sm rounded-[28px] bg-[var(--nara-ink)] p-5 text-left text-[var(--nara-paper)]">
+      <div className="mx-auto mt-10 max-w-sm bg-[var(--nara-ink)] p-5 text-left text-[var(--nara-paper)]">
         <p className="text-xs text-[var(--nara-paper)]/60">Hatırlatma örneği · randevudan bir gün önce</p>
         <p className="mt-3 rounded-2xl rounded-tl-sm bg-[var(--nara-paper)]/10 p-4 text-sm leading-6">
           Nara Studio: Merhaba {booking.name}, yarın {hhmm(booking.start)}&apos;da {s.name.toLocaleLowerCase("tr")} randevun var.
@@ -457,7 +456,7 @@ function Panel({
       {!h ? (
         <p className="mt-8 rounded-2xl bg-[var(--nara-paper)] p-6 text-[var(--nara-muted)]">Stüdyo bu gün kapalı.</p>
       ) : (
-        <div className="mt-6 overflow-x-auto rounded-[28px] bg-[var(--nara-paper)] p-4 sm:p-6">
+        <div className="mt-6 overflow-x-auto border border-[var(--nara-sage)] bg-[var(--nara-paper)] p-4 sm:p-6">
           <div className="grid min-w-[520px] grid-cols-[56px_repeat(3,1fr)] gap-x-3">
             <span />
             {staff.map((p) => (

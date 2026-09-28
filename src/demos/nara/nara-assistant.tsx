@@ -67,9 +67,9 @@ export function NaraAssistant() {
       style={naraVars}
     >
       <div className="mx-auto max-w-6xl px-5 pb-20 sm:px-8">
-        <header className="flex flex-wrap items-center justify-between gap-4 py-6">
+        <header className="sticky top-3 z-30 my-4 flex flex-wrap items-center justify-between gap-3 rounded-[28px] bg-white/90 py-2 pr-2 pl-6 shadow-[0_8px_30px_-12px_rgba(0,0,0,.25)] backdrop-blur sm:rounded-full">
           <Link className="font-[family-name:var(--nara-display)] text-2xl tracking-tight" href={SITE_PATH}>
-            Nara<span className="text-[var(--nara-rose)]">.</span>
+            Nara
             <span className="ml-2 font-[family-name:var(--nara-body)] text-sm text-[var(--nara-muted)]">mesaj asistanı</span>
           </Link>
           <Link className="text-sm font-semibold text-[var(--nara-rose)] hover:underline" href={BOOKING_PATH}>
@@ -169,7 +169,7 @@ export function NaraAssistant() {
           </div>
 
           {/* Behind the scenes */}
-          <section aria-labelledby="perde" className="rounded-[28px] bg-[var(--nara-paper)] p-6 sm:p-8">
+          <section aria-labelledby="perde" className="border border-[var(--nara-sage)] bg-[var(--nara-paper)] p-6 sm:p-8">
             <div className="flex flex-wrap items-baseline justify-between gap-3">
               <h2 className="font-[family-name:var(--nara-display)] text-3xl" id="perde">
                 Perde arkası
