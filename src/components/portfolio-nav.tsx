@@ -43,14 +43,16 @@ export function PortfolioNav() {
 
   const closeExpandedNav = () => setManuallyExpanded(false);
 
+  // The band this sits in spans the page width above the content; only the
+  // visible bar or button may take the pointer, or it blocks what scrolls under it.
   return (
-    <div className="relative mx-auto h-[66px] w-full max-w-[54rem]">
+    <div className="pointer-events-none relative mx-auto h-[66px] w-full max-w-[54rem]">
       <div
         aria-hidden={compact}
         className={`absolute inset-x-0 top-0 ${transition} ${
           compact
             ? "pointer-events-none -translate-y-2 scale-[0.96] opacity-0 blur-[3px]"
-            : "translate-y-0 scale-100 opacity-100 blur-0"
+            : "pointer-events-auto translate-y-0 scale-100 opacity-100 blur-0"
         }`}
         inert={compact ? true : undefined}
       >
@@ -91,7 +93,7 @@ export function PortfolioNav() {
         aria-hidden={!compact}
         className={`absolute left-1/2 top-0 -translate-x-1/2 ${transition} ${
           compact
-            ? "opacity-100 blur-0"
+            ? "pointer-events-auto opacity-100 blur-0"
             : "pointer-events-none -translate-y-2 scale-[0.78] opacity-0 blur-[3px]"
         }`}
         inert={!compact ? true : undefined}
