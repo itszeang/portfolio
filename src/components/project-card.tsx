@@ -1,12 +1,13 @@
 import { ArrowUpRight } from "lucide-react";
 import { ScrollFrames } from "@/components/scroll-frames";
 import type { Project } from "@/content";
+import type { Lang } from "@/lib/i18n";
 
 /**
  * A shipped product of my own, in the same card as the demos. Its website's
  * screenshots scroll by as the card rises, like the demo cards'.
  */
-export function ProjectCard({ project, sizes }: { project: Project; sizes: string }) {
+export function ProjectCard({ project, sizes, lang = "tr" }: { project: Project; sizes: string; lang?: Lang }) {
   const link = project.links[0];
   return (
     <a
@@ -17,7 +18,7 @@ export function ProjectCard({ project, sizes }: { project: Project; sizes: strin
     >
       <ScrollFrames frames={project.siteImages.map((i) => i.src)} sizes={sizes} />
       <span className="flex flex-1 flex-col px-3 pt-4 pb-3">
-        <span className="text-[13px] text-white/50">Kendi ürünüm · {project.kind}</span>
+        <span className="text-[13px] text-white/50">{lang === "en" ? "My own product" : "Kendi ürünüm"} · {project.kind}</span>
         <span className="mt-1 flex items-center justify-between gap-3">
           <span className="text-[17px] leading-6 font-medium tracking-[-0.015em] text-white">{project.name}</span>
           <ArrowUpRight
@@ -26,7 +27,7 @@ export function ProjectCard({ project, sizes }: { project: Project; sizes: strin
           />
         </span>
         <span className="mt-2 text-sm leading-6 text-white/62">{project.summary}</span>
-        <span className="sr-only"> (yeni sekmede açılır)</span>
+        <span className="sr-only">{lang === "en" ? " (opens in a new tab)" : " (yeni sekmede açılır)"}</span>
       </span>
     </a>
   );

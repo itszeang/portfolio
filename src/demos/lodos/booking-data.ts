@@ -1,16 +1,15 @@
 // Lodos's dining room and its bookings, for the table-booking demo. Existing
 // reservations are generated from the date, so every visitor sees the same
 // room and Fridays really are fuller than Mondays (see `nights`).
-import { nights, tray } from "./data";
+import type { Lang } from "@/lib/i18n";
+import { lodosIn, nights } from "./data";
 
 export type Zone = "pencere" | "salon" | "fasil" | "sessiz" | "uzun";
-export const zoneName: Record<Zone, string> = {
-  pencere: "Pencere kenarı",
-  salon: "Salon",
-  fasil: "Fasıla yakın",
-  sessiz: "Sessiz köşe",
-  uzun: "Uzun masa",
+export const zoneNames: Record<Lang, Record<Zone, string>> = {
+  tr: { pencere: "Pencere kenarı", salon: "Salon", fasil: "Fasıla yakın", sessiz: "Sessiz köşe", uzun: "Uzun masa" },
+  en: { pencere: "By the window", salon: "Main room", fasil: "Near the band", sessiz: "Quiet corner", uzun: "Long table" },
 };
+export const zoneName = zoneNames.tr;
 
 /** A table on the plan: centre (x, y) and size in plan units (720 × 500). */
 export type Table = { id: number; seats: number; min: number; zone: Zone; x: number; y: number; w: number; h: number; round?: boolean };
@@ -96,32 +95,47 @@ export const isFree = (table: number, start: number, list: Res[]) =>
   !list.some((r) => r.table === table && r.start < start + DURATION && start < r.start + DURATION);
 
 // --- Dates -------------------------------------------------------------------
-const dayShort = ["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt"];
-const dayLong = ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"];
-const months = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
+const NAMES = {
+  tr: {
+    short: ["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt"],
+    long: ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"],
+    months: ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"],
+    today: "Bugün",
+    tomorrow: "Yarın",
+  },
+  en: {
+    short: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+    long: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+    today: "Today",
+    tomorrow: "Tomorrow",
+  },
+};
 
 export const isoDay = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 
 export type Day = { iso: string; dow: number; short: string; long: string; date: number };
 
 /** The next `count` days from `todayIso`, labelled for chips and the ticket. */
-export function nextDays(todayIso: string, count: number): Day[] {
+export function nextDays(todayIso: string, count: number, lang: Lang = "tr"): Day[] {
+  const n = NAMES[lang];
   const [y, m, d] = todayIso.split("-").map(Number);
   return Array.from({ length: count }, (_, i) => {
     const x = new Date(y, m - 1, d + i);
-    const rel = i === 0 ? "Bugün" : i === 1 ? "Yarın" : null;
+    const rel = i === 0 ? n.today : i === 1 ? n.tomorrow : null;
     return {
       iso: isoDay(x),
       dow: x.getDay(),
       date: x.getDate(),
-      short: rel ?? `${dayShort[x.getDay()]} ${x.getDate()}`,
-      long: `${x.getDate()} ${months[x.getMonth()]} ${dayLong[x.getDay()]}`,
+      short: rel ?? `${n.short[x.getDay()]} ${x.getDate()}`,
+      // "3 Ekim Cuma" in Turkish, "Friday 3 October" in English.
+      long: lang === "en" ? `${n.long[x.getDay()]} ${x.getDate()} ${n.months[x.getMonth()]}` : `${x.getDate()} ${n.months[x.getMonth()]} ${n.long[x.getDay()]}`,
     };
   });
 }
 
 /** Meze ids from the website's tray link, in tray order. */
-export const trayFrom = (param: string | null) => {
+export const trayFrom = (param: string | null, lang: Lang = "tr") => {
   const ids = new Set((param ?? "").split(","));
-  return tray.filter((m) => ids.has(m.id));
+  return lodosIn(lang).tray.filter((m) => ids.has(m.id));
 };

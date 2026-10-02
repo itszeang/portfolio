@@ -2,7 +2,57 @@
 
 import { ArrowRight, Plus } from "lucide-react";
 import { createContext, useContext, useState, type FormEvent, type ReactNode } from "react";
-import { type AreaId, areaName, areas, situations } from "./data";
+import { useLang } from "@/lib/lang-context";
+import { type AreaId, lawIn } from "./data";
+
+const COPY = {
+  tr: {
+    bring: "İlk görüşmeye getirin",
+    added: "Forma eklendi, forma git",
+    ask: "Bu konuda ön görüşme talep edin",
+    errName: "Adınızı ve soyadınızı yazın.",
+    errContact: "Geçerli bir e-posta ya da 05XX XXX XX XX biçiminde telefon yazın.",
+    errArea: "Konunun hangi alana girdiğini seçin; emin değilseniz en yakın olanı seçebilirsiniz.",
+    errConsent: "Devam etmek için aydınlatma metnini onaylayın.",
+    received: "Talebiniz alındı",
+    thanks: (n: string) => `Teşekkürler, ${n}.`,
+    reply: (area: string) => `${area} konusundaki ön görüşme talebiniz için bir iş günü içinde size ulaşılır. (Bu bir örnek sitedir; form hiçbir yere gönderilmedi.)`,
+    again: "Yeni talep oluştur",
+    picked: "Seçtiğiniz durum:",
+    name: "Adınız ve soyadınız",
+    contact: "Telefon ya da e-posta",
+    area: "Konu",
+    choose: "Seçin",
+    note: "Kısaca durumunuz",
+    optional: "(isteğe bağlı)",
+    noteHelp: "Kimlik numarası gibi hassas bilgileri buraya yazmayın; görüşmede konuşulur.",
+    consent: "Kişisel verilerimin yalnızca bu talebe dönüş yapılması amacıyla işlenmesine ilişkin aydınlatma metnini okudum.",
+    submit: "Ön görüşme talep edin",
+  },
+  en: {
+    bring: "Bring to the first meeting",
+    added: "Added to the form, go to the form",
+    ask: "Request a first consultation about this",
+    errName: "Write your first name and surname.",
+    errContact: "Write a valid email, or a Turkish phone number as 05XX XXX XX XX.",
+    errArea: "Choose which area your matter falls under; if you're not sure, pick the closest one.",
+    errConsent: "Confirm the privacy notice to continue.",
+    received: "Request received",
+    thanks: (n: string) => `Thank you, ${n}.`,
+    reply: (area: string) => `We'll contact you within one working day about your first consultation on ${area.toLowerCase()}. (This is a sample site; the form wasn't sent anywhere.)`,
+    again: "Start a new request",
+    picked: "Your situation:",
+    name: "First name and surname",
+    contact: "Phone or email",
+    area: "Area",
+    choose: "Choose",
+    note: "Your situation in brief",
+    optional: "(optional)",
+    noteHelp: "Don't write sensitive details such as an ID number here; we'll talk about them in the meeting.",
+    consent: "I've read the privacy notice (under KVKK, Turkey's data protection law) on processing my personal data only to reply to this request.",
+    submit: "Request a first consultation",
+  },
+};
 
 type Ctx = { situation: string | null; setSituation: (id: string) => void; area: AreaId | null; setArea: (a: AreaId | null) => void };
 const LawCtx = createContext<Ctx | null>(null);
@@ -10,6 +60,7 @@ const useLaw = () => useContext(LawCtx)!;
 
 /** Shares the visitor's chosen situation between the routes list and the form. */
 export function LawProvider({ children }: { children: ReactNode }) {
+  const { situations } = lawIn(useLang());
   const [situation, setSit] = useState<string | null>(null);
   const [area, setArea] = useState<AreaId | null>(null);
   const setSituation = (id: string) => {
@@ -22,6 +73,9 @@ export function LawProvider({ children }: { children: ReactNode }) {
 /** The situations, numbered rows that open in place to show what the visitor needs to know. */
 export function Routes() {
   const { situation, setSituation } = useLaw();
+  const lang = useLang();
+  const c = COPY[lang];
+  const { situations, areaName } = lawIn(lang);
   const [open, setOpen] = useState<string | null>(null);
 
   return (
@@ -48,7 +102,7 @@ export function Routes() {
               <div className="grid gap-6 pb-7 pl-[3.25rem] md:grid-cols-2" id={`durum-${s.id}`}>
                 <p className="leading-7">{s.means}</p>
                 <div>
-                  <p className="text-[11px] font-semibold tracking-[0.14em] text-[var(--law-oxblood)] uppercase">İlk görüşmeye getirin</p>
+                  <p className="text-[11px] font-semibold tracking-[0.14em] text-[var(--law-oxblood)] uppercase">{c.bring}</p>
                   <ul className="mt-3 space-y-1.5 text-[15px]">
                     {s.bring.map((b) => (
                       <li className="flex gap-2.5" key={b}>
@@ -62,7 +116,7 @@ export function Routes() {
                     href="#on-gorusme"
                     onClick={() => setSituation(s.id)}
                   >
-                    {situation === s.id ? "Forma eklendi, forma git" : "Bu konuda ön görüşme talep edin"} <ArrowRight aria-hidden="true" className="size-4" />
+                    {situation === s.id ? c.added : c.ask} <ArrowRight aria-hidden="true" className="size-4" />
                   </a>
                 </div>
               </div>
@@ -76,6 +130,7 @@ export function Routes() {
 
 /** Practice areas as rows that open to list what each covers. */
 export function AreaRows() {
+  const { areas } = lawIn(useLang());
   const [open, setOpen] = useState<AreaId | null>(null);
   return (
     <ul className="border-t border-[var(--law-line)]">
@@ -111,6 +166,9 @@ type Errors = Partial<Record<"name" | "contact" | "area" | "consent", string>>;
 /** First-consultation request. A demo: nothing is sent anywhere. */
 export function ConsultForm() {
   const { situation, area, setArea } = useLaw();
+  const lang = useLang();
+  const c = COPY[lang];
+  const { areas, situations, areaName } = lawIn(lang);
   const picked = situations.find((s) => s.id === situation);
   const [name, setName] = useState("");
   const [contact, setContact] = useState("");
@@ -122,11 +180,11 @@ export function ConsultForm() {
   function submit(e: FormEvent) {
     e.preventDefault();
     const x: Errors = {};
-    if (name.trim().length < 2) x.name = "Adınızı ve soyadınızı yazın.";
-    const c = contact.trim();
-    if (!/^\S+@\S+\.\S+$/.test(c) && !/^0?5\d{9}$/.test(c.replace(/\D/g, ""))) x.contact = "Geçerli bir e-posta ya da 05XX XXX XX XX biçiminde telefon yazın.";
-    if (!area) x.area = "Konunun hangi alana girdiğini seçin; emin değilseniz en yakın olanı seçebilirsiniz.";
-    if (!consent) x.consent = "Devam etmek için aydınlatma metnini onaylayın.";
+    if (name.trim().length < 2) x.name = c.errName;
+    const typed = contact.trim();
+    if (!/^\S+@\S+\.\S+$/.test(typed) && !/^0?5\d{9}$/.test(typed.replace(/\D/g, ""))) x.contact = c.errContact;
+    if (!area) x.area = c.errArea;
+    if (!consent) x.consent = c.errConsent;
     setErrors(x);
     if (Object.keys(x).length === 0) setSent(true);
   }
@@ -142,13 +200,13 @@ export function ConsultForm() {
   if (sent) {
     return (
       <div aria-live="polite" className="bg-[var(--law-paper)] p-8 text-[var(--law-ink)]">
-        <p className="text-[11px] font-semibold tracking-[0.14em] text-[var(--law-oxblood)] uppercase">Talebiniz alındı</p>
-        <p className="mt-3 font-[family-name:var(--law-display)] text-3xl font-light">Teşekkürler, {name.trim().split(" ")[0]}.</p>
+        <p className="text-[11px] font-semibold tracking-[0.14em] text-[var(--law-oxblood)] uppercase">{c.received}</p>
+        <p className="mt-3 font-[family-name:var(--law-display)] text-3xl font-light">{c.thanks(name.trim().split(" ")[0])}</p>
         <p className="mt-3 leading-7 text-[var(--law-slate)]">
-          {areaName(area!)} konusundaki ön görüşme talebiniz için bir iş günü içinde size ulaşılır. (Bu bir örnek sitedir; form hiçbir yere gönderilmedi.)
+          {c.reply(areaName(area!))}
         </p>
         <button className="mt-6 text-sm font-semibold text-[var(--law-oxblood)] underline underline-offset-4" onClick={() => setSent(false)} type="button">
-          Yeni talep oluştur
+          {c.again}
         </button>
       </div>
     );
@@ -158,13 +216,13 @@ export function ConsultForm() {
     <form className="bg-[var(--law-paper)] p-6 text-[var(--law-ink)] sm:p-8" noValidate onSubmit={submit}>
       {picked && (
         <p className="mb-6 border-l-2 border-[var(--law-oxblood)] bg-[var(--law-panel)] px-4 py-3 text-sm">
-          Seçtiğiniz durum: <span className="font-semibold">{picked.says}</span>
+          {c.picked} <span className="font-semibold">{picked.says}</span>
         </p>
       )}
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
           <label className="text-sm font-semibold" htmlFor="law-name">
-            Adınız ve soyadınız
+            {c.name}
           </label>
           <input
             aria-describedby={errors.name ? "law-name-err" : undefined}
@@ -182,7 +240,7 @@ export function ConsultForm() {
         </div>
         <div>
           <label className="text-sm font-semibold" htmlFor="law-contact">
-            Telefon ya da e-posta
+            {c.contact}
           </label>
           <input
             aria-describedby={errors.contact ? "law-contact-err" : undefined}
@@ -202,7 +260,7 @@ export function ConsultForm() {
 
       <div className="mt-5">
         <label className="text-sm font-semibold" htmlFor="law-area">
-          Konu
+          {c.area}
         </label>
         <select
           aria-describedby={errors.area ? "law-area-err" : undefined}
@@ -215,7 +273,7 @@ export function ConsultForm() {
           }}
           value={area ?? ""}
         >
-          <option value="">Seçin</option>
+          <option value="">{c.choose}</option>
           {areas.map((a) => (
             <option key={a.id} value={a.id}>
               {a.name}
@@ -227,10 +285,10 @@ export function ConsultForm() {
 
       <div className="mt-5">
         <label className="text-sm font-semibold" htmlFor="law-note">
-          Kısaca durumunuz <span className="font-normal text-[var(--law-slate)]">(isteğe bağlı)</span>
+          {c.note} <span className="font-normal text-[var(--law-slate)]">{c.optional}</span>
         </label>
         <textarea className={`${field} min-h-28 border-[var(--law-line)] py-3`} id="law-note" maxLength={600} onChange={(e) => setNote(e.target.value)} value={note} />
-        <p className="mt-2 text-xs text-[var(--law-slate)]">Kimlik numarası gibi hassas bilgileri buraya yazmayın; görüşmede konuşulur.</p>
+        <p className="mt-2 text-xs text-[var(--law-slate)]">{c.noteHelp}</p>
       </div>
 
       <label className="mt-5 flex items-start gap-3 text-sm leading-6">
@@ -245,12 +303,12 @@ export function ConsultForm() {
           }}
           type="checkbox"
         />
-        <span>Kişisel verilerimin yalnızca bu talebe dönüş yapılması amacıyla işlenmesine ilişkin aydınlatma metnini okudum.</span>
+        <span>{c.consent}</span>
       </label>
       {err("consent")}
 
       <button className="mt-7 inline-flex min-h-12 w-full items-center justify-center gap-2 bg-[var(--law-oxblood)] px-6 font-semibold text-white transition-colors hover:bg-[var(--law-ink)] sm:w-auto" type="submit">
-        Ön görüşme talep edin <ArrowRight aria-hidden="true" className="size-4" />
+        {c.submit} <ArrowRight aria-hidden="true" className="size-4" />
       </button>
     </form>
   );

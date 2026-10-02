@@ -4,20 +4,58 @@ import CircularText from "@/components/reactbits/CircularText";
 import { MotionConfig } from "motion/react";
 import Link from "next/link";
 import { useState } from "react";
-import { FIX_MEZE, FIX_PRICE, RESERVE_PATH, tl, tray } from "./data";
+import type { Lang } from "@/lib/i18n";
+import { FIX_MEZE, FIX_PRICE, lodosIn, tray as TRAY } from "./data";
 
 // Plate positions on a 400×400 tray: one in the middle, eight around it.
 const C = 200;
 const RING = 118;
-const spots = tray.map((_, i) =>
+const spots = TRAY.map((_, i) =>
   i === 0 ? { x: C, y: C, r: 48 } : { x: C + RING * Math.cos(((i - 1) / 8) * Math.PI * 2 - Math.PI / 2), y: C + RING * Math.sin(((i - 1) / 8) * Math.PI * 2 - Math.PI / 2), r: 42 },
 );
 
 /** The mark a spoon leaves when the meze is spread on the plate. */
 const swirl = (x: number, y: number, r: number) => `M${x - r * 0.55} ${y + r * 0.15} A${r * 0.6} ${r * 0.6} 0 0 1 ${x + r * 0.45} ${y - r * 0.35}`;
 
+const COPY = {
+  tr: {
+    ring: "BU AKŞAMIN TEPSİSİ • LODOS MEYHANE • KADIKÖY • ",
+    trayLabel: "Meze tepsisi",
+    hint: "Seçmek için bir tabağa dokunun.",
+    yourTray: "Fix menü tepsin",
+    remove: (name: string) => `${name} tepsiden çıkar`,
+    full: "Tepsi tamam. Değiştirmek için birini çıkarın.",
+    more: (n: number) => `${n} meze daha seçebilirsiniz.`,
+    guests: "Kişi",
+    fewer: "Bir kişi azalt",
+    moreGuests: "Bir kişi artır",
+    perPerson: (price: string) => `Fix menü, kişi başı ${price}`,
+    includes: "6 soğuk meze, 2 ara sıcak ve meyve. İçecekler dahil değildir.",
+    bookWithTray: "Bu tepsiyle masa ayırt",
+    book: "Masa ayırt",
+  },
+  en: {
+    ring: "TONIGHT'S TRAY • LODOS MEYHANE • KADIKÖY • ",
+    trayLabel: "Meze tray",
+    hint: "Tap a plate to choose it.",
+    yourTray: "Your set-menu tray",
+    remove: (name: string) => `Remove ${name} from the tray`,
+    full: "The tray is full. Take one off to change it.",
+    more: (n: number) => `You can pick ${n} more.`,
+    guests: "Guests",
+    fewer: "One guest fewer",
+    moreGuests: "One guest more",
+    perPerson: (price: string) => `Set menu, ${price} per person`,
+    includes: "6 cold mezes, 2 hot starters and fruit. Drinks not included.",
+    bookWithTray: "Book a table with this tray",
+    book: "Book a table",
+  },
+};
+
 /** The waiter's tray: pick six cold mezes for the fixed menu. */
-export function MezeTray() {
+export function MezeTray({ lang = "tr" }: { lang?: Lang }) {
+  const c = COPY[lang];
+  const { tray, tl, reservePath: RESERVE_PATH } = lodosIn(lang);
   const [picked, setPicked] = useState<string[]>(["fava", "haydari", "ezme"]);
   const [people, setPeople] = useState(4);
   const [focus, setFocus] = useState<string | null>(null);
@@ -37,10 +75,10 @@ export function MezeTray() {
               <CircularText
                 className="!h-full !w-full !font-[family-name:var(--lodos-body)] !font-semibold !text-[var(--lodos-cini)]"
                 spinDuration={60}
-                text="BU AKŞAMIN TEPSİSİ • LODOS MEYHANE • KADIKÖY • "
+                text={c.ring}
               />
             </div>
-            <svg aria-label="Meze tepsisi" className="absolute inset-[9%] h-[82%] w-[82%] drop-shadow-[0_24px_30px_rgba(29,42,46,0.25)]" role="group" viewBox="0 0 400 400">
+            <svg aria-label={c.trayLabel} className="absolute inset-[9%] h-[82%] w-[82%] drop-shadow-[0_24px_30px_rgba(29,42,46,0.25)]" role="group" viewBox="0 0 400 400">
               <defs>
                 <radialGradient cx="45%" cy="40%" id="lodos-tray" r="65%">
                   <stop offset="0" stopColor="#EEF1EF" />
@@ -120,11 +158,11 @@ export function MezeTray() {
                   {shown.note}
                 </>
               ) : (
-                "Seçmek için bir tabağa dokunun."
+                c.hint
               )}
             </p>
             <p className="mt-6 text-sm font-semibold">
-              Fix menü tepsin{" "}
+              {c.yourTray}{" "}
               <span className="tabular-nums text-[var(--lodos-nar)]">
                 {picked.length}/{FIX_MEZE}
               </span>
@@ -135,7 +173,7 @@ export function MezeTray() {
                 return (
                   <li key={id}>
                     <button
-                      aria-label={`${m.name} tepsiden çıkar`}
+                      aria-label={c.remove(m.name)}
                       className="inline-flex min-h-9 items-center gap-2 rounded-full bg-[var(--lodos-card)] px-3 text-sm shadow-sm hover:text-[var(--lodos-nar)]"
                       onClick={() => toggle(id)}
                       type="button"
@@ -148,15 +186,15 @@ export function MezeTray() {
               })}
             </ul>
             <p className="mt-2 text-xs text-[var(--lodos-muted)]">
-              {full ? "Tepsi tamam. Değiştirmek için birini çıkarın." : `${FIX_MEZE - picked.length} meze daha seçebilirsiniz.`}
+              {full ? c.full : c.more(FIX_MEZE - picked.length)}
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-6 border-t border-[var(--lodos-ink)]/10 pt-6">
               <div>
-                <p className="text-xs text-[var(--lodos-muted)]">Kişi</p>
+                <p className="text-xs text-[var(--lodos-muted)]">{c.guests}</p>
                 <div className="mt-1 flex items-center gap-2">
                   <button
-                    aria-label="Bir kişi azalt"
+                    aria-label={c.fewer}
                     className="grid size-10 place-items-center rounded-full bg-[var(--lodos-card)] text-lg shadow-sm"
                     onClick={() => setPeople((n) => Math.max(1, n - 1))}
                     type="button"
@@ -165,7 +203,7 @@ export function MezeTray() {
                   </button>
                   <span className="w-8 text-center font-[family-name:var(--lodos-display)] text-2xl tabular-nums">{people}</span>
                   <button
-                    aria-label="Bir kişi artır"
+                    aria-label={c.moreGuests}
                     className="grid size-10 place-items-center rounded-full bg-[var(--lodos-card)] text-lg shadow-sm"
                     onClick={() => setPeople((n) => Math.min(12, n + 1))}
                     type="button"
@@ -175,20 +213,29 @@ export function MezeTray() {
                 </div>
               </div>
               <div>
-                <p className="text-xs text-[var(--lodos-muted)]">Fix menü, kişi başı {tl(FIX_PRICE)}</p>
+                <p className="text-xs text-[var(--lodos-muted)]">{c.perPerson(tl(FIX_PRICE))}</p>
                 {/* Gloock has no ₺ glyph, so the sign comes from the body face. */}
                 <p className="mt-1 font-[family-name:var(--lodos-display)] text-3xl tabular-nums">
-                  {(people * FIX_PRICE).toLocaleString("tr-TR")} <span className="font-[family-name:var(--lodos-body)] text-2xl">₺</span>
+                  {lang === "en" ? (
+                    <>
+                      <span className="font-[family-name:var(--lodos-body)] text-2xl">₺</span>
+                      {(people * FIX_PRICE).toLocaleString("en-GB")}
+                    </>
+                  ) : (
+                    <>
+                      {(people * FIX_PRICE).toLocaleString("tr-TR")} <span className="font-[family-name:var(--lodos-body)] text-2xl">₺</span>
+                    </>
+                  )}
                 </p>
               </div>
             </div>
-            <p className="mt-2 text-xs text-[var(--lodos-muted)]">6 soğuk meze, 2 ara sıcak ve meyve. İçecekler dahil değildir.</p>
+            <p className="mt-2 text-xs text-[var(--lodos-muted)]">{c.includes}</p>
 
             <Link
               className="mt-6 inline-flex min-h-12 items-center rounded-full bg-[var(--lodos-nar)] px-7 font-semibold text-white transition-colors hover:bg-[#9E2F3E]"
               href={`${RESERVE_PATH}?kisi=${people}${full ? `&tepsi=${picked.join(",")}` : ""}`}
             >
-              {full ? "Bu tepsiyle masa ayırt" : "Masa ayırt"}
+              {full ? c.bookWithTray : c.book}
             </Link>
           </div>
         </div>

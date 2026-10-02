@@ -6,12 +6,14 @@
 import { AnimatePresence, motion } from "motion/react";
 import { Check, Copy, Mail } from "lucide-react";
 import { useState } from "react";
+import { useLang } from "@/lib/lang-context";
 import type { ReactNode } from "react";
 
 const EMAIL = "hello@burakalpyahsi.com";
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 export function ContactButton(): ReactNode {
+  const lang = useLang();
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
 
@@ -47,7 +49,17 @@ export function ContactButton(): ReactNode {
       onBlur={() => setOpen(false)}
       aria-label={
         // Starts with the visible text so voice control ("click İletişim") finds it.
-        copied ? "E-posta kopyalandı" : open ? `${EMAIL} adresini kopyala` : "İletişim: e-postayı göster"
+        lang === "en"
+          ? copied
+            ? "Email copied"
+            : open
+              ? `Copy ${EMAIL}`
+              : "Contact: show my email"
+          : copied
+            ? "E-posta kopyalandı"
+            : open
+              ? `${EMAIL} adresini kopyala`
+              : "İletişim: e-postayı göster"
       }
       transition={{ layout: { duration: 0.55, ease: EASE } }}
       style={{ borderRadius: 12 }}
@@ -108,7 +120,7 @@ export function ContactButton(): ReactNode {
               className="inline-flex items-center gap-2 whitespace-nowrap"
             >
               <Mail className="h-4 w-4 shrink-0" aria-hidden="true" />
-              <span>İletişim</span>
+              <span>{lang === "en" ? "Contact" : "İletişim"}</span>
             </motion.span>
           )}
         </AnimatePresence>

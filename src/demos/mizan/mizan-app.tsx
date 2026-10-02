@@ -3,8 +3,128 @@
 import { Check, Download, FileText, ImageIcon, Receipt, Send } from "lucide-react";
 import { motion, MotionConfig } from "motion/react";
 import { useEffect, useReducer, useRef, useState } from "react";
-import { accountName, booking, type Doc, docs, expenseAccounts, type FieldKey, money, moneyFields, type Posted, startJournal, toNumber } from "./data";
+import type { Lang } from "@/lib/i18n";
+import { useLang } from "@/lib/lang-context";
+import { booking, type Doc, docs, type FieldKey, mizanIn, moneyFields, type Posted } from "./data";
 import { Paper } from "./paper";
+
+/** "%95" in Turkish, "95%" in English. */
+const pct = (n: number, lang: Lang) => (lang === "en" ? `${n}%` : `%${n}`);
+
+const COPY = {
+  tr: {
+    checks: {
+      denk: "Fiş denk: borç = alacak",
+      oran: (rate: number) => `KDV oranı %${rate} ile tutuyor`,
+      vkn: "Satıcı VKN on haneli",
+      mukerrer: "Bu belge deftere daha önce işlenmemiş",
+    },
+    status: { new: "okunmadı", reading: "okunuyor", review: "kurşun kalemde", approved: "işlendi", skipped: "ayrıldı" },
+    tagline: "ön muhasebe asistanı · simülasyon",
+    threshold: "Kurşun kalem sınırı",
+    h1: "Faturayı okur, mahsup fişini doldurur.",
+    lead: "Emin olmadığını kurşun kalemle yazar; siz onaylayınca mürekkebe geçer.",
+    inbox: "Gelen evrak",
+    document: "Belge",
+    read: "Belgeyi oku",
+    ink: "Mürekkeple yaz",
+    unsure: (text: string, conf: string) => `${text}, emin değil (${conf}). Kontrol edip mürekkeple yazın.`,
+    voucher: "Mahsup fişi",
+    voucherTitle: "MAHSUP FİŞİ",
+    date: "Tarih",
+    docNo: "Belge no",
+    vkn: "Satıcı VKN",
+    account: "Hesap",
+    debit: "Borç",
+    credit: "Alacak",
+    total: "TOPLAM",
+    checksLabel: "Kontroller",
+    okSr: ": tamam",
+    badSr: ": tutmuyor",
+    preparedBy: "Hazırlayan",
+    approvedBy: "Onaylayan",
+    signature: "İmzanız",
+    noNeed: (t: string) => `gerek yok · her satır ${t} üstünde`,
+    sign: "İmzala ve deftere işle",
+    checkPencil: (n: number) => `Kurşun kalemdeki ${n} yeri kontrol edip mürekkeple yazın.`,
+    fixRed: "Kırmızı işaretli kontrolü düzeltin.",
+    inBook: "Bu belge defterde var; ikinci kez işlenmemeli.",
+    setAside: "Evrakı ayır",
+    stampDup: "MÜKERRER",
+    stampAuto: "KENDİLİĞİNDEN İŞLENDİ",
+    stampPosted: "DEFTERE İŞLENDİ",
+    stampNot: "İŞLENMEDİ",
+    entry: (n: number | null) => `MADDE ${n}`,
+    csvHead: ["Madde", "Tarih", "Belge", "Hesap", "Hesap adı", "Açıklama", "Borç", "Alacak"],
+    csvFile: "yevmiye-eylul-2026.csv",
+    journal: "Yevmiye defteri",
+    journalLead: "Eylül 2026 · her fiş üç satır: gider, KDV ve ödeme",
+    download: "Dökümü indir (CSV)",
+    send: "Mali müşavire gönder",
+    sent: "Mali müşavire gönderildi. (Örnek; bir şey gönderilmedi.)",
+    records: "Yevmiye kayıtları",
+    cols: ["MADDE", "TARİH", "HESAP", "AÇIKLAMA", "BORÇ", "ALACAK"],
+    auto: "(kendiliğinden)",
+    carried: "Nakli yekûn",
+    vatBalance: "191 İndirilecek KDV bakiyesi:",
+  },
+  en: {
+    checks: {
+      denk: "Voucher balances: debit = credit",
+      oran: (rate: number) => `VAT matches the ${rate}% rate`,
+      vkn: "Seller's tax number has ten digits",
+      mukerrer: "This document hasn't been posted before",
+    },
+    status: { new: "not read", reading: "reading", review: "in pencil", approved: "posted", skipped: "set aside" },
+    tagline: "bookkeeping assistant for Turkish invoices · simulation",
+    threshold: "Pencil threshold",
+    h1: "It reads the invoice and fills in the journal voucher.",
+    lead: "Anything it isn't sure of, it writes in pencil; once you confirm, it goes into ink.",
+    inbox: "Incoming documents",
+    document: "Document",
+    read: "Read the document",
+    ink: "Write in ink",
+    unsure: (text: string, conf: string) => `${text}, not sure (${conf}). Check it and write it in ink.`,
+    voucher: "Journal voucher",
+    voucherTitle: "JOURNAL VOUCHER",
+    date: "Date",
+    docNo: "Document no.",
+    vkn: "Seller's tax no. (VKN)",
+    account: "Account",
+    debit: "Debit",
+    credit: "Credit",
+    total: "TOTAL",
+    checksLabel: "Checks",
+    okSr: ": OK",
+    badSr: ": doesn't match",
+    preparedBy: "Prepared by",
+    approvedBy: "Approved by",
+    signature: "Your signature",
+    noNeed: (t: string) => `not needed · every line above ${t}`,
+    sign: "Sign and post to the journal",
+    checkPencil: (n: number) => (n === 1 ? "Check the 1 item in pencil and write it in ink." : `Check the ${n} items in pencil and write them in ink.`),
+    fixRed: "Fix the check marked in red.",
+    inBook: "This document is already in the journal; it mustn't be posted twice.",
+    setAside: "Set the document aside",
+    stampDup: "DUPLICATE",
+    stampAuto: "POSTED AUTOMATICALLY",
+    stampPosted: "POSTED",
+    stampNot: "NOT POSTED",
+    entry: (n: number | null) => `ENTRY ${n}`,
+    csvHead: ["Entry", "Date", "Document", "Account", "Account name", "Description", "Debit", "Credit"],
+    csvFile: "journal-september-2026.csv",
+    journal: "General journal",
+    journalLead: "September 2026 · three lines per voucher: expense, VAT and payment",
+    download: "Download the listing (CSV)",
+    send: "Send to the accountant",
+    sent: "Sent to the accountant. (A sample; nothing was sent.)",
+    records: "Journal entries",
+    cols: ["ENTRY", "DATE", "ACCOUNT", "DESCRIPTION", "DEBIT", "CREDIT"],
+    auto: "(automatic)",
+    carried: "Carried forward",
+    vatBalance: "191 Deductible VAT balance:",
+  },
+};
 
 // Every place on the voucher the reader writes something, in the order it writes them.
 type Cell = FieldKey | "account";
@@ -19,7 +139,7 @@ type DocState = {
   posted: number | null;
   by: "auto" | "you" | null;
 };
-type State = { docs: Record<string, DocState>; journal: Posted[]; threshold: number };
+type State = { docs: Record<string, DocState>; journal: Posted[]; threshold: number; lang: Lang };
 type Action =
   | { type: "read"; id: string }
   | { type: "tick"; id: string }
@@ -33,40 +153,44 @@ const confOf = (doc: Doc, cell: Cell) => (cell === "account" ? booking[doc.id].e
 const pencilOf = (doc: Doc, s: DocState, threshold: number) => order.filter((c) => confOf(doc, c) < threshold && !s.confirmed.includes(c));
 
 /** What an accountant would check before signing. Confidence alone is not enough. */
-function checks(doc: Doc, s: DocState, journal: Posted[]) {
+function checks(doc: Doc, s: DocState, journal: Posted[], lang: Lang) {
+  const { toNumber } = mizanIn(lang);
+  const c = COPY[lang].checks;
   const matrah = toNumber(s.values.matrah);
   const kdv = toNumber(s.values.kdv);
   const total = toNumber(s.values.total);
   return [
-    { key: "denk", label: "Fiş denk: borç = alacak", ok: Math.abs(matrah + kdv - total) < 0.02 },
-    { key: "oran", label: `KDV oranı %${doc.rate} ile tutuyor`, ok: matrah > 0 && Math.abs(kdv / matrah - doc.rate / 100) < 0.005 },
-    { key: "vkn", label: "Satıcı VKN on haneli", ok: /^\d{10}$/.test(s.values.vkn.trim()) },
-    { key: "mukerrer", label: "Bu belge deftere daha önce işlenmemiş", ok: !journal.some((p) => p.doc === s.values.no.trim()) },
+    { key: "denk", label: c.denk, ok: Math.abs(matrah + kdv - total) < 0.02 },
+    { key: "oran", label: c.oran(doc.rate), ok: matrah > 0 && Math.abs(kdv / matrah - doc.rate / 100) < 0.005 },
+    { key: "vkn", label: c.vkn, ok: /^\d{10}$/.test(s.values.vkn.trim()) },
+    { key: "mukerrer", label: c.mukerrer, ok: !journal.some((p) => p.doc === s.values.no.trim()) },
   ];
 }
 
-function post(doc: Doc, s: DocState, journal: Posted[], by: "auto" | "you"): Posted {
+function post(doc: Doc, s: DocState, journal: Posted[], by: "auto" | "you", lang: Lang): Posted {
+  const { toNumber, memo, vatMemo } = mizanIn(lang);
   return {
     no: journal.length + 1,
     date: s.values.date,
     doc: s.values.no.trim(),
     by,
     lines: [
-      { code: s.account, memo: booking[doc.id].memo, debit: toNumber(s.values.matrah), credit: 0 },
-      { code: "191", memo: `KDV %${doc.rate}`, debit: toNumber(s.values.kdv), credit: 0 },
+      { code: s.account, memo: memo(doc.id), debit: toNumber(s.values.matrah), credit: 0 },
+      { code: "191", memo: vatMemo(doc.rate), debit: toNumber(s.values.kdv), credit: 0 },
       { code: booking[doc.id].pay, memo: s.values.seller, debit: 0, credit: toNumber(s.values.total) },
     ],
   };
 }
 
-const initial = (): State => ({
+const initial = (lang: Lang): State => ({
+  lang,
   docs: Object.fromEntries(
     docs.map((d) => [
       d.id,
       {
         status: "new",
         found: 0,
-        values: Object.fromEntries(Object.entries(d.fields).map(([k, f]) => [k, moneyFields.includes(k as FieldKey) ? money(Number(f.value)) : f.value])) as Record<FieldKey, string>,
+        values: Object.fromEntries(Object.entries(d.fields).map(([k, f]) => [k, moneyFields.includes(k as FieldKey) ? mizanIn(lang).money(Number(f.value)) : f.value])) as Record<FieldKey, string>,
         account: booking[d.id].expense.code,
         confirmed: [],
         posted: null,
@@ -74,7 +198,7 @@ const initial = (): State => ({
       },
     ]),
   ),
-  journal: startJournal,
+  journal: mizanIn(lang).startJournal,
   threshold: 0.95,
 });
 
@@ -92,9 +216,9 @@ function reducer(state: State, a: Action): State {
       if (found < order.length) return put({ found });
       // Finished: anything the reader is sure of is inked; file it at once if nothing is left in pencil.
       const done: DocState = { ...s, found, status: "review" };
-      const clean = pencilOf(doc, done, state.threshold).length === 0 && checks(doc, done, state.journal).every((c) => c.ok);
+      const clean = pencilOf(doc, done, state.threshold).length === 0 && checks(doc, done, state.journal, state.lang).every((c) => c.ok);
       if (!clean) return put(done);
-      const entry = post(doc, done, state.journal, "auto");
+      const entry = post(doc, done, state.journal, "auto", state.lang);
       return put({ ...done, status: "approved", posted: entry.no, by: "auto" }, { journal: [...state.journal, entry] });
     }
     case "write":
@@ -103,7 +227,7 @@ function reducer(state: State, a: Action): State {
         confirmed: s.confirmed.includes(a.cell) ? s.confirmed : [...s.confirmed, a.cell],
       });
     case "approve": {
-      const entry = post(doc, s, state.journal, "you");
+      const entry = post(doc, s, state.journal, "you", state.lang);
       return put({ status: "approved", posted: entry.no, by: "you" }, { journal: [...state.journal, entry] });
     }
     case "skip":
@@ -112,10 +236,11 @@ function reducer(state: State, a: Action): State {
 }
 
 const slipIcon = { pdf: FileText, photo: ImageIcon, receipt: Receipt } as const;
-const statusWord: Record<DocState["status"], string> = { new: "okunmadı", reading: "okunuyor", review: "kurşun kalemde", approved: "işlendi", skipped: "ayrıldı" };
 
 export function MizanApp() {
-  const [state, dispatch] = useReducer(reducer, undefined, initial);
+  const lang = useLang();
+  const c = COPY[lang];
+  const [state, dispatch] = useReducer(reducer, lang, initial);
   const [selected, setSelected] = useState(docs[0].id);
   const [active, setActive] = useState<FieldKey | null>(null);
   const [speed, setSpeed] = useState(260);
@@ -138,7 +263,7 @@ export function MizanApp() {
 
   const found = ds.status === "new" ? [] : order.slice(0, ds.found);
   const pencil = ds.status === "review" ? pencilOf(doc, ds, state.threshold) : ds.status === "reading" ? found : [];
-  const list = ds.status === "new" || ds.status === "reading" ? [] : checks(doc, ds, state.journal.filter((p) => p.no !== ds.posted));
+  const list = ds.status === "new" || ds.status === "reading" ? [] : checks(doc, ds, state.journal.filter((p) => p.no !== ds.posted), lang);
   const dup = list.some((c) => c.key === "mukerrer" && !c.ok);
   const canSign = ds.status === "review" && pencil.length === 0 && list.every((c) => c.ok);
   const lowOnPaper = (ds.status === "review" ? pencil : []).filter((c): c is FieldKey => c !== "account");
@@ -151,10 +276,10 @@ export function MizanApp() {
       <header className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-5 pt-7 sm:px-8">
         <p className="flex items-baseline gap-3">
           <span className="text-2xl font-bold tracking-[0.18em]">MİZAN</span>
-          <span className="text-sm opacity-75">ön muhasebe asistanı · simülasyon</span>
+          <span className="text-sm opacity-75">{c.tagline}</span>
         </p>
         <label className="flex items-center gap-3 text-sm" htmlFor="mz-limit">
-          Kurşun kalem sınırı
+          {c.threshold}
           <input
             className="w-28 accent-[var(--mz-voucher)]"
             id="mz-limit"
@@ -164,21 +289,21 @@ export function MizanApp() {
             type="range"
             value={Math.round(state.threshold * 100)}
           />
-          <span className="w-9 font-semibold tabular-nums">%{Math.round(state.threshold * 100)}</span>
+          <span className="w-9 font-semibold tabular-nums">{pct(Math.round(state.threshold * 100), lang)}</span>
         </label>
       </header>
 
       <main className="pb-24">
         <section className="mx-auto max-w-7xl px-5 pt-10 sm:px-8">
-          <h1 className="max-w-[20ch] text-[clamp(2.2rem,5vw,4.1rem)] leading-[1] font-semibold tracking-[-0.01em]">Faturayı okur, mahsup fişini doldurur.</h1>
+          <h1 className="max-w-[20ch] text-[clamp(2.2rem,5vw,4.1rem)] leading-[1] font-semibold tracking-[-0.01em]">{c.h1}</h1>
           <p className="mt-3 max-w-[40ch] font-[family-name:var(--mz-hand)] text-[clamp(1.25rem,2.2vw,1.6rem)] leading-snug text-[#C9C4BA]">
-            Emin olmadığını kurşun kalemle yazar; siz onaylayınca mürekkebe geçer.
+            {c.lead}
           </p>
         </section>
 
-        <nav aria-label="Gelen evrak" className="mx-auto mt-10 max-w-7xl px-5 sm:px-8">
+        <nav aria-label={c.inbox} className="mx-auto mt-10 max-w-7xl px-5 sm:px-8">
           <ul className="flex gap-3 overflow-x-auto pt-2 pb-3">
-            {docs.map((d) => {
+            {mizanIn(lang).docs.map((d) => {
               const s = state.docs[d.id];
               const Icon = slipIcon[d.kind];
               const on = d.id === selected;
@@ -192,10 +317,10 @@ export function MizanApp() {
                   >
                     <Icon aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-[#1b2230]" strokeWidth={1.6} />
                     <span className="min-w-0">
-                      <span className="block truncate font-semibold text-[#1b2230]">{d.title}</span>
-                      <span className="block truncate text-xs text-[#4a4f57]">{d.source}</span>
+                      <span className="block min-w-0 [overflow-wrap:anywhere] font-semibold text-[#1b2230]">{d.title}</span>
+                      <span className="block min-w-0 [overflow-wrap:anywhere] text-xs text-[#4a4f57]">{d.source}</span>
                       <span className={`mt-1 block font-[family-name:var(--mz-hand)] text-[15px] ${s.status === "approved" ? "text-[var(--mz-ink)]" : s.status === "skipped" ? "text-[var(--mz-red)]" : "text-[var(--mz-pencil)]"}`}>
-                        {statusWord[s.status]}
+                        {c.status[s.status]}
                       </span>
                     </span>
                   </button>
@@ -206,12 +331,12 @@ export function MizanApp() {
         </nav>
 
         <div className="mx-auto mt-6 grid max-w-7xl items-start gap-8 px-5 sm:px-8 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
-          <section aria-label="Belge" className="relative mx-auto w-full max-w-[480px]">
+          <section aria-label={c.document} className="relative mx-auto w-full max-w-[480px]">
             <Paper active={active} doc={doc} flagged={lowOnPaper} found={found.filter((c): c is FieldKey => c !== "account")} scanning={ds.status === "reading"} />
             {ds.status === "new" && (
               <div className="absolute inset-0 grid place-items-center bg-[var(--mz-blotter)]/40">
                 <button className="min-h-12 rounded-[1px] bg-[var(--mz-ink)] px-7 text-lg font-semibold text-white shadow-lg hover:bg-[#15296b]" onClick={read} type="button">
-                  Belgeyi oku
+                  {c.read}
                 </button>
               </div>
             )}
@@ -262,6 +387,9 @@ function Written({
   edit: string;
   align?: "left" | "right";
 }) {
+  const lang = useLang();
+  const c = COPY[lang];
+  const { expenseAccounts } = mizanIn(lang);
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(edit);
   const input = useRef<HTMLInputElement & HTMLSelectElement>(null);
@@ -306,7 +434,7 @@ function Written({
             value={draft}
           />
         )}
-        <button aria-label="Mürekkeple yaz" className="grid size-9 shrink-0 place-items-center rounded-[1px] bg-[var(--mz-ink)] text-white" onClick={done} type="button">
+        <button aria-label={c.ink} className="grid size-9 shrink-0 place-items-center rounded-[1px] bg-[var(--mz-ink)] text-white" onClick={done} type="button">
           <Check aria-hidden="true" className="size-4" />
         </button>
       </span>
@@ -315,7 +443,7 @@ function Written({
   if (pencil && editable) {
     return (
       <button
-        aria-label={`${text}, emin değil (%${Math.round(conf * 100)}). Kontrol edip mürekkeple yazın.`}
+        aria-label={c.unsure(text, pct(Math.round(conf * 100), lang))}
         className={`${hand} mz-write group relative inline-flex items-baseline gap-1 border-b border-dashed border-[var(--mz-pencil)] text-left hover:text-[var(--mz-ink)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--mz-ink)]`}
         onClick={() => {
           setDraft(edit);
@@ -325,7 +453,7 @@ function Written({
         {...hover}
       >
         {text}
-        <sup className="font-[family-name:var(--mz-print)] text-[10px] font-semibold text-[var(--mz-red)]">%{Math.round(conf * 100)}</sup>
+        <sup className="font-[family-name:var(--mz-print)] text-[10px] font-semibold text-[var(--mz-red)]">{pct(Math.round(conf * 100), lang)}</sup>
       </button>
     );
   }
@@ -361,6 +489,9 @@ function Voucher({
   dispatch: (a: Action) => void;
   onHover: (f: FieldKey | null) => void;
 }) {
+  const lang = useLang();
+  const c = COPY[lang];
+  const { accountName, money, toNumber, memo, vatMemo } = mizanIn(lang);
   const b = booking[doc.id];
   const editable = ds.status === "review";
   const cell = (c: Cell, text: string, edit: string, align: "left" | "right" = "left") => (
@@ -386,7 +517,7 @@ function Voucher({
 
   return (
     <section
-      aria-label="Mahsup fişi"
+      aria-label={c.voucher}
       className="relative bg-[var(--mz-voucher)] p-5 pl-9 text-[#1c2a22] shadow-[0_20px_36px_-20px_rgba(0,0,0,.75)] sm:p-7 sm:pl-12"
     >
       {/* Binder holes: vouchers are filed in a ring binder. */}
@@ -394,7 +525,7 @@ function Voucher({
       <span aria-hidden="true" className="absolute bottom-14 left-3 size-3.5 rounded-full bg-[var(--mz-blotter)] sm:left-4" />
 
       <div className="flex flex-wrap items-baseline justify-between gap-2 border-b-2 border-[var(--mz-form)] pb-2 text-[var(--mz-form)]">
-        <h2 className="text-xl font-bold tracking-[0.2em]">MAHSUP FİŞİ</h2>
+        <h2 className="text-xl font-bold tracking-[0.2em]">{c.voucherTitle}</h2>
         <p className="text-sm font-semibold">
           No <span className="font-[family-name:var(--mz-hand)] text-base text-[var(--mz-ink)]">{String(no).padStart(4, "0")}</span>
         </p>
@@ -402,15 +533,15 @@ function Voucher({
 
       <dl className="mt-3 grid gap-x-6 gap-y-2 text-sm sm:grid-cols-2">
         <div className="flex items-baseline gap-2">
-          <dt className="shrink-0 font-semibold text-[var(--mz-form)]">Tarih</dt>
+          <dt className="shrink-0 font-semibold text-[var(--mz-form)]">{c.date}</dt>
           <dd className="min-w-0">{cell("date", ds.values.date, ds.values.date)}</dd>
         </div>
         <div className="flex items-baseline gap-2">
-          <dt className="shrink-0 font-semibold text-[var(--mz-form)]">Belge no</dt>
+          <dt className="shrink-0 font-semibold text-[var(--mz-form)]">{c.docNo}</dt>
           <dd className="min-w-0">{cell("no", ds.values.no, ds.values.no)}</dd>
         </div>
         <div className="flex items-baseline gap-2 sm:col-span-2">
-          <dt className="shrink-0 font-semibold text-[var(--mz-form)]">Satıcı VKN</dt>
+          <dt className="shrink-0 font-semibold text-[var(--mz-form)]">{c.vkn}</dt>
           <dd className="min-w-0">{cell("vkn", ds.values.vkn, ds.values.vkn)}</dd>
         </div>
       </dl>
@@ -419,13 +550,13 @@ function Voucher({
         <thead>
           <tr className="border-y border-[var(--mz-form)] text-left text-[var(--mz-form)]">
             <th className="py-1.5 font-semibold" scope="col">
-              Hesap
+              {c.account}
             </th>
             <th className="w-[27%] border-l border-[var(--mz-form)] py-1.5 pr-1 text-right font-semibold" scope="col">
-              Borç
+              {c.debit}
             </th>
             <th className="w-[27%] border-l border-[var(--mz-form)] py-1.5 pr-1 text-right font-semibold" scope="col">
-              Alacak
+              {c.credit}
             </th>
           </tr>
         </thead>
@@ -436,15 +567,15 @@ function Voucher({
                 {cell("account", ds.account, ds.account)}
                 <span className={found.includes("account") ? "" : "invisible"}>{accountName(ds.account)}</span>
               </span>
-              <span className="block text-xs text-[#4b5a50]">{b.memo}</span>
+              <span className="block text-xs text-[#4b5a50]">{memo(doc.id)}</span>
             </td>
             <td className="border-l border-[var(--mz-form)]/60 pr-1 text-right">{cell("matrah", amount("matrah"), ds.values.matrah, "right")}</td>
             <td className="border-l border-[var(--mz-form)]/60" />
           </tr>
           <tr>
             <td className="pr-2">
-              <span className="font-[family-name:var(--mz-hand)] text-[1.08em] text-[var(--mz-ink)]">191</span> İndirilecek KDV
-              <span className="block text-xs text-[#4b5a50]">KDV %{doc.rate}</span>
+              <span className="font-[family-name:var(--mz-hand)] text-[1.08em] text-[var(--mz-ink)]">191</span> {accountName("191")}
+              <span className="block text-xs text-[#4b5a50]">{vatMemo(doc.rate)}</span>
             </td>
             <td className="border-l border-[var(--mz-form)]/60 pr-1 text-right">{cell("kdv", amount("kdv"), ds.values.kdv, "right")}</td>
             <td className="border-l border-[var(--mz-form)]/60" />
@@ -460,7 +591,7 @@ function Voucher({
         </tbody>
         <tfoot>
           <tr className="border-t-[3px] border-double border-[var(--mz-red)] font-semibold">
-            <td className="py-2 tracking-[0.12em] text-[var(--mz-form)]">TOPLAM</td>
+            <td className="py-2 tracking-[0.12em] text-[var(--mz-form)]">{c.total}</td>
             <td className="border-l border-[var(--mz-form)]/60 py-2 pr-1 text-right font-[family-name:var(--mz-hand)] text-[1.08em] text-[var(--mz-ink)] tabular-nums">{all ? money(debit) : ""}</td>
             <td className="border-l border-[var(--mz-form)]/60 py-2 pr-1 text-right font-[family-name:var(--mz-hand)] text-[1.08em] text-[var(--mz-ink)] tabular-nums">{all ? money(credit) : ""}</td>
           </tr>
@@ -468,15 +599,15 @@ function Voucher({
       </table>
 
       {list.length > 0 && (
-        <ul aria-label="Kontroller" className="mt-4 grid gap-1.5 text-sm sm:grid-cols-2">
-          {list.map((c) => (
-            <li className="flex items-center gap-2" key={c.key}>
-              <span aria-hidden="true" className={`grid size-4 shrink-0 place-items-center border border-[var(--mz-form)] bg-white font-[family-name:var(--mz-hand)] text-sm leading-none ${c.ok ? "text-[var(--mz-ink)]" : "text-[var(--mz-red)]"}`}>
-                {c.ok ? "✓" : "✗"}
+        <ul aria-label={c.checksLabel} className="mt-4 grid gap-1.5 text-sm sm:grid-cols-2">
+          {list.map((chk) => (
+            <li className="flex items-center gap-2" key={chk.key}>
+              <span aria-hidden="true" className={`grid size-4 shrink-0 place-items-center border border-[var(--mz-form)] bg-white font-[family-name:var(--mz-hand)] text-sm leading-none ${chk.ok ? "text-[var(--mz-ink)]" : "text-[var(--mz-red)]"}`}>
+                {chk.ok ? "✓" : "✗"}
               </span>
-              <span className={c.ok ? "" : "font-semibold text-[var(--mz-red)]"}>
-                {c.label}
-                <span className="sr-only">{c.ok ? ": tamam" : ": tutmuyor"}</span>
+              <span className={chk.ok ? "" : "font-semibold text-[var(--mz-red)]"}>
+                {chk.label}
+                <span className="sr-only">{chk.ok ? c.okSr : c.badSr}</span>
               </span>
             </li>
           ))}
@@ -485,13 +616,13 @@ function Voucher({
 
       <div className="mt-6 grid gap-4 border-t border-[var(--mz-form)] pt-3 text-sm sm:grid-cols-2">
         <div>
-          <p className="font-semibold text-[var(--mz-form)]">Hazırlayan</p>
+          <p className="font-semibold text-[var(--mz-form)]">{c.preparedBy}</p>
           <p className="font-[family-name:var(--mz-hand)] text-lg text-[var(--mz-ink)]">{ds.status === "new" ? "" : "Mizan"}</p>
         </div>
         <div aria-live="polite">
-          <p className="font-semibold text-[var(--mz-form)]">Onaylayan</p>
+          <p className="font-semibold text-[var(--mz-form)]">{c.approvedBy}</p>
           {ds.status === "approved" && ds.by === "you" && (
-            <svg aria-label="İmzanız" className="h-10 w-40 text-[var(--mz-ink)]" role="img" viewBox="0 0 160 40">
+            <svg aria-label={c.signature} className="h-10 w-40 text-[var(--mz-ink)]" role="img" viewBox="0 0 160 40">
               <motion.path
                 animate={{ pathLength: 1 }}
                 d="M4 30 C 14 6, 22 6, 24 24 S 34 34, 42 16 S 52 6, 56 22 S 66 36, 76 18 C 82 8, 90 10, 92 22 C 94 30, 104 30, 112 20 S 130 12, 156 18"
@@ -505,7 +636,7 @@ function Voucher({
             </svg>
           )}
           {ds.status === "approved" && ds.by === "auto" && (
-            <p className="font-[family-name:var(--mz-hand)] text-lg text-[var(--mz-pencil)]">gerek yok · her satır %{Math.round(threshold * 100)} üstünde</p>
+            <p className="font-[family-name:var(--mz-hand)] text-lg text-[var(--mz-pencil)]">{c.noNeed(pct(Math.round(threshold * 100), lang))}</p>
           )}
           {ds.status === "review" && !dup && (
             <>
@@ -515,20 +646,20 @@ function Voucher({
                 onClick={() => dispatch({ type: "approve", id: doc.id })}
                 type="button"
               >
-                İmzala ve deftere işle
+                {c.sign}
               </button>
               {!canSign && (
                 <p className="mt-1.5 text-xs">
-                  {pencil.length ? `Kurşun kalemdeki ${pencil.length} yeri kontrol edip mürekkeple yazın.` : "Kırmızı işaretli kontrolü düzeltin."}
+                  {pencil.length ? c.checkPencil(pencil.length) : c.fixRed}
                 </p>
               )}
             </>
           )}
           {ds.status === "review" && dup && (
             <>
-              <p className="mt-1 text-[var(--mz-red)]">Bu belge defterde var; ikinci kez işlenmemeli.</p>
+              <p className="mt-1 text-[var(--mz-red)]">{c.inBook}</p>
               <button className="mt-2 inline-flex min-h-11 items-center rounded-[1px] border-2 border-[var(--mz-red)] px-5 font-semibold text-[var(--mz-red)]" onClick={() => dispatch({ type: "skip", id: doc.id })} type="button">
-                Evrakı ayır
+                {c.setAside}
               </button>
             </>
           )}
@@ -539,12 +670,12 @@ function Voucher({
         <motion.span
           animate={{ opacity: 0.85, scale: 1 }}
           aria-hidden="true"
-          className={`pointer-events-none absolute top-24 right-5 -rotate-[9deg] rounded-[10px] border-[3px] px-4 py-2 text-center text-lg leading-tight font-bold tracking-[0.12em] mix-blend-multiply ${ds.status === "skipped" ? "border-[var(--mz-red)] text-[var(--mz-red)]" : "border-[var(--mz-stamp)] text-[var(--mz-stamp)]"}`}
+          className={`pointer-events-none relative mt-6 ml-auto block w-fit -rotate-[9deg] rounded-[10px] border-[3px] px-4 py-2 text-center text-base leading-tight whitespace-nowrap sm:text-lg font-bold tracking-[0.12em] mix-blend-multiply ${ds.status === "skipped" ? "border-[var(--mz-red)] text-[var(--mz-red)]" : "border-[var(--mz-stamp)] text-[var(--mz-stamp)]"}`}
           initial={{ opacity: 0, scale: 1.6 }}
           transition={{ type: "spring", stiffness: 500, damping: 28 }}
         >
-          {ds.status === "skipped" ? "MÜKERRER" : ds.by === "auto" ? "KENDİLİĞİNDEN İŞLENDİ" : "DEFTERE İŞLENDİ"}
-          <span className="block text-xs tracking-[0.2em]">{ds.status === "skipped" ? "İŞLENMEDİ" : `MADDE ${ds.posted}`}</span>
+          {ds.status === "skipped" ? c.stampDup : ds.by === "auto" ? c.stampAuto : c.stampPosted}
+          <span className="block text-xs tracking-[0.2em]">{ds.status === "skipped" ? c.stampNot : c.entry(ds.posted)}</span>
         </motion.span>
       )}
     </section>
@@ -553,17 +684,20 @@ function Voucher({
 
 /** The journal book: every posted voucher, three lines each, with running totals. */
 function Journal({ journal, sent, onSend }: { journal: Posted[]; sent: boolean; onSend: () => void }) {
+  const lang = useLang();
+  const c = COPY[lang];
+  const { accountName, money } = mizanIn(lang);
   const debit = journal.reduce((n, p) => n + p.lines.reduce((m, l) => m + l.debit, 0), 0);
   const credit = journal.reduce((n, p) => n + p.lines.reduce((m, l) => m + l.credit, 0), 0);
   const vat = journal.reduce((n, p) => n + p.lines.filter((l) => l.code === "191").reduce((m, l) => m + l.debit, 0), 0);
 
   function csv() {
-    const rows = [["Madde", "Tarih", "Belge", "Hesap", "Hesap adı", "Açıklama", "Borç", "Alacak"], ...journal.flatMap((p) => p.lines.map((l) => [String(p.no), p.date, p.doc, l.code, accountName(l.code), l.memo, l.debit ? money(l.debit) : "", l.credit ? money(l.credit) : ""]))];
+    const rows = [c.csvHead, ...journal.flatMap((p) => p.lines.map((l) => [String(p.no), p.date, p.doc, l.code, accountName(l.code), l.memo, l.debit ? money(l.debit) : "", l.credit ? money(l.credit) : ""]))];
     const text = "﻿" + rows.map((r) => r.map((c) => `"${c.replace(/"/g, '""')}"`).join(";")).join("\r\n");
     const url = URL.createObjectURL(new Blob([text], { type: "text/csv;charset=utf-8" }));
     const a = document.createElement("a");
     a.href = url;
-    a.download = "yevmiye-eylul-2026.csv";
+    a.download = c.csvFile;
     a.click();
     URL.revokeObjectURL(url);
   }
@@ -573,46 +707,46 @@ function Journal({ journal, sent, onSend }: { journal: Posted[]; sent: boolean; 
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h2 className="text-3xl font-semibold" id="mz-journal">
-            Yevmiye defteri
+            {c.journal}
           </h2>
-          <p className="mt-1 text-sm opacity-75">Eylül 2026 · her fiş üç satır: gider, KDV ve ödeme</p>
+          <p className="mt-1 text-sm opacity-75">{c.journalLead}</p>
         </div>
         <div className="flex flex-wrap gap-3">
           <button className="inline-flex min-h-11 items-center gap-2 rounded-[1px] border border-[var(--mz-light)]/60 px-4 font-semibold hover:bg-[var(--mz-light)] hover:text-[var(--mz-blotter)]" onClick={csv} type="button">
-            <Download aria-hidden="true" className="size-4" /> Dökümü indir (CSV)
+            <Download aria-hidden="true" className="size-4" /> {c.download}
           </button>
           <button className="inline-flex min-h-11 items-center gap-2 rounded-[1px] bg-[var(--mz-light)] px-4 font-semibold text-[var(--mz-blotter)]" onClick={onSend} type="button">
-            <Send aria-hidden="true" className="size-4" /> Mali müşavire gönder
+            <Send aria-hidden="true" className="size-4" /> {c.send}
           </button>
         </div>
       </div>
       {sent && (
         <p className="mt-2 text-sm" role="status">
-          Mali müşavire gönderildi. (Örnek; bir şey gönderilmedi.)
+          {c.sent}
         </p>
       )}
 
-      <div className="mt-5 overflow-x-auto bg-[var(--mz-page)] text-[#1f2530] shadow-[0_20px_36px_-20px_rgba(0,0,0,.75)]" role="region" aria-label="Yevmiye kayıtları" tabIndex={0}>
+      <div className="mt-5 overflow-x-auto bg-[var(--mz-page)] text-[#1f2530] shadow-[0_20px_36px_-20px_rgba(0,0,0,.75)]" role="region" aria-label={c.records} tabIndex={0}>
         <table className="w-full border-collapse sm:min-w-[640px] text-sm [&_td]:border-b [&_td]:border-[rgba(31,58,147,.18)] [&_td]:px-3 [&_td]:py-2">
           <thead>
             <tr className="border-b-2 border-[var(--mz-red)] text-left text-xs tracking-[0.12em] text-[#6b7280]">
               <th className="w-16 px-3 py-2 font-semibold" scope="col">
-                MADDE
+                {c.cols[0]}
               </th>
               <th className="hidden w-28 px-3 py-2 font-semibold sm:table-cell" scope="col">
-                TARİH
+                {c.cols[1]}
               </th>
               <th className="px-3 py-2 font-semibold" scope="col">
-                HESAP
+                {c.cols[2]}
               </th>
               <th className="hidden px-3 py-2 font-semibold sm:table-cell" scope="col">
-                AÇIKLAMA
+                {c.cols[3]}
               </th>
               <th className="border-l-[3px] border-double border-[var(--mz-red)]/60 px-3 py-2 text-right font-semibold sm:w-32" scope="col">
-                BORÇ
+                {c.cols[4]}
               </th>
               <th className="border-l-[3px] border-double border-[var(--mz-red)]/60 px-3 py-2 text-right font-semibold sm:w-32" scope="col">
-                ALACAK
+                {c.cols[5]}
               </th>
             </tr>
           </thead>
@@ -627,7 +761,7 @@ function Journal({ journal, sent, onSend }: { journal: Posted[]; sent: boolean; 
                   </td>
                   <td className="hidden sm:table-cell">
                     {l.memo}
-                    {i === 0 && p.by === "auto" && <span className="ml-2 font-[family-name:var(--mz-print)] text-xs text-[#6b7280]">(kendiliğinden)</span>}
+                    {i === 0 && p.by === "auto" && <span className="ml-2 font-[family-name:var(--mz-print)] text-xs text-[#6b7280]">{c.auto}</span>}
                   </td>
                   <td className="border-l-[3px] border-double border-[var(--mz-red)]/60 text-right tabular-nums">{l.debit ? money(l.debit) : ""}</td>
                   <td className="border-l-[3px] border-double border-[var(--mz-red)]/60 text-right tabular-nums">{l.credit ? money(l.credit) : ""}</td>
@@ -638,10 +772,10 @@ function Journal({ journal, sent, onSend }: { journal: Posted[]; sent: boolean; 
           <tfoot className="font-[family-name:var(--mz-print)] font-semibold">
             <tr className="border-t-[3px] border-double border-[var(--mz-red)]">
               <td className="px-3 py-3 sm:hidden" colSpan={2}>
-                Nakli yekûn
+                {c.carried}
               </td>
               <td className="hidden px-3 py-3 sm:table-cell" colSpan={4}>
-                Nakli yekûn
+                {c.carried}
               </td>
               <td className="border-l-[3px] border-double border-[var(--mz-red)]/60 px-3 py-3 text-right tabular-nums">{money(debit)}</td>
               <td className="border-l-[3px] border-double border-[var(--mz-red)]/60 px-3 py-3 text-right tabular-nums">{money(credit)}</td>
@@ -650,10 +784,8 @@ function Journal({ journal, sent, onSend }: { journal: Posted[]; sent: boolean; 
         </table>
       </div>
       <p className="mt-4 text-lg">
-        191 İndirilecek KDV bakiyesi:{" "}
-        <b className="tabular-nums">
-          {money(vat)} ₺
-        </b>
+        {c.vatBalance}{" "}
+        <b className="tabular-nums">{lang === "en" ? `₺${money(vat)}` : `${money(vat)} ₺`}</b>
       </p>
     </section>
   );

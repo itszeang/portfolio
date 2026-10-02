@@ -68,13 +68,19 @@ const jsonLd = {
   ],
 };
 
+const LANG_SCRIPT = 'if(location.pathname==="/en"||location.pathname.indexOf("/en/")===0)document.documentElement.lang="en"';
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    // suppressHydrationWarning: CONSENT_SCRIPT sets data-consent on <html>
-    // before React hydrates.
+    // suppressHydrationWarning: CONSENT_SCRIPT sets data-consent and LANG_SCRIPT
+    // sets lang on <html> before React hydrates.
     <html className="dark" data-scroll-behavior="smooth" lang="tr" suppressHydrationWarning>
+      <head>
+        {/* One root layout serves both languages: English pages live under /en. */}
+        <script dangerouslySetInnerHTML={{ __html: LANG_SCRIPT }} />
+      </head>
       <body className={`${GeistSans.variable} ${GeistMono.variable}`}>
         {CONSENT_SCRIPT && <script dangerouslySetInnerHTML={{ __html: CONSENT_SCRIPT }} />}
         <script

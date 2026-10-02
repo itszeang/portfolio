@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { type Chip, type LogLine, type State, opening, respond } from "./assistant-engine";
-import { BOOKING_PATH, SITE_PATH } from "./data";
+import { type Chip, type LogLine, type State, openingFor, respond } from "./assistant-engine";
+import { naraIn } from "./data";
 import { body, display, naraVars } from "./theme";
+import type { Lang } from "@/lib/i18n";
 
 type Msg = { id: number; from: "user" | "bot"; text: string; chips?: Chip[] };
 type Entry = LogLine & { id: number; turn: number };
@@ -17,17 +18,65 @@ const KIND_STYLE: Record<LogLine["kind"], string> = {
   devir: "bg-white text-[var(--nara-ink)] ring-1 ring-[var(--nara-ink)]/20",
 };
 
-const KIND_LABEL: Record<LogLine["kind"], string> = {
-  niyet: "Anladığı",
-  kaynak: "Kaynak",
-  araç: "Araç",
-  eylem: "Yaptığı",
-  devir: "İnsana devir",
+const COPY = {
+  tr: {
+    kinds: { niyet: "Anladığı", kaynak: "Kaynak", araç: "Araç", eylem: "Yaptığı", devir: "İnsana devir" } as Record<LogLine["kind"], string>,
+    assistant: "mesaj asistanı",
+    toPanel: "İşletme paneline git →",
+    h1: "Mesajlara Nara adına o cevap verir.",
+    lead: "Soldaki telefona yaz ya da önerilere dokun. Sağda asistanın her cevapta ne anladığını, hangi bilgiye baktığını ve ne yaptığını görürsün. Gerçek kurulumda bu konuşma WhatsApp üzerinden olur.",
+    typing: "yazıyor…",
+    status: "asistan · genelde anında yanıtlar",
+    typingLabel: "Asistan yazıyor",
+    message: "Mesaj",
+    placeholder: "Mesaj yaz",
+    send: "Gönder",
+    sample: "Örnek sohbet; mesajlar hiçbir yere gönderilmez.",
+    behind: "Perde arkası",
+    behindLead: "Her cevapta asistanın izlediği adımlar",
+    empty: "Henüz bir mesaj yok. Soldan bir soru sor; asistanın anladığı niyet, baktığı kaynak ve yaptığı işlem burada sırayla görünecek.",
+    bookedNote: "Asistanın oluşturduğu randevu, Nara'nın randevu sisteminde gerçekten duruyor.",
+    seeInPanel: "İşletme panelinde gör →",
+    principles: [
+      ["Sadece kendi bilgisiyle", "Fiyat, saat ve hizmetleri işletmenin kendi listelerinden okur."],
+      ["Araçlarına bağlı", "Takvime bakar, randevuyu oluşturur, hatırlatmayı planlar."],
+      ["Bilmiyorsa uydurmaz", "Cevabı kaynaklarında yoksa konuşmayı ekibe devreder."],
+    ],
+  },
+  en: {
+    kinds: { niyet: "Understood", kaynak: "Source", araç: "Tool", eylem: "Did", devir: "Handed to a person" } as Record<LogLine["kind"], string>,
+    assistant: "message assistant",
+    toPanel: "Go to the studio panel →",
+    h1: "It answers messages on Nara's behalf.",
+    lead: "Type into the phone on the left or tap a suggestion. On the right you'll see, for every reply, what the assistant understood, what it checked and what it did. In a real setup this conversation happens on WhatsApp.",
+    typing: "typing…",
+    status: "assistant · usually replies instantly",
+    typingLabel: "The assistant is typing",
+    message: "Message",
+    placeholder: "Write a message",
+    send: "Send",
+    sample: "A sample chat; no message is sent anywhere.",
+    behind: "Behind the scenes",
+    behindLead: "The steps the assistant takes for each reply",
+    empty: "No messages yet. Ask something on the left; the intent the assistant understood, the source it checked and what it did will appear here in order.",
+    bookedNote: "The booking the assistant made really is in Nara's booking system.",
+    seeInPanel: "See it in the studio panel →",
+    principles: [
+      ["Only its own information", "It reads prices, times and services from the business's own lists."],
+      ["Connected to its tools", "It checks the calendar, makes the booking and schedules the reminder."],
+      ["Doesn't make things up", "When the answer isn't in its sources, it hands the chat to the team."],
+    ],
+  },
 };
 
 /** Nara's messaging assistant: the "yapay zekâ otomasyonu" demo (scripted, no model). */
-export function NaraAssistant() {
-  const [msgs, setMsgs] = useState<Msg[]>([{ id: 0, from: "bot", text: opening.text, chips: opening.chips }]);
+export function NaraAssistant({ lang = "tr" }: { lang?: Lang }) {
+  const c = COPY[lang];
+  const { bookingPath: BOOKING_PATH, sitePath: SITE_PATH } = naraIn(lang);
+  const [msgs, setMsgs] = useState<Msg[]>(() => {
+    const opening = openingFor(lang);
+    return [{ id: 0, from: "bot", text: opening.text, chips: opening.chips }];
+  });
   const [log, setLog] = useState<Entry[]>([]);
   const [state, setState] = useState<State>({ stage: "idle" });
   const [draft, setDraft] = useState("");
@@ -46,7 +95,7 @@ export function NaraAssistant() {
     setMsgs((m) => [...m.map((x) => ({ ...x, chips: undefined })), { id: idRef.current++, from: "user", text: shown }]);
     setDraft("");
     setTyping(true);
-    const reply = respond(text, state);
+    const reply = respond(text, state, new Date(), lang);
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     window.setTimeout(
       () => {
@@ -59,7 +108,7 @@ export function NaraAssistant() {
     );
   }
 
-  const booked = log.some((l) => l.text.startsWith("Randevu oluşturuldu"));
+  const booked = log.some((l) => l.booked);
 
   return (
     <div
@@ -70,20 +119,19 @@ export function NaraAssistant() {
         <header className="sticky top-3 z-30 my-4 flex flex-wrap items-center justify-between gap-3 rounded-[28px] bg-white/90 py-2 pr-2 pl-6 shadow-[0_8px_30px_-12px_rgba(0,0,0,.25)] backdrop-blur sm:rounded-full">
           <Link className="font-[family-name:var(--nara-display)] text-2xl tracking-tight" href={SITE_PATH}>
             Nara
-            <span className="ml-2 font-[family-name:var(--nara-body)] text-sm text-[var(--nara-muted)]">mesaj asistanı</span>
+            <span className="ml-2 font-[family-name:var(--nara-body)] text-sm text-[var(--nara-muted)]">{c.assistant}</span>
           </Link>
           <Link className="text-sm font-semibold text-[var(--nara-rose)] hover:underline" href={BOOKING_PATH}>
-            İşletme paneline git →
+            {c.toPanel}
           </Link>
         </header>
 
         <div className="max-w-2xl pt-4">
           <h1 className="font-[family-name:var(--nara-display)] text-[clamp(2.2rem,5vw,3.6rem)] leading-[1] tracking-[-0.02em]">
-            Mesajlara Nara adına o cevap verir.
+            {c.h1}
           </h1>
           <p className="mt-4 text-[var(--nara-muted)]">
-            Soldaki telefona yaz ya da önerilere dokun. Sağda asistanın her cevapta ne anladığını, hangi bilgiye
-            baktığını ve ne yaptığını görürsün. Gerçek kurulumda bu konuşma WhatsApp üzerinden olur.
+            {c.lead}
           </p>
         </div>
 
@@ -97,7 +145,7 @@ export function NaraAssistant() {
                 </span>
                 <div>
                   <p className="text-sm font-semibold">Nara Studio</p>
-                  <p className="text-xs text-[var(--nara-muted)]">{typing ? "yazıyor…" : "asistan · genelde anında yanıtlar"}</p>
+                  <p className="text-xs text-[var(--nara-muted)]">{typing ? c.typing : c.status}</p>
                 </div>
               </div>
 
@@ -126,7 +174,7 @@ export function NaraAssistant() {
                   </div>
                 ))}
                 {typing && (
-                  <p aria-label="Asistan yazıyor" className="inline-flex gap-1 rounded-2xl rounded-bl-md bg-white px-4 py-3 shadow-sm">
+                  <p aria-label={c.typingLabel} className="inline-flex gap-1 rounded-2xl rounded-bl-md bg-white px-4 py-3 shadow-sm">
                     {[0, 1, 2].map((i) => (
                       <span className="size-1.5 animate-bounce rounded-full bg-[var(--nara-muted)] motion-reduce:animate-none" key={i} style={{ animationDelay: `${i * 120}ms` }} />
                     ))}
@@ -142,7 +190,7 @@ export function NaraAssistant() {
                 }}
               >
                 <label className="sr-only" htmlFor="nara-msg">
-                  Mesaj
+                  {c.message}
                 </label>
                 <input
                   autoComplete="off"
@@ -150,11 +198,11 @@ export function NaraAssistant() {
                   id="nara-msg"
                   maxLength={200}
                   onChange={(e) => setDraft(e.target.value)}
-                  placeholder="Mesaj yaz"
+                  placeholder={c.placeholder}
                   value={draft}
                 />
                 <button
-                  aria-label="Gönder"
+                  aria-label={c.send}
                   className="grid size-11 shrink-0 place-items-center rounded-full bg-[var(--nara-rose)] text-white disabled:opacity-40"
                   disabled={!draft.trim() || typing}
                   type="submit"
@@ -165,29 +213,28 @@ export function NaraAssistant() {
                 </button>
               </form>
             </div>
-            <p className="px-4 pt-3 pb-1 text-center text-[11px] text-[var(--nara-paper)]/55">Örnek sohbet; mesajlar hiçbir yere gönderilmez.</p>
+            <p className="px-4 pt-3 pb-1 text-center text-[11px] text-[var(--nara-paper)]/55">{c.sample}</p>
           </div>
 
           {/* Behind the scenes */}
           <section aria-labelledby="perde" className="border border-[var(--nara-sage)] bg-[var(--nara-paper)] p-6 sm:p-8">
             <div className="flex flex-wrap items-baseline justify-between gap-3">
               <h2 className="font-[family-name:var(--nara-display)] text-3xl" id="perde">
-                Perde arkası
+                {c.behind}
               </h2>
-              <p className="text-xs text-[var(--nara-muted)]">Her cevapta asistanın izlediği adımlar</p>
+              <p className="text-xs text-[var(--nara-muted)]">{c.behindLead}</p>
             </div>
 
             {log.length === 0 ? (
               <p className="mt-8 rounded-2xl border border-dashed border-[var(--nara-ink)]/20 p-6 text-sm leading-6 text-[var(--nara-muted)]">
-                Henüz bir mesaj yok. Soldan bir soru sor; asistanın anladığı niyet, baktığı kaynak ve yaptığı işlem
-                burada sırayla görünecek.
+                {c.empty}
               </p>
             ) : (
               <ol className="mt-6 space-y-2.5">
                 {log.map((l) => (
                   <li className="flex items-start gap-3" key={l.id}>
                     <span className="w-7 shrink-0 pt-1 text-right text-xs tabular-nums text-[var(--nara-muted)]">{l.turn}</span>
-                    <span className={`shrink-0 rounded-full px-2.5 py-1 text-[11px] font-semibold ${KIND_STYLE[l.kind]}`}>{KIND_LABEL[l.kind]}</span>
+                    <span className={`shrink-0 rounded-full px-2.5 py-1 text-[11px] font-semibold ${KIND_STYLE[l.kind]}`}>{c.kinds[l.kind]}</span>
                     <span className="pt-0.5 text-sm leading-6">{l.text}</span>
                   </li>
                 ))}
@@ -197,27 +244,21 @@ export function NaraAssistant() {
             {booked && (
               <div className="mt-8 rounded-2xl bg-[var(--nara-ink)] p-5 text-[var(--nara-paper)]">
                 <p className="text-sm leading-6">
-                  Asistanın oluşturduğu randevu, Nara&apos;nın randevu sisteminde gerçekten duruyor.
+                  {c.bookedNote}
                 </p>
                 <Link className="mt-3 inline-flex min-h-11 items-center text-sm font-semibold text-[var(--nara-butter)] hover:underline" href={BOOKING_PATH}>
-                  İşletme panelinde gör →
+                  {c.seeInPanel}
                 </Link>
               </div>
             )}
 
             <dl className="mt-10 grid gap-4 border-t border-[var(--nara-ink)]/10 pt-6 text-sm sm:grid-cols-3">
-              <div>
-                <dt className="font-semibold">Sadece kendi bilgisiyle</dt>
-                <dd className="mt-1 leading-6 text-[var(--nara-muted)]">Fiyat, saat ve hizmetleri işletmenin kendi listelerinden okur.</dd>
-              </div>
-              <div>
-                <dt className="font-semibold">Araçlarına bağlı</dt>
-                <dd className="mt-1 leading-6 text-[var(--nara-muted)]">Takvime bakar, randevuyu oluşturur, hatırlatmayı planlar.</dd>
-              </div>
-              <div>
-                <dt className="font-semibold">Bilmiyorsa uydurmaz</dt>
-                <dd className="mt-1 leading-6 text-[var(--nara-muted)]">Cevabı kaynaklarında yoksa konuşmayı ekibe devreder.</dd>
-              </div>
+              {c.principles.map(([t, d]) => (
+                <div key={t}>
+                  <dt className="font-semibold">{t}</dt>
+                  <dd className="mt-1 leading-6 text-[var(--nara-muted)]">{d}</dd>
+                </div>
+              ))}
             </dl>
           </section>
         </div>

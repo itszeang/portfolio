@@ -3,6 +3,8 @@
 // the template itself may not be resold or redistributed.
 
 import type { ReactNode } from "react";
+import { skills as skillsEn } from "@/content.en";
+import type { Lang } from "@/lib/i18n";
 
 const SKILLS = [
   "Ürün geliştirme",
@@ -16,15 +18,16 @@ const SKILLS = [
   "Arayüz tasarımı",
 ];
 
-export function Skills(): ReactNode {
+export function Skills({ lang = "tr" }: { lang?: Lang }): ReactNode {
+  const list = lang === "en" ? skillsEn.items : SKILLS;
   return (
     <div className="flex flex-col gap-3">
       <h3 className="text-[15px] font-semibold tracking-tight text-foreground">
-        Neler yapıyorum
+        {lang === "en" ? skillsEn.title : "Neler yapıyorum"}
       </h3>
       <div className="rounded-4xl border border-foreground/5 bg-foreground/2 p-2 sm:p-4 dark:bg-foreground/5">
         <div className="flex flex-wrap gap-3">
-          {SKILLS.map((skill) => (
+          {list.map((skill) => (
             <span
               key={skill}
               className="rounded-full border border-foreground/8 bg-background px-4 py-2 text-[14px] tracking-tight text-foreground/85 sm:text-[15px]"

@@ -1,7 +1,51 @@
 "use client";
 
 import { type FormEvent, useState } from "react";
-import { type Kind, kinds } from "./data";
+import { useLang } from "@/lib/lang-context";
+import { type Kind, etutIn, kinds } from "./data";
+
+const COPY = {
+  tr: {
+    errKind: "Projenin türünü seçin.",
+    errCity: "Projenin bulunduğu ili yazın.",
+    errName: "Adınızı yazın.",
+    errContact: "E-posta ya da 05XX XXX XX XX biçiminde telefon yazın.",
+    received: "TALEP ALINDI · ÖRNEK",
+    title: "Keşif için size döneceğiz",
+    reply: (city: string, kind: string) =>
+      `${city} için ${kind.toLocaleLowerCase("tr")} talebiniz alındı. Keşif gününü birlikte belirlemek için iki iş günü içinde arıyoruz. (Bu bir örnek sitedir; form hiçbir yere gönderilmedi.)`,
+    again: "YENİ TALEP",
+    kind: "Proje türü",
+    city: "İl",
+    size: "Yaklaşık alan",
+    sizeNote: "(m², isteğe bağlı)",
+    when: "Ne zaman başlamak istiyorsunuz?",
+    whens: ["Hemen", "3-6 ay içinde", "6-12 ay içinde", "Henüz fikir aşamasında"],
+    name: "Adınız",
+    contact: "Telefon ya da e-posta",
+    submit: "Keşif talep et",
+  },
+  en: {
+    errKind: "Choose the type of project.",
+    errCity: "Write the province the project is in.",
+    errName: "Write your name.",
+    errContact: "Write an email, or a Turkish phone number as 05XX XXX XX XX.",
+    received: "REQUEST RECEIVED · SAMPLE",
+    title: "We'll get back to you about a site visit",
+    reply: (city: string, kind: string) =>
+      `Your ${kind.toLowerCase()} request for ${city} has been received. We'll call within two working days to agree a day for the site visit. (This is a sample site; the form wasn't sent anywhere.)`,
+    again: "NEW REQUEST",
+    kind: "Project type",
+    city: "Province",
+    size: "Approximate area",
+    sizeNote: "(m², optional)",
+    when: "When would you like to start?",
+    whens: ["Right away", "Within 3–6 months", "Within 6–12 months", "Still just an idea"],
+    name: "Your name",
+    contact: "Phone or email",
+    submit: "Request a site visit",
+  },
+};
 
 type Errors = Partial<Record<"kind" | "city" | "name" | "contact", string>>;
 
@@ -11,10 +55,13 @@ const field =
 
 /** Site-visit request. A demo: nothing is sent anywhere. */
 export function InquiryForm() {
+  const lang = useLang();
+  const c = COPY[lang];
+  const { kindName } = etutIn(lang);
   const [kind, setKind] = useState<Kind | null>(null);
   const [city, setCity] = useState("");
   const [size, setSize] = useState("");
-  const [when, setWhen] = useState("3-6 ay içinde");
+  const [when, setWhen] = useState(1);
   const [name, setName] = useState("");
   const [contact, setContact] = useState("");
   const [errors, setErrors] = useState<Errors>({});
@@ -23,11 +70,11 @@ export function InquiryForm() {
   function submit(e: FormEvent) {
     e.preventDefault();
     const x: Errors = {};
-    if (!kind) x.kind = "Projenin türünü seçin.";
-    if (city.trim().length < 2) x.city = "Projenin bulunduğu ili yazın.";
-    if (name.trim().length < 2) x.name = "Adınızı yazın.";
-    const c = contact.trim();
-    if (!/^\S+@\S+\.\S+$/.test(c) && !/^0?5\d{9}$/.test(c.replace(/\D/g, ""))) x.contact = "E-posta ya da 05XX XXX XX XX biçiminde telefon yazın.";
+    if (!kind) x.kind = c.errKind;
+    if (city.trim().length < 2) x.city = c.errCity;
+    if (name.trim().length < 2) x.name = c.errName;
+    const typed = contact.trim();
+    if (!/^\S+@\S+\.\S+$/.test(typed) && !/^0?5\d{9}$/.test(typed.replace(/\D/g, ""))) x.contact = c.errContact;
     setErrors(x);
     if (!Object.keys(x).length) setSent(true);
   }
@@ -43,14 +90,13 @@ export function InquiryForm() {
   if (sent) {
     return (
       <div aria-live="polite" className="border-t border-[var(--etut-ink)] pt-5">
-        <p className={`${mono} text-[var(--etut-red)]`}>TALEP ALINDI · ÖRNEK</p>
-        <p className="mt-3 font-[family-name:var(--etut-display)] text-5xl leading-[0.95] font-bold tracking-[-0.05em]">Keşif için size döneceğiz</p>
+        <p className={`${mono} text-[var(--etut-red)]`}>{c.received}</p>
+        <p className="mt-3 font-[family-name:var(--etut-display)] text-5xl leading-[0.95] font-bold tracking-[-0.05em]">{c.title}</p>
         <p className="mt-4 leading-7 text-[var(--etut-ink)]/80">
-          {city.trim()} için {kind!.toLocaleLowerCase("tr")} talebiniz alındı. Keşif gününü birlikte belirlemek için iki iş günü
-          içinde arıyoruz. (Bu bir örnek sitedir; form hiçbir yere gönderilmedi.)
+          {c.reply(city.trim(), kindName(kind!))}
         </p>
         <button className={`${mono} mt-6 underline underline-offset-4`} onClick={() => setSent(false)} type="button">
-          YENİ TALEP
+          {c.again}
         </button>
       </div>
     );
@@ -59,7 +105,7 @@ export function InquiryForm() {
   return (
     <form className="border-t border-[var(--etut-ink)] pt-5" noValidate onSubmit={submit}>
       <fieldset>
-        <legend className="text-sm font-semibold">Proje türü</legend>
+        <legend className="text-sm font-semibold">{c.kind}</legend>
         <div className="mt-3 grid grid-cols-2 gap-2">
           {kinds.map((k) => (
             <label
@@ -77,7 +123,7 @@ export function InquiryForm() {
                 type="radio"
                 value={k}
               />
-              {k}
+              {kindName(k)}
             </label>
           ))}
         </div>
@@ -87,7 +133,7 @@ export function InquiryForm() {
       <div className="mt-6 grid gap-6 sm:grid-cols-2">
         <div>
           <label className="text-sm font-semibold" htmlFor="etut-city">
-            İl
+            {c.city}
           </label>
           <input
             aria-describedby={errors.city ? "etut-city-err" : undefined}
@@ -105,7 +151,7 @@ export function InquiryForm() {
         </div>
         <div>
           <label className="text-sm font-semibold" htmlFor="etut-size">
-            Yaklaşık alan <span className="font-normal text-[var(--etut-muted)]">(m², isteğe bağlı)</span>
+            {c.size} <span className="font-normal text-[var(--etut-muted)]">{c.sizeNote}</span>
           </label>
           <input
             className={`${field} border-[var(--etut-ink)]/20`}
@@ -120,11 +166,13 @@ export function InquiryForm() {
 
       <div className="mt-6">
         <label className="text-sm font-semibold" htmlFor="etut-when">
-          Ne zaman başlamak istiyorsunuz?
+          {c.when}
         </label>
-        <select className={`${field} border-[var(--etut-ink)]/20`} id="etut-when" onChange={(e) => setWhen(e.target.value)} value={when}>
-          {["Hemen", "3-6 ay içinde", "6-12 ay içinde", "Henüz fikir aşamasında"].map((o) => (
-            <option key={o}>{o}</option>
+        <select className={`${field} border-[var(--etut-ink)]/20`} id="etut-when" onChange={(e) => setWhen(Number(e.target.value))} value={when}>
+          {c.whens.map((o, i) => (
+            <option key={o} value={i}>
+              {o}
+            </option>
           ))}
         </select>
       </div>
@@ -132,7 +180,7 @@ export function InquiryForm() {
       <div className="mt-6 grid gap-6 sm:grid-cols-2">
         <div>
           <label className="text-sm font-semibold" htmlFor="etut-name">
-            Adınız
+            {c.name}
           </label>
           <input
             aria-describedby={errors.name ? "etut-name-err" : undefined}
@@ -150,7 +198,7 @@ export function InquiryForm() {
         </div>
         <div>
           <label className="text-sm font-semibold" htmlFor="etut-contact">
-            Telefon ya da e-posta
+            {c.contact}
           </label>
           <input
             aria-describedby={errors.contact ? "etut-contact-err" : undefined}
@@ -172,7 +220,7 @@ export function InquiryForm() {
         className="mt-8 inline-flex min-h-12 w-full items-center justify-center gap-2 bg-[var(--etut-ink)] px-6 font-bold text-white transition-colors hover:bg-[#333] sm:w-auto"
         type="submit"
       >
-        Keşif talep et
+        {c.submit}
       </button>
     </form>
   );

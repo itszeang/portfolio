@@ -2,6 +2,9 @@
 // the "online randevu" demo. Health services may not be advertised in Turkey,
 // so there are no prices, promises or patient stories here: only visit types,
 // durations and the practical questions a clinic asks before a visit.
+// Turkish is written inline; English sits beside it and `mineIn` picks one.
+
+import { type Lang, locale } from "@/lib/i18n";
 
 export type DoctorId = "elif" | "mert" | "zeynep";
 export type Doctor = { id: DoctorId; name: string; role: string; short: string; days: number[] };
@@ -30,10 +33,15 @@ const adultNames = ["orta kesici", "yan kesici", "köpek dişi", "1. küçük az
 const childNames = ["orta kesici", "yan kesici", "köpek dişi", "1. süt azı", "2. süt azı"];
 const quadrantName: Record<number, string> = { 1: "Sağ üst", 2: "Sol üst", 3: "Sol alt", 4: "Sağ alt", 5: "Sağ üst", 6: "Sol üst", 7: "Sol alt", 8: "Sağ alt" };
 
-/** "Sağ üst 1. büyük azı" for 16. */
-export function toothName(fdi: number) {
+const adultNamesEn = ["central incisor", "lateral incisor", "canine", "first premolar", "second premolar", "first molar", "second molar", "wisdom tooth"];
+const childNamesEn = ["central incisor", "lateral incisor", "canine", "first baby molar", "second baby molar"];
+const quadrantNameEn: Record<number, string> = { 1: "Upper right", 2: "Upper left", 3: "Lower left", 4: "Lower right", 5: "Upper right", 6: "Upper left", 7: "Lower left", 8: "Lower right" };
+
+/** "Sağ üst 1. büyük azı" (or "Upper right first molar") for 16. */
+export function toothName(fdi: number, lang: Lang = "tr") {
   const q = Math.floor(fdi / 10);
   const n = fdi % 10;
+  if (lang === "en") return `${quadrantNameEn[q]} ${(q > 4 ? childNamesEn : adultNamesEn)[n - 1]}`;
   return `${quadrantName[q]} ${(q > 4 ? childNames : adultNames)[n - 1]}`;
 }
 
@@ -146,8 +154,13 @@ const months = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz"
 export const isoDay = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 export type Day = { iso: string; dow: number; short: string; long: string; offset: number };
 
+const dayShortEn = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const dayLongEn = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const monthsEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
 /** The next `count` open days (Sunday skipped), starting today. */
-export function openDays(todayIso: string, count: number): Day[] {
+export function openDays(todayIso: string, count: number, lang: Lang = "tr"): Day[] {
+  const en = lang === "en";
   const [y, m, d] = todayIso.split("-").map(Number);
   const out: Day[] = [];
   for (let i = 0; out.length < count; i++) {
@@ -157,9 +170,47 @@ export function openDays(todayIso: string, count: number): Day[] {
       iso: isoDay(x),
       dow: x.getDay(),
       offset: i,
-      short: i === 0 ? "Bugün" : i === 1 ? "Yarın" : `${dayShort[x.getDay()]} ${x.getDate()}`,
-      long: `${x.getDate()} ${months[x.getMonth()]} ${dayLong[x.getDay()]}`,
+      short: i === 0 ? (en ? "Today" : "Bugün") : i === 1 ? (en ? "Tomorrow" : "Yarın") : `${(en ? dayShortEn : dayShort)[x.getDay()]} ${x.getDate()}`,
+      long: en ? `${dayLongEn[x.getDay()]} ${x.getDate()} ${monthsEn[x.getMonth()]}` : `${x.getDate()} ${months[x.getMonth()]} ${dayLong[x.getDay()]}`,
     });
   }
   return out;
+}
+
+// --- English -----------------------------------------------------------------
+const DOCTOR_EN: Record<DoctorId, Pick<Doctor, "name" | "short" | "role">> = {
+  elif: { name: "Dr Elif Karataş", short: "Dr Elif", role: "Dentist" },
+  mert: { name: "Dr Mert Aydoğan", short: "Dr Mert", role: "Endodontist (root canal treatment)" },
+  zeynep: { name: "Dr Zeynep Tunalı", short: "Dr Zeynep", role: "Paediatric dentist (children's dentistry)" },
+};
+
+const VISIT_EN: Record<VisitId, Pick<Visit, "name" | "hint">> = {
+  kontrol: { name: "Check-up", hint: "Start here if it's been a while." },
+  temizlik: { name: "Scale and clean", hint: "Done together with a check-up." },
+  agri: { name: "Pain or sensitivity", hint: "A few questions to see how urgent it is." },
+  kirik: { name: "Broken tooth or lost filling", hint: "You can mark which tooth it is." },
+  kanal: { name: "Ongoing root canal treatment", hint: "For your next session." },
+  cocuk: { name: "For my child", hint: "Our children's dentist will see them." },
+};
+
+const HEALTH_EN: Record<HealthKey, { q: string; detail?: string; flag: string }> = {
+  kan: { q: "Do you take blood-thinning medicine?", flag: "Bleeding risk: ask about the medicine before treatment." },
+  alerji: { q: "Do you have any known allergies?", detail: "For example penicillin, local anaesthetic, latex", flag: "Allergy" },
+  hamile: { q: "Are you, or could you be, pregnant?", flag: "Pregnancy: take care with X-rays and medicine." },
+  kalp: { q: "Do you have heart disease or high blood pressure?", flag: "Heart / blood pressure: measure blood pressure before treatment." },
+  diyabet: { q: "Do you have diabetes?", flag: "Diabetes: time the appointment around meals." },
+  ilac: { q: "Do you take any other medicine regularly?", detail: "Name of the medicine", flag: "Regular medicine" },
+};
+
+/** The clinic's people, visit types and questions in one language. */
+export function mineIn(lang: Lang) {
+  const en = lang === "en";
+  return {
+    doctors: en ? doctors.map((d) => ({ ...d, ...DOCTOR_EN[d.id] })) : doctors,
+    visits: en ? visits.map((v) => ({ ...v, ...VISIT_EN[v.id] })) : visits,
+    healthQuestions: en ? healthQuestions.map((h) => ({ ...h, ...HEALTH_EN[h.key] })) : healthQuestions,
+    toothName: (fdi: number) => toothName(fdi, lang),
+    openDays: (todayIso: string, count: number) => openDays(todayIso, count, lang),
+    stamp: (d: Date) => `${d.toLocaleDateString(locale(lang))} ${d.toLocaleTimeString(locale(lang), { hour: "2-digit", minute: "2-digit" })}`,
+  };
 }

@@ -1,6 +1,12 @@
 "use client";
 
+import { useLang } from "@/lib/lang-context";
 import { toothName } from "./data";
+
+const COPY = {
+  tr: { marked: "İşaretlenen dişler", chart: "Diş şeması", upper: "ÜST ÇENE", lower: "ALT ÇENE", right: "SAĞ", left: "SOL" },
+  en: { marked: "Marked teeth", chart: "Tooth chart", upper: "UPPER JAW", lower: "LOWER JAW", right: "RIGHT", left: "LEFT" },
+};
 
 // Two U-shaped arches facing each other, as the patient sees them in a mirror:
 // their right is on the right. Each tooth sits on an ellipse; the angles were
@@ -94,24 +100,26 @@ export function ToothChart({
   onToggle?: (fdi: number) => void;
   readOnly?: boolean;
 }) {
+  const lang = useLang();
+  const c = COPY[lang];
   const a = arches[kind];
   const teeth = layout(kind);
   const mid = (a.up - a.ry * Math.cos((a.teeth[a.teeth.length - 1].angle * Math.PI) / 180) + (a.down + a.ry * Math.cos((a.teeth[a.teeth.length - 1].angle * Math.PI) / 180))) / 2;
   return (
-    <svg aria-label={readOnly ? "İşaretlenen dişler" : "Diş şeması"} className="block h-auto w-full" role="group" viewBox={`0 0 ${a.w} ${a.h}`}>
+    <svg aria-label={readOnly ? c.marked : c.chart} className="block h-auto w-full" role="group" viewBox={`0 0 ${a.w} ${a.h}`}>
       <path d={gum(a, true)} fill="none" stroke="var(--mine-gum)" strokeLinecap="round" strokeOpacity="0.6" strokeWidth={kind === "adult" ? 40 : 38} />
       <path d={gum(a, false)} fill="none" stroke="var(--mine-gum)" strokeLinecap="round" strokeOpacity="0.6" strokeWidth={kind === "adult" ? 40 : 38} />
       <text className="fill-[var(--mine-muted)] text-[10px] font-semibold tracking-[0.14em]" textAnchor="middle" x={a.w / 2} y={mid - 26}>
-        ÜST ÇENE
+        {c.upper}
       </text>
       <text className="fill-[var(--mine-muted)] text-[10px] font-semibold tracking-[0.14em]" textAnchor="middle" x={a.w / 2} y={mid + 33}>
-        ALT ÇENE
+        {c.lower}
       </text>
       <text className="fill-[var(--mine-ink)] text-[12px] font-bold" textAnchor="end" x={a.w - 4} y={mid + 4}>
-        SAĞ
+        {c.right}
       </text>
       <text className="fill-[var(--mine-ink)] text-[12px] font-bold" x="4" y={mid + 4}>
-        SOL
+        {c.left}
       </text>
       {teeth.map((t) => {
         const on = marked.includes(t.fdi);
@@ -139,7 +147,7 @@ export function ToothChart({
         if (readOnly) return <g key={t.fdi}>{shape}</g>;
         return (
           <g
-            aria-label={`${toothName(t.fdi)} (${t.fdi})`}
+            aria-label={`${toothName(t.fdi, lang)} (${t.fdi})`}
             aria-pressed={on}
             className="group cursor-pointer outline-none"
             key={t.fdi}

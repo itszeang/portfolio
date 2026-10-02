@@ -1,6 +1,7 @@
 "use client";
 
-import { type Table, type Zone, tables, zoneName } from "./booking-data";
+import { useLang } from "@/lib/lang-context";
+import { type Table, type Zone, tables, zoneNames } from "./booking-data";
 
 export type TableState = "free" | "taken" | "nofit" | "selected";
 
@@ -14,7 +15,14 @@ function chairs(t: Table): [number, number][] {
   return [-120, -60, 0, 60, 120].flatMap((dx): [number, number][] => [[x + dx, y - h / 2 - 10], [x + dx, y + h / 2 + 10]]);
 }
 
-const stateLabel: Record<TableState, string> = { free: "boş", taken: "dolu", nofit: "kişi sayısına uygun değil", selected: "seçildi" };
+const STATE_LABEL: Record<"tr" | "en", Record<TableState, string>> = {
+  tr: { free: "boş", taken: "dolu", nofit: "kişi sayısına uygun değil", selected: "seçildi" },
+  en: { free: "free", taken: "taken", nofit: "wrong size for your party", selected: "selected" },
+};
+const PLAN = {
+  tr: { label: "Salon planı", entrance: "Giriş", band: "Fasıl", music: "Müzik 21:00'de başlar", counter: "Meze tezgâhı", kitchen: "ve mutfak", quiet: "sessiz köşe" },
+  en: { label: "Floor plan", entrance: "Entrance", band: "Band", music: "Music from 21:00", counter: "Meze counter", kitchen: "and kitchen", quiet: "quiet corner" },
+};
 
 /** The dining room from above. Tables are buttons; the room is drawn around them. */
 export function FloorPlan({
@@ -26,8 +34,10 @@ export function FloorPlan({
   prefer: Zone | null;
   onPick: (id: number) => void;
 }) {
+  const lang = useLang();
+  const p = PLAN[lang];
   return (
-    <svg aria-label="Salon planı" className="block h-auto w-full select-none" role="group" viewBox="0 0 720 500">
+    <svg aria-label={p.label} className="block h-auto w-full select-none" role="group" viewBox="0 0 720 500">
       <defs>
         <pattern height="8" id="lodos-hatch" patternTransform="rotate(45)" patternUnits="userSpaceOnUse" width="8">
           <rect fill="#262926" height="8" width="8" />
@@ -46,27 +56,27 @@ export function FloorPlan({
       <rect fill="var(--ld-panel)" height="70" width="10" x="3" y="400" />
       <path d="M26 435 h24 m-8 -8 l8 8 l-8 8" fill="none" stroke="var(--lodos-muted)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
       <text className="fill-[var(--lodos-muted)] text-[11px] font-semibold" x="24" y="420">
-        Giriş
+        {p.entrance}
       </text>
 
       <rect fill="var(--lodos-nar)" fillOpacity="0.07" height="96" rx="10" stroke="var(--lodos-nar)" strokeDasharray="5 5" strokeOpacity="0.45" width="164" x="536" y="22" />
       <text className="fill-[var(--lodos-nar)] font-[family-name:var(--lodos-display)] text-[22px]" x="556" y="62">
-        Fasıl
+        {p.band}
       </text>
       <text className="fill-[var(--lodos-muted)] text-[11px]" x="556" y="84">
-        Müzik 21:00&apos;de başlar
+        {p.music}
       </text>
       <path d="M668 34 v26 a6 6 0 1 1 -3 -5 v-17 l14 -4 v18 a6 6 0 1 1 -3 -5 v-13z" fill="var(--lodos-nar)" opacity="0.7" />
 
       <rect fill="var(--lodos-ink)" fillOpacity="0.06" height="84" rx="10" width="150" x="550" y="396" />
       <text className="fill-[var(--lodos-muted)] text-[12px] font-semibold" x="568" y="436">
-        Meze tezgâhı
+        {p.counter}
       </text>
       <text className="fill-[var(--lodos-muted)] text-[11px]" x="568" y="454">
-        ve mutfak
+        {p.kitchen}
       </text>
       <text className="fill-[var(--lodos-muted)] text-[10px] italic" textAnchor="middle" x="58" y="318">
-        sessiz köşe
+        {p.quiet}
       </text>
 
       {/* Tables */}
@@ -80,7 +90,11 @@ export function FloorPlan({
         return (
           <g
             aria-disabled={!usable}
-            aria-label={`Masa ${t.id}, ${t.seats} kişilik, ${zoneName[t.zone].toLowerCase()}, ${stateLabel[s]}`}
+            aria-label={
+              lang === "en"
+                ? `Table ${t.id}, seats ${t.seats}, ${zoneNames.en[t.zone].toLowerCase()}, ${STATE_LABEL.en[s]}`
+                : `Masa ${t.id}, ${t.seats} kişilik, ${zoneNames.tr[t.zone].toLowerCase()}, ${STATE_LABEL.tr[s]}`
+            }
             aria-pressed={s === "selected"}
             className={`group outline-none ${usable ? "cursor-pointer" : "cursor-not-allowed"}`}
             key={t.id}

@@ -1,14 +1,75 @@
 "use client";
 
 import { useState } from "react";
-import { type Appt, type Day, type DoctorId, doctors, healthQuestions, hm, toothName, visits } from "./data";
+import { useLang } from "@/lib/lang-context";
+import { type Appt, type Day, type DoctorId, hm, mineIn } from "./data";
 import type { Booked } from "./mine-booking";
 import { ToothChart } from "./tooth-chart";
 
-const since = { bugun: "bugün başladı", gunler: "birkaç gündür", haftalar: "haftalardır" } as const;
+const COPY = {
+  tr: {
+    since: { bugun: "bugün başladı", gunler: "birkaç gündür", haftalar: "haftalardır" },
+    title: "Hekim ekranı",
+    lead: "Hastanın randevu alırken anlattıkları, muayeneden önce hekimin önünde. Bu ekranı yalnızca klinik görür.",
+    doctor: "Hekim",
+    day: "Gün",
+    new: "YENİ",
+    min: "dk",
+    off: (d: string) => `${d} bu gün çalışmıyor.`,
+    sample: "Örnek kayıt. Hasta tarafında bir randevu oluşturun; hekimin göreceği tam kart burada açılır.",
+    pick: "Soldan bir randevu seçin.",
+    none: "Henüz yeni randevu yok. Hasta ekranından bir randevu oluşturun; hekimin göreceği kart burada açılır.",
+    guardian: (g: string) => ` · veli ${g}`,
+    painSlot: "Ağrı saati",
+    marked: "İşaretlenen diş",
+    notMarked: "İşaretlenmedi",
+    pain: "Ağrı",
+    swelling: ", şişlik ya da ateş var",
+    noSwelling: ", şişlik yok",
+    wakes: ", geceleri uyandırıyor",
+    health: "Sağlık bilgileri",
+    warnings: (n: number) => `${n} uyarı, yukarıda`,
+    noRisk: "Bildirilen risk yok",
+    notShared: "Paylaşılmadı; muayenede sorulacak",
+    consent: "Açık rıza kaydı",
+    given: (at: string) => `Verildi: ${at}`,
+    notGiven: "Verilmedi",
+  },
+  en: {
+    since: { bugun: "started today", gunler: "for a few days", haftalar: "for weeks" },
+    title: "Dentist's screen",
+    lead: "What the patient said while booking, in front of the dentist before the visit. Only the clinic sees this screen.",
+    doctor: "Dentist",
+    day: "Day",
+    new: "NEW",
+    min: "min",
+    off: (d: string) => `${d} isn't working this day.`,
+    sample: "A sample record. Make a booking on the patient side; the full card the dentist sees opens here.",
+    pick: "Choose an appointment on the left.",
+    none: "No new appointment yet. Make one from the patient screen; the card the dentist sees opens here.",
+    guardian: (g: string) => ` · guardian ${g}`,
+    painSlot: "Pain slot",
+    marked: "Marked teeth",
+    notMarked: "None marked",
+    pain: "Pain",
+    swelling: ", swelling or fever",
+    noSwelling: ", no swelling",
+    wakes: ", wakes them at night",
+    health: "Health information",
+    warnings: (n: number) => (n === 1 ? "1 warning, above" : `${n} warnings, above`),
+    noRisk: "No risks reported",
+    notShared: "Not shared; will be asked at the visit",
+    consent: "Explicit consent record",
+    given: (at: string) => `Given: ${at}`,
+    notGiven: "Not given",
+  },
+};
 
 /** What the doctor sees before the patient walks in. */
 export function DoctorView({ booked, booksFor, days }: { booked: Booked | null; booksFor: (d: Day, doc: DoctorId) => Appt[]; days: Day[] }) {
+  const lang = useLang();
+  const c = COPY[lang];
+  const { doctors, visits } = mineIn(lang);
   const [doc, setDoc] = useState<DoctorId>(booked?.doctor ?? "elif");
   const [dayIdx, setDayIdx] = useState(() => Math.max(0, days.findIndex((d) => d.iso === booked?.day)));
   const [openId, setOpenId] = useState<string | null>(booked?.id ?? null);
@@ -20,10 +81,10 @@ export function DoctorView({ booked, booksFor, days }: { booked: Booked | null; 
 
   return (
     <div>
-      <h2 className="font-[family-name:var(--mine-display)] text-[clamp(1.8rem,4.2vw,2.8rem)] leading-[1.05] font-light tracking-[-0.03em]">Hekim ekranı</h2>
-      <p className="mt-3 max-w-[60ch] text-[var(--mine-muted)]">Hastanın randevu alırken anlattıkları, muayeneden önce hekimin önünde. Bu ekranı yalnızca klinik görür.</p>
+      <h2 className="font-[family-name:var(--mine-display)] text-[clamp(1.8rem,4.2vw,2.8rem)] leading-[1.05] font-light tracking-[-0.03em]">{c.title}</h2>
+      <p className="mt-3 max-w-[60ch] text-[var(--mine-muted)]">{c.lead}</p>
 
-      <div className="mt-8 flex flex-wrap gap-2" role="group" aria-label="Hekim">
+      <div className="mt-8 flex flex-wrap gap-2" role="group" aria-label={c.doctor}>
         {doctors.map((d) => (
           <button
             aria-pressed={d.id === doc}
@@ -36,7 +97,7 @@ export function DoctorView({ booked, booksFor, days }: { booked: Booked | null; 
           </button>
         ))}
       </div>
-      <div className="mt-3 flex flex-wrap gap-2" role="group" aria-label="Gün">
+      <div className="mt-3 flex flex-wrap gap-2" role="group" aria-label={c.day}>
         {days.map((d, i) => (
           <button
             aria-pressed={i === dayIdx}
@@ -69,12 +130,12 @@ export function DoctorView({ booked, booksFor, days }: { booked: Booked | null; 
                     >
                       <span className="font-semibold tabular-nums">{hm(a.start)}</span>
                       <span className="min-w-0">
-                        <span className="block truncate font-semibold">
+                        <span className="block min-w-0 [overflow-wrap:anywhere] font-semibold">
                           {a.who}
-                          {a.mine && <span className={`ml-2 rounded-full px-1.5 text-[10px] ${on ? "bg-white/20" : "bg-[var(--mine-cobalt)] text-white"}`}>YENİ</span>}
+                          {a.mine && <span className={`ml-2 rounded-full px-1.5 text-[10px] ${on ? "bg-white/20" : "bg-[var(--mine-cobalt)] text-white"}`}>{c.new}</span>}
                         </span>
-                        <span className={`block truncate text-xs ${on ? "text-white/70" : "text-[var(--mine-muted)]"}`}>
-                          {v.name} · {a.minutes} dk
+                        <span className={`block min-w-0 [overflow-wrap:anywhere] text-xs ${on ? "text-white/70" : "text-[var(--mine-muted)]"}`}>
+                          {v.name} · {a.minutes} {c.min}
                         </span>
                       </span>
                     </button>
@@ -83,7 +144,7 @@ export function DoctorView({ booked, booksFor, days }: { booked: Booked | null; 
               })}
             </ol>
           ) : (
-            <p className="p-3 text-sm text-[var(--mine-muted)]">{doctor.short} bu gün çalışmıyor.</p>
+            <p className="p-3 text-sm text-[var(--mine-muted)]">{c.off(doctor.short)}</p>
           )}
         </section>
 
@@ -95,11 +156,11 @@ export function DoctorView({ booked, booksFor, days }: { booked: Booked | null; 
               <p className="text-xs font-bold tracking-[0.16em] text-[var(--mine-muted)] uppercase">{hm(open.start)}</p>
               <p className="mt-2 font-[family-name:var(--mine-display)] text-2xl font-semibold">{open.who}</p>
               <p className="mt-1 text-[var(--mine-muted)]">{visits.find((v) => v.id === open.visit)!.name}</p>
-              <p className="mt-6 text-sm text-[var(--mine-muted)]">Örnek kayıt. Hasta tarafında bir randevu oluşturun; hekimin göreceği tam kart burada açılır.</p>
+              <p className="mt-6 text-sm text-[var(--mine-muted)]">{c.sample}</p>
             </div>
           ) : (
             <p className="text-[var(--mine-muted)]">
-              {booked ? "Soldan bir randevu seçin." : "Henüz yeni randevu yok. Hasta ekranından bir randevu oluşturun; hekimin göreceği kart burada açılır."}
+              {booked ? c.pick : c.none}
             </p>
           )}
         </section>
@@ -109,6 +170,9 @@ export function DoctorView({ booked, booksFor, days }: { booked: Booked | null; 
 }
 
 function PatientCard({ b }: { b: Booked }) {
+  const lang = useLang();
+  const c = COPY[lang];
+  const { visits, healthQuestions, toothName } = mineIn(lang);
   const v = visits.find((x) => x.id === b.visit)!;
   const flags = b.health
     ? healthQuestions.filter((q) => b.health![q.key].yes).map((q) => ({ key: q.key, text: q.flag, detail: b.health![q.key].detail }))
@@ -123,10 +187,10 @@ function PatientCard({ b }: { b: Booked }) {
           <h2 className="mt-2 font-[family-name:var(--mine-display)] text-3xl font-semibold tracking-[-0.02em]">{b.patient}</h2>
           <p className="mt-1 text-[var(--mine-muted)]">
             {v.name}
-            {b.guardian && ` · veli ${b.guardian}`}
+            {b.guardian && c.guardian(b.guardian)}
           </p>
         </div>
-        {b.emergency && <span className="rounded-full bg-[var(--mine-alarm)] px-3 py-1 text-xs font-bold text-white">Ağrı saati</span>}
+        {b.emergency && <span className="rounded-full bg-[var(--mine-alarm)] px-3 py-1 text-xs font-bold text-white">{c.painSlot}</span>}
       </div>
 
       {flags.length > 0 && (
@@ -151,12 +215,12 @@ function PatientCard({ b }: { b: Booked }) {
         )}
         <dl className="space-y-4 text-sm">
           <div>
-            <dt className="text-[var(--mine-muted)]">İşaretlenen diş</dt>
-            <dd className="mt-0.5 font-semibold">{b.teeth.length ? b.teeth.map((f) => `${f} · ${toothName(f).toLowerCase()}`).join(", ") : "İşaretlenmedi"}</dd>
+            <dt className="text-[var(--mine-muted)]">{c.marked}</dt>
+            <dd className="mt-0.5 font-semibold">{b.teeth.length ? b.teeth.map((f) => `${f} · ${toothName(f).toLowerCase()}`).join(", ") : c.notMarked}</dd>
           </div>
           {b.triage && (
             <div>
-              <dt className="text-[var(--mine-muted)]">Ağrı</dt>
+              <dt className="text-[var(--mine-muted)]">{c.pain}</dt>
               <dd className="mt-1">
                 <span className="flex items-center gap-3">
                   <span aria-hidden="true" className="h-2 w-32 overflow-hidden rounded-full bg-[var(--mine-bg)]">
@@ -165,22 +229,22 @@ function PatientCard({ b }: { b: Booked }) {
                   <span className="font-semibold tabular-nums">{b.triage.pain}/10</span>
                 </span>
                 <span className="mt-1 block text-[var(--mine-muted)]">
-                  {b.triage.since && since[b.triage.since]}
-                  {b.triage.swelling ? ", şişlik ya da ateş var" : ", şişlik yok"}
-                  {b.triage.night ? ", geceleri uyandırıyor" : ""}
+                  {b.triage.since && c.since[b.triage.since]}
+                  {b.triage.swelling ? c.swelling : c.noSwelling}
+                  {b.triage.night ? c.wakes : ""}
                 </span>
               </dd>
             </div>
           )}
           <div>
-            <dt className="text-[var(--mine-muted)]">Sağlık bilgileri</dt>
+            <dt className="text-[var(--mine-muted)]">{c.health}</dt>
             <dd className="mt-0.5 font-semibold">
-              {b.consentAt ? (flags.length ? `${flags.length} uyarı, yukarıda` : "Bildirilen risk yok") : "Paylaşılmadı; muayenede sorulacak"}
+              {b.consentAt ? (flags.length ? c.warnings(flags.length) : c.noRisk) : c.notShared}
             </dd>
           </div>
           <div>
-            <dt className="text-[var(--mine-muted)]">Açık rıza kaydı</dt>
-            <dd className="mt-0.5">{b.consentAt ? `Verildi: ${b.consentAt}` : "Verilmedi"}</dd>
+            <dt className="text-[var(--mine-muted)]">{c.consent}</dt>
+            <dd className="mt-0.5">{b.consentAt ? c.given(b.consentAt) : c.notGiven}</dd>
           </div>
         </dl>
       </div>

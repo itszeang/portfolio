@@ -1,3 +1,5 @@
+import type { Widen } from "@/lib/i18n";
+
 // ============================================================================
 //  Sitenin tüm içeriği — tek kaynak.
 //  Tasarım ne olursa olsun metinler, bağlantılar ve görseller buradan okunur.
@@ -72,7 +74,6 @@ export const socials = [
 export const servicesIntro = {
   title: "Fikri, çalışan bir ürüne",
   subtitle: "dönüştürüyorum.",
-  lead: "Claude ve Codex destekli geliştirme süreciyle hızlı prototip, temiz uygulama ve ölçülebilir sonuç.",
 };
 
 export const services = [
@@ -195,7 +196,7 @@ export const projects = [
     ],
   },
 ];
-export type Project = (typeof projects)[number];
+export type Project = Widen<(typeof projects)[number]>;
 export const visibleProjects = projects.filter((p) => p.visible);
 
 export const otherWork = {
@@ -502,7 +503,8 @@ export const servicePages = [
     related: "reviewms",
   },
 ] as const;
-export type ServicePage = (typeof servicePages)[number];
+export type ServicePage = Widen<(typeof servicePages)[number]>;
+export type Service = Widen<(typeof services)[number]>;
 
 // --- Sektörler ------------------------------------------------------------------
 // Web sitesi örnekleri sektöre göre gruplanır. Yeni bir sektörün ilk örneği
@@ -678,7 +680,7 @@ export const demos = [
     frames: 1,
   },
 ] as const;
-export type Demo = (typeof demos)[number];
+export type Demo = Widen<(typeof demos)[number]>;
 
 // --- Arşiv: önceki tasarımlarda kullanılıp çıkarılan metinler -----------------
 // Yeni tasarımda işine yararsa buradan al; kullanılmıyorsa silebilirsin.

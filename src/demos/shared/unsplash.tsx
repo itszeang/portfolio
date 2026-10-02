@@ -1,17 +1,19 @@
 // Photographs from Unsplash (Unsplash License: free to use, no permission
 // needed), served from Unsplash's own image CDN at the size each slot needs.
+import type { Lang } from "@/lib/i18n";
 
-export type UnsplashImage = { id: string; alt: string; by: string };
+/** `alt` is Turkish; `altEn` is used on the English pages when given. */
+export type UnsplashImage = { id: string; alt: string; altEn?: string; by: string };
 
 const src = (id: string, w: number) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=70`;
 
 /** A responsive Unsplash photo that fills its box. */
-export function UnsplashPhoto({ image, className = "", sizes, priority = false }: { image: UnsplashImage; className?: string; sizes: string; priority?: boolean }) {
+export function UnsplashPhoto({ image, className = "", sizes, priority = false, lang = "tr" }: { image: UnsplashImage; className?: string; sizes: string; priority?: boolean; lang?: Lang }) {
   return (
     // Unsplash's CDN already resizes and converts; a plain img with srcset is enough here.
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      alt={image.alt}
+      alt={lang === "en" && image.altEn ? image.altEn : image.alt}
       className={`h-full w-full object-cover ${className}`}
       decoding="async"
       fetchPriority={priority ? "high" : undefined}

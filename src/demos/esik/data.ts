@@ -1,3 +1,5 @@
+import type { Lang } from "@/lib/i18n";
+
 // Eşik Gayrimenkul: a fictional İzmir real-estate office for the "emlak"
 // website demo. Listings, prices and commute times are invented but kept in a
 // believable range; every figure on screen is labelled as an example.
@@ -65,8 +67,50 @@ export function monthly(l: Listing, loan: Loan) {
   return { base: Math.round(base), dues: l.dues, utilities: utilities(l.net), total: Math.round(base + l.dues + utilities(l.net)) };
 }
 
-export const tl = (n: number) => `${Math.round(n).toLocaleString("tr-TR")} ₺`;
-export const short = (n: number) => (n >= 1_000_000 ? `${(n / 1_000_000).toLocaleString("tr-TR", { maximumFractionDigits: 2 })} milyon ₺` : tl(n));
+export const tl = (n: number, lang: Lang = "tr") => (lang === "en" ? `₺${Math.round(n).toLocaleString("en-GB")}` : `${Math.round(n).toLocaleString("tr-TR")} ₺`);
+export const short = (n: number, lang: Lang = "tr") =>
+  n >= 1_000_000
+    ? lang === "en"
+      ? `₺${(n / 1_000_000).toLocaleString("en-GB", { maximumFractionDigits: 2 })} million`
+      : `${(n / 1_000_000).toLocaleString("tr-TR", { maximumFractionDigits: 2 })} milyon ₺`
+    : tl(n, lang);
+
+// --- English -------------------------------------------------------------------------
+// The deal values stay the Turkish keys the logic uses; these are the labels.
+export const dealLabel = (d: Deal | "Tümü", lang: Lang) => (lang === "en" ? { Tümü: "All", Satılık: "For sale", Kiralık: "To rent" }[d] : d);
+
+const TITLE_EN: Record<string, string> = {
+  "E-2107": "3+1 with a sea view",
+  "E-2104": "2+1 a walk from campus",
+  "E-2099": "Garden-floor 2+1",
+  "E-2096": "Renovated 1+1",
+  "E-2092": "Spacious 4+1 for a family",
+  "E-2088": "3+1 near the metro",
+  "E-2083": "Studio to invest in",
+  "E-2079": "2+1 near the shops",
+};
+const HEATING_EN: Record<string, string> = { "Doğalgaz kombi": "Gas combi boiler", Klima: "Air conditioning", "Merkezi sistem": "Central heating" };
+const FEATURE_EN: Record<string, string> = {
+  Asansör: "Lift",
+  Otopark: "Parking",
+  Balkon: "Balcony",
+  Eşyasız: "Unfurnished",
+  Bahçe: "Garden",
+  "Site içi": "Gated complex",
+  Havuz: "Pool",
+  Eşyalı: "Furnished",
+  "Merkezi konum": "Central location",
+  "Ebeveyn banyo": "En-suite",
+  Kapıcı: "Caretaker",
+  Güvenlik: "Security",
+};
+
+/** A listing with its words in the language. */
+export const listingIn = (l: Listing, lang: Lang): Listing =>
+  lang === "en" ? { ...l, title: TITLE_EN[l.id] ?? l.title, heating: HEATING_EN[l.heating] ?? l.heating, features: l.features.map((f) => FEATURE_EN[f] ?? f) } : l;
+
+/** "Alsancak'a 25 dk" in Turkish, "25 min to Alsancak" in English. */
+export const commuteText = (to: Destination, min: number, lang: Lang) => (lang === "en" ? `${min} min to ${to}` : `${toPlace(to)} ${min} dk`);
 
 /** "Bornova'ya", "Alsancak'a": the Turkish dative suffix with vowel harmony. */
 export function toPlace(name: string) {

@@ -7,6 +7,7 @@
 // keeps scrolling over the box; chips stay draggable with a mouse.
 import { RotateCcw } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useLang } from "@/lib/lang-context";
 
 type Chip = {
   label: string;
@@ -43,6 +44,7 @@ type ChipState = {
 };
 
 export function Stack(): ReactNode {
+  const lang = useLang();
   const containerRef = useRef<HTMLDivElement | null>(null);
   const measureRef = useRef<HTMLDivElement | null>(null);
   const chipRefs = useRef<Array<HTMLDivElement | null>>([]);
@@ -218,15 +220,15 @@ export function Stack(): ReactNode {
     <div className="flex flex-col gap-3">
       <div className="flex items-center gap-3">
         <h3 className="text-foreground text-[15px] font-semibold tracking-tight">
-          Araç kutusu
+          {lang === "en" ? "Toolbox" : "Araç kutusu"}
         </h3>
       </div>
 
-      <div className="border-foreground/5 bg-foreground/2 dark:bg-foreground/5 relative h-40 overflow-hidden rounded-4xl border sm:h-64">
+      <div className="border-foreground/5 bg-foreground/2 dark:bg-foreground/5 relative h-60 overflow-hidden rounded-4xl border sm:h-64">
         <button
           type="button"
           onClick={() => setResetKey((k) => k + 1)}
-          aria-label="Çipleri sıfırla"
+          aria-label={lang === "en" ? "Reset the chips" : "Çipleri sıfırla"}
           className="focus-ring border-foreground/8 bg-background text-foreground/70 hover:text-foreground absolute top-3 right-3 z-20 inline-flex h-9 w-9 items-center justify-center rounded-xl border transition-colors"
         >
           <RotateCcw

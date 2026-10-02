@@ -6,7 +6,6 @@ import {
   addDays,
   type BarberId,
   barberName,
-  barbers,
   booked,
   CLOSE,
   etaOf,
@@ -20,12 +19,185 @@ import {
   OPEN,
   previewEta,
   type ServiceId,
-  serviceName,
-  services,
   type Shop,
+  skIn,
   tick,
-  tl,
 } from "./data";
+import { useLang } from "@/lib/lang-context";
+
+const flapSize = "clamp(28px, 8.4vw, 42px)";
+
+const COPY = {
+  tr: {
+    demo: "Demo: bir dakika üç saniyede geçer.",
+    view: "Görünüm",
+    views: [
+      ["musteri", "Müşteri"],
+      ["dukkan", "Dükkan ekranı"],
+    ] as const,
+    inShop: "Şu an dükkanda",
+    live: "Canlı",
+    paused: "Durdu",
+    srQueue: (n: number, eta: number) => `Sırada ${n} kişi var. Şimdi gelen biri yaklaşık ${eta} dakika bekler.`,
+    // Tile size for the two boards: English words are longer, so they shrink to their column.
+    flapFont: flapSize,
+    queueLabel: "SIRADA",
+    queueFlap: (n: number) => `${n} KİŞİ`,
+    ifNow: "ŞİMDİ GELSENİZ",
+    nowFlap: "HEMEN",
+    etaFlap: (m: number) => `~${m} DK`,
+    left: (m: number) => `${m} dk kaldı`,
+    free: "Boş",
+    you: " · siz",
+    callHint: "Dükkan ekranından berber gibi sıradakini çağırabilirsiniz.",
+    whatTo: "Ne yapmak istersiniz?",
+    tabs: [
+      ["sira", "Sıraya gir"],
+      ["randevu", "Randevu al"],
+    ] as const,
+    errName: "Adınızı yazın.",
+    errPhone: "Telefonu 05XX XXX XX XX biçiminde yazın.",
+    wait: "Evde ya da işinizde bekleyin; yola çıkma vaktini söyleriz.",
+    go: "Yola çıkma vakti! Siz gelene kadar sıranız gelmiş olur.",
+    seated: (b: string) => `Sıranız geldi: ${b} sizi bekliyor.`,
+    done: "Sağlıcakla! Bir dahaki sefere saatini seçip randevu da alabilirsiniz.",
+    leftQueue: "Sıradan çıktınız.",
+    yourNo: "Sıra numaranız",
+    min: "dk",
+    ahead: (n: number) => `önünüzde ${n} kişi`,
+    firstFree: "ilk boşalan berber",
+    toShop: (m: number) => `dükkana ${m} dk`,
+    sms: (m: number) => `Sıranıza ${m} dakika kala SMS de gelir (örnek; mesaj gönderilmez).`,
+    leave: "Sıradan çık",
+    rejoin: "Yeniden sıraya gir",
+    book: "Randevu al",
+    firstFreeShort: "İlk boşalan",
+    whatService: "Ne yaptıracaksınız?",
+    who: "Kimde?",
+    whoNote: "Bekleme süresi seçiminize göre değişir.",
+    now: "hemen",
+    travel: "Dükkana kaç dakikada gelirsiniz?",
+    name: "Adınız",
+    phone: "Cep telefonu",
+    join: "SIRAYA GİR",
+    free2: "Sıra ücretsiz. Gelmezseniz 10 dakika sonra sıranız düşer.",
+    loading: "Saatler yükleniyor…",
+    booked: "Randevunuz alındı",
+    today: "Bugün",
+    tomorrow: "Yarın",
+    noDeposit: "Kapora yok. Gelemeyecekseniz en geç bir saat önce SMS'teki bağlantıdan iptal edin; saatiniz sıradaki müşteriye açılsın (örnek; mesaj gönderilmez).",
+    another: "Başka randevu",
+    service: "Hizmet",
+    barber: "Berber",
+    any: "Fark etmez",
+    time: "Saat",
+    noSlots: "Bu gün boş saat kalmadı. Canlı sıraya girebilirsiniz.",
+    pickTime: "Bir saat seçin.",
+    bookCta: "RANDEVUYU AL",
+    when: (today: boolean, t: string, b: string) => ` · ${today ? "bugün" : "yarın"} ${t} · ${b}`,
+    chooseTime: " · saat seçin",
+    priceNote: "Fiyatlar örnektir. Kapora alınmaz.",
+    shopScreen: "Dükkan ekranı",
+    pause: "Canlı akışı durdur",
+    play: "Canlı akışı başlat",
+    shopLead: "Duvardaki ekran ve berberin tableti. Kesim bitince “Bitir”e basmak sıradaki müşteriye haber verir.",
+    next: "SIRADAKİ",
+    none: "YOK",
+    lastCalled: "SON ÇAĞRILAN",
+    srCalled: (no: number, b: string) => `${no} numara, ${b} koltuğuna.`,
+    chairs: "Koltuklar",
+    youParen: " (siz)",
+    emptyChair: "Boş, sırada uygun kimse yok",
+    finish: "Bitir, sıradakini çağır",
+    queue: (n: number) => `Sıra (${n})`,
+    firstFreeLower: "ilk boşalan",
+    emptyQueue: "Sırada kimse yok.",
+  },
+  en: {
+    demo: "Demo: one minute passes every three seconds.",
+    view: "View",
+    views: [
+      ["musteri", "Customer"],
+      ["dukkan", "Shop screen"],
+    ] as const,
+    inShop: "In the shop now",
+    live: "Live",
+    paused: "Paused",
+    srQueue: (n: number, eta: number) => `${n} people are waiting. Someone arriving now would wait about ${eta} minutes.`,
+    flapFont: "min(42px, 13.5cqw)",
+    queueLabel: "WAITING",
+    queueFlap: (n: number) => `${n} PEOPLE`,
+    ifNow: "IF YOU CAME NOW",
+    nowFlap: "NOW",
+    etaFlap: (m: number) => `~${m} MIN`,
+    left: (m: number) => `${m} min left`,
+    free: "Free",
+    you: " · you",
+    callHint: "On the shop screen you can call the next customer, as the barber would.",
+    whatTo: "What would you like to do?",
+    tabs: [
+      ["sira", "Join the queue"],
+      ["randevu", "Book a time"],
+    ] as const,
+    errName: "Write your name.",
+    errPhone: "Enter a Turkish mobile number as 05XX XXX XX XX.",
+    wait: "Wait at home or at work; we'll tell you when to set off.",
+    go: "Time to set off! Your turn will have come by the time you arrive.",
+    seated: (b: string) => `It's your turn: ${b} is waiting for you.`,
+    done: "Looking sharp! Next time you can also pick a time and book.",
+    leftQueue: "You've left the queue.",
+    yourNo: "Your number",
+    min: "min",
+    ahead: (n: number) => (n === 1 ? "1 person ahead of you" : `${n} people ahead of you`),
+    firstFree: "first free barber",
+    toShop: (m: number) => `${m} min to the shop`,
+    sms: (m: number) => `You'll also get an SMS ${m} minutes before your turn (a sample; no message is sent).`,
+    leave: "Leave the queue",
+    rejoin: "Join the queue again",
+    book: "Book a time",
+    firstFreeShort: "First free",
+    whatService: "What are you having done?",
+    who: "With whom?",
+    whoNote: "The wait depends on your choice.",
+    now: "now",
+    travel: "How many minutes away from the shop are you?",
+    name: "Your name",
+    phone: "Mobile phone",
+    join: "JOIN THE QUEUE",
+    free2: "Joining is free. If you don't turn up, you drop out after 10 minutes.",
+    loading: "Loading times…",
+    booked: "You're booked in",
+    today: "Today",
+    tomorrow: "Tomorrow",
+    noDeposit: "No deposit. If you can't make it, cancel at least an hour before using the link in the SMS, so the time opens up for someone else (a sample; no message is sent).",
+    another: "Book another",
+    service: "Service",
+    barber: "Barber",
+    any: "Any",
+    time: "Time",
+    noSlots: "No free times left this day. You can join the live queue.",
+    pickTime: "Choose a time.",
+    bookCta: "BOOK THIS TIME",
+    when: (today: boolean, t: string, b: string) => ` · ${today ? "today" : "tomorrow"} ${t} · ${b}`,
+    chooseTime: " · choose a time",
+    priceNote: "Prices are examples. No deposit is taken.",
+    shopScreen: "Shop screen",
+    pause: "Pause the live feed",
+    play: "Start the live feed",
+    shopLead: "The screen on the wall and the barber's tablet. Pressing “Finish” when a cut is done tells the next customer.",
+    next: "NEXT",
+    none: "NONE",
+    lastCalled: "LAST CALLED",
+    srCalled: (no: number, b: string) => `Number ${no}, to ${b}'s chair.`,
+    chairs: "Chairs",
+    youParen: " (you)",
+    emptyChair: "Free, nobody suitable waiting",
+    finish: "Finish, call the next",
+    queue: (n: number) => `Queue (${n})`,
+    firstFreeLower: "first free",
+    emptyQueue: "Nobody is waiting.",
+  },
+};
 
 /** One simulated minute, in milliseconds. */
 const SPEED = 3000;
@@ -45,9 +217,11 @@ const chip = (on: boolean) =>
 const field =
   "mt-1.5 block min-h-12 w-full border border-[var(--sk-line)] bg-transparent px-4 font-normal text-white focus-visible:border-[var(--sk-copper-light)] focus-visible:outline-2 focus-visible:outline-[var(--sk-copper-light)]";
 const upper = (s: string) => s.toLocaleUpperCase("tr");
-const flapSize = "clamp(28px, 8.4vw, 42px)";
 
 export function SinekkaydiApp() {
+  const lang = useLang();
+  const c = COPY[lang];
+  const { barbers, serviceName } = skIn(lang);
   const [shop, setShop] = useState<Shop>(initialShop);
   const [running, setRunning] = useState(true);
   const [view, setView] = useState<"musteri" | "dukkan">("musteri");
@@ -68,14 +242,9 @@ export function SinekkaydiApp() {
   return (
     <>
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <p className="text-sm text-[var(--sk-muted)]">Demo: bir dakika üç saniyede geçer.</p>
-        <div aria-label="Görünüm" className="flex border border-[var(--sk-line)] p-1 text-sm" role="group">
-          {(
-            [
-              ["musteri", "Müşteri"],
-              ["dukkan", "Dükkan ekranı"],
-            ] as const
-          ).map(([k, l]) => (
+        <p className="text-sm text-[var(--sk-muted)]">{c.demo}</p>
+        <div aria-label={c.view} className="flex border border-[var(--sk-line)] p-1 text-sm" role="group">
+          {c.views.map(([k, l]) => (
             <button aria-pressed={view === k} className={`min-h-10 px-4 transition-colors ${view === k ? "bg-[var(--sk-copper)] text-white" : "hover:bg-white/5"}`} key={k} onClick={() => setView(k)} type="button">
               {l}
             </button>
@@ -91,58 +260,51 @@ export function SinekkaydiApp() {
             <section aria-labelledby="sk-live" className="border border-[var(--sk-line)] bg-[var(--sk-panel)] p-5 text-white sm:p-7 lg:sticky lg:top-6">
               <div className="flex items-center justify-between gap-3">
                 <h3 className="text-xs font-bold tracking-[0.2em] text-white/60 uppercase" id="sk-live">
-                  Şu an dükkanda
+                  {c.inShop}
                 </h3>
                 <span className="flex items-center gap-2 text-xs text-white/60">
-                  <span className="size-2 rounded-full bg-[var(--sk-copper)] motion-safe:animate-pulse" /> {running ? "Canlı" : "Durdu"}
+                  <span className="size-2 rounded-full bg-[var(--sk-copper)] motion-safe:animate-pulse" /> {running ? c.live : c.paused}
                 </span>
               </div>
-              <p className="sr-only">
-                Sırada {waiting} kişi var. Şimdi gelen biri yaklaşık {walkInEta} dakika bekler.
-              </p>
+              <p className="sr-only">{c.srQueue(waiting, walkInEta)}</p>
               <div aria-hidden="true" className="mt-5 grid gap-5 sm:grid-cols-2">
-                <div>
-                  <p className="mb-2 text-[11px] font-semibold tracking-[0.16em] text-white/50">SIRADA</p>
-                  <SplitFlapText charset="numeric" fontSize={flapSize} loop={false} padTo={6} text={`${waiting} KİŞİ`} tileColor="#2B2522" />
+                <div className="@container">
+                  <p className="mb-2 text-[11px] font-semibold tracking-[0.16em] text-white/50">{c.queueLabel}</p>
+                  <SplitFlapText charset="numeric" fontSize={c.flapFont} loop={false} padTo={6} text={c.queueFlap(waiting)} tileColor="#2B2522" />
                 </div>
-                <div>
-                  <p className="mb-2 text-[11px] font-semibold tracking-[0.16em] text-white/50">ŞİMDİ GELSENİZ</p>
-                  <SplitFlapText charset="numeric" fontSize={flapSize} loop={false} padTo={6} text={walkInEta === 0 ? "HEMEN" : `~${walkInEta} DK`} textColor="#E6B08E" tileColor="#2B2522" />
+                <div className="@container">
+                  <p className="mb-2 text-[11px] font-semibold tracking-[0.16em] text-white/50">{c.ifNow}</p>
+                  <SplitFlapText charset="numeric" fontSize={c.flapFont} loop={false} padTo={6} text={walkInEta === 0 ? c.nowFlap : c.etaFlap(walkInEta)} textColor="#E6B08E" tileColor="#2B2522" />
                 </div>
               </div>
               {/* Three compact chairs side by side on a phone, so "Sıraya gir" stays near the top. */}
               <ul className="mt-6 grid grid-cols-3 gap-2 sm:mt-7 sm:grid-cols-1 sm:gap-3">
-                {shop.chairs.map((c) => {
-                  const total = c.ticket ? minutesOf(c.ticket.service) : 1;
+                {shop.chairs.map((ch) => {
+                  const total = ch.ticket ? minutesOf(ch.ticket.service) : 1;
                   return (
-                    <li className="border border-[var(--sk-line)] p-3 sm:p-4" key={c.barber}>
+                    <li className="border border-[var(--sk-line)] p-3 sm:p-4" key={ch.barber}>
                       <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between sm:gap-3">
-                        <span className="text-sm font-semibold sm:text-base">{barberName(c.barber)}</span>
-                        <span className={`text-xs sm:text-sm ${c.ticket ? "text-white/70" : "font-semibold text-[var(--sk-copper-light)]"}`}>
-                          {c.ticket ? `${c.left} dk kaldı` : "Boş"}
+                        <span className="text-sm font-semibold sm:text-base">{barberName(ch.barber)}</span>
+                        <span className={`text-xs sm:text-sm ${ch.ticket ? "text-white/70" : "font-semibold text-[var(--sk-copper-light)]"}`}>
+                          {ch.ticket ? c.left(ch.left) : c.free}
                         </span>
                       </div>
                       <p className="mt-1 hidden text-xs text-white/50 sm:block">
-                        {c.ticket ? `No ${c.ticket.no} · ${serviceName(c.ticket.service)}${c.ticket.no === mine?.no ? " · siz" : ""}` : barbers.find((b) => b.id === c.barber)!.note}
+                        {ch.ticket ? `No ${ch.ticket.no} · ${serviceName(ch.ticket.service)}${ch.ticket.no === mine?.no ? c.you : ""}` : barbers.find((b) => b.id === ch.barber)!.note}
                       </p>
                       <div aria-hidden="true" className="mt-3 h-1 overflow-hidden bg-white/10">
-                        <div className="h-full bg-[var(--sk-copper)] transition-[width] duration-700" style={{ width: c.ticket ? `${(1 - c.left / total) * 100}%` : "0%" }} />
+                        <div className="h-full bg-[var(--sk-copper)] transition-[width] duration-700" style={{ width: ch.ticket ? `${(1 - ch.left / total) * 100}%` : "0%" }} />
                       </div>
                     </li>
                   );
                 })}
               </ul>
-              <p className="mt-4 text-xs text-white/40 sm:mt-5">Dükkan ekranından berber gibi sıradakini çağırabilirsiniz.</p>
+              <p className="mt-4 text-xs text-white/40 sm:mt-5">{c.callHint}</p>
             </section>
 
             <section className="border border-[var(--sk-line)] bg-[var(--sk-panel)] p-5 sm:p-7">
-              <div aria-label="Ne yapmak istersiniz?" className="grid grid-cols-2 gap-1 border border-[var(--sk-line)] p-1" role="group">
-                {(
-                  [
-                    ["sira", "Sıraya gir"],
-                    ["randevu", "Randevu al"],
-                  ] as const
-                ).map(([k, l]) => (
+              <div aria-label={c.whatTo} className="grid grid-cols-2 gap-1 border border-[var(--sk-line)] p-1" role="group">
+                {c.tabs.map(([k, l]) => (
                   <button aria-pressed={tab === k} className={`min-h-12 font-[family-name:var(--sk-display)] text-lg transition-colors ${tab === k ? "bg-[var(--sk-copper)] text-white" : "text-[var(--sk-copper-light)] hover:bg-white/5"}`} key={k} onClick={() => setTab(k)} type="button">
                     {l}
                   </button>
@@ -172,14 +334,17 @@ function JoinPanel({
   setJoined: (j: { travel: number } | null) => void;
   onBook: () => void;
 }) {
+  const lang = useLang();
+  const c = COPY[lang];
+  const { services, barbers, serviceName } = skIn(lang);
   const [service, setService] = useState<ServiceId>("sac");
   const [pref, setPref] = useState<BarberId | null>(null);
   const [travel, setTravel] = useState(10);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [tried, setTried] = useState(false);
-  const errName = tried && name.trim().length < 2 ? "Adınızı yazın." : null;
-  const errPhone = tried && !PHONE.test(phone.replace(/\D/g, "")) ? "Telefonu 05XX XXX XX XX biçiminde yazın." : null;
+  const errName = tried && name.trim().length < 2 ? c.errName : null;
+  const errPhone = tried && !PHONE.test(phone.replace(/\D/g, "")) ? c.errPhone : null;
 
   if (mine) {
     const chair = shop.chairs.find((c) => c.ticket?.no === mine.no);
@@ -189,18 +354,18 @@ function JoinPanel({
     const phase = done ? "done" : chair ? "seated" : inQueue < 0 ? "left" : eta <= mine.travel ? "go" : "wait";
     const t = [...shop.queue, ...shop.chairs.flatMap((c) => (c.ticket ? [c.ticket] : []))].find((x) => x.no === mine.no);
     const message = {
-      wait: "Evde ya da işinizde bekleyin; yola çıkma vaktini söyleriz.",
-      go: "Yola çıkma vakti! Siz gelene kadar sıranız gelmiş olur.",
-      seated: `Sıranız geldi: ${chair ? barberName(chair.barber) : ""} sizi bekliyor.`,
-      done: "Sağlıcakla! Bir dahaki sefere saatini seçip randevu da alabilirsiniz.",
-      left: "Sıradan çıktınız.",
+      wait: c.wait,
+      go: c.go,
+      seated: c.seated(chair ? barberName(chair.barber) : ""),
+      done: c.done,
+      left: c.leftQueue,
     }[phase];
     return (
       <div>
         <div className={`p-5 ${phase === "go" ? "bg-[#3A2A20]" : phase === "seated" ? "bg-[#2F3A2C]" : "bg-white/5"}`}>
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
-              <p className="text-[11px] font-bold tracking-[0.16em] uppercase">Sıra numaranız</p>
+              <p className="text-[11px] font-bold tracking-[0.16em] uppercase">{c.yourNo}</p>
               <div aria-hidden="true" className="mt-2">
                 <SplitFlapText charset="numeric" fontSize={48} loop={false} padTo={3} text={String(mine.no)} tileColor="#1B1F24" />
               </div>
@@ -208,8 +373,10 @@ function JoinPanel({
             </div>
             {phase === "wait" || phase === "go" ? (
               <div className="text-right">
-                <p className="font-[family-name:var(--sk-display)] text-4xl tabular-nums">~{eta} dk</p>
-                <p className="text-sm">önünüzde {inQueue} kişi</p>
+                <p className="font-[family-name:var(--sk-display)] text-4xl tabular-nums">
+                  ~{eta} {c.min}
+                </p>
+                <p className="text-sm">{c.ahead(inQueue)}</p>
               </div>
             ) : null}
           </div>
@@ -218,11 +385,11 @@ function JoinPanel({
           </p>
           {t && phase !== "done" && (
             <p className="mt-1 text-sm opacity-75">
-              {serviceName(t.service)} · {t.pref ? barberName(t.pref) : "ilk boşalan berber"} · dükkana {mine.travel} dk
+              {serviceName(t.service)} · {t.pref ? barberName(t.pref) : c.firstFree} · {c.toShop(mine.travel)}
             </p>
           )}
         </div>
-        <p className="mt-4 text-sm text-[var(--sk-muted)]">Sıranıza {mine.travel} dakika kala SMS de gelir (örnek; mesaj gönderilmez).</p>
+        <p className="mt-4 text-sm text-[var(--sk-muted)]">{c.sms(mine.travel)}</p>
         <div className="mt-6 flex flex-wrap gap-3">
           {phase === "wait" || phase === "go" ? (
             <button
@@ -233,15 +400,15 @@ function JoinPanel({
               }}
               type="button"
             >
-              Sıradan çık
+              {c.leave}
             </button>
           ) : (
             <>
               <button className="min-h-12 bg-[var(--sk-copper)] px-6 font-semibold text-white hover:bg-[#9A5E3F]" onClick={() => setJoined(null)} type="button">
-                Yeniden sıraya gir
+                {c.rejoin}
               </button>
               <button className="min-h-12 px-4 font-semibold underline underline-offset-4" onClick={onBook} type="button">
-                Randevu al
+                {c.book}
               </button>
             </>
           )}
@@ -250,7 +417,7 @@ function JoinPanel({
     );
   }
 
-  const options: { id: BarberId | null; label: string }[] = [{ id: null, label: "İlk boşalan" }, ...barbers.map((b) => ({ id: b.id, label: b.name }))];
+  const options: { id: BarberId | null; label: string }[] = [{ id: null, label: c.firstFreeShort }, ...barbers.map((b) => ({ id: b.id, label: b.name }))];
   return (
     <form
       noValidate
@@ -264,18 +431,18 @@ function JoinPanel({
       }}
     >
       <fieldset>
-        <legend className="font-semibold">Ne yaptıracaksınız?</legend>
+        <legend className="font-semibold">{c.whatService}</legend>
         <div className="mt-3 flex flex-wrap gap-2">
           {services.map((s) => (
             <button aria-pressed={service === s.id} className={chip(service === s.id)} key={s.id} onClick={() => setService(s.id)} type="button">
-              {s.name} <span className="font-normal opacity-70">· {s.minutes} dk</span>
+              {s.name} <span className="font-normal opacity-70">· {s.minutes} {c.min}</span>
             </button>
           ))}
         </div>
       </fieldset>
       <fieldset className="mt-6">
-        <legend className="font-semibold">Kimde?</legend>
-        <p className="text-sm text-[var(--sk-muted)]">Bekleme süresi seçiminize göre değişir.</p>
+        <legend className="font-semibold">{c.who}</legend>
+        <p className="text-sm text-[var(--sk-muted)]">{c.whoNote}</p>
         <div className="mt-3 grid grid-cols-2 gap-2">
           {options.map((o) => {
             const eta = previewEta(shop, service, o.id);
@@ -288,43 +455,46 @@ function JoinPanel({
                 type="button"
               >
                 <span>{o.label}</span>
-                <span className="font-normal tabular-nums opacity-80">{eta === 0 ? "hemen" : `~${eta} dk`}</span>
+                <span className="font-normal tabular-nums opacity-80">{eta === 0 ? c.now : `~${eta} ${c.min}`}</span>
               </button>
             );
           })}
         </div>
       </fieldset>
       <fieldset className="mt-6">
-        <legend className="font-semibold">Dükkana kaç dakikada gelirsiniz?</legend>
+        <legend className="font-semibold">{c.travel}</legend>
         <div className="mt-3 flex flex-wrap gap-2">
           {[5, 10, 15, 20].map((m) => (
             <button aria-pressed={travel === m} className={chip(travel === m)} key={m} onClick={() => setTravel(m)} type="button">
-              {m} dk
+              {m} {c.min}
             </button>
           ))}
         </div>
       </fieldset>
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
         <label className="block text-sm font-semibold" htmlFor="sk-name">
-          Adınız
+          {c.name}
           <input aria-invalid={!!errName} autoComplete="given-name" className={field} id="sk-name" onChange={(e) => setName(e.target.value)} value={name} />
           {errName && <span className="mt-1 block font-normal text-[#F2A38F]">{errName}</span>}
         </label>
         <label className="block text-sm font-semibold" htmlFor="sk-phone">
-          Cep telefonu
+          {c.phone}
           <input aria-invalid={!!errPhone} autoComplete="tel" className={field} id="sk-phone" inputMode="tel" onChange={(e) => setPhone(e.target.value)} placeholder="05XX XXX XX XX" value={phone} />
           {errPhone && <span className="mt-1 block font-normal text-[#F2A38F]">{errPhone}</span>}
         </label>
       </div>
       <button className="mt-7 flex min-h-14 w-full items-center justify-center gap-3 bg-[var(--sk-copper)] font-[family-name:var(--sk-display)] text-lg tracking-wide text-white hover:bg-[#9A5E3F]" type="submit">
-        SIRAYA GİR <span className="font-[family-name:var(--sk-body)] text-sm font-semibold opacity-80">· No {shop.nextNo}</span>
+        {c.join} <span className="font-[family-name:var(--sk-body)] text-sm font-semibold opacity-80">· No {shop.nextNo}</span>
       </button>
-      <p className="mt-3 text-center text-xs text-[var(--sk-muted)]">Sıra ücretsiz. Gelmezseniz 10 dakika sonra sıranız düşer.</p>
+      <p className="mt-3 text-center text-xs text-[var(--sk-muted)]">{c.free2}</p>
     </form>
   );
 }
 
 function BookPanel() {
+  const lang = useLang();
+  const c = COPY[lang];
+  const { services, barbers, serviceName, tl } = skIn(lang);
   const now = useSyncExternalStore(subscribe, clientNow, serverNow);
   const [service, setService] = useState<ServiceId>("sac");
   const [barber, setBarber] = useState<BarberId | null>(null);
@@ -334,7 +504,7 @@ function BookPanel() {
   const [phone, setPhone] = useState("");
   const [tried, setTried] = useState(false);
   const [done, setDone] = useState<{ day: string; time: number; barber: BarberId; service: ServiceId } | null>(null);
-  if (!now) return <p className="text-[var(--sk-muted)]">Saatler yükleniyor…</p>;
+  if (!now) return <p className="text-[var(--sk-muted)]">{c.loading}</p>;
 
   const [today, minNow] = now.split("|");
   const days = [today, addDays(today, 1)];
@@ -351,21 +521,21 @@ function BookPanel() {
   const slots = slotsFor(day);
   const slot = slots.find((s) => s.t === time) ?? null;
   const svc = services.find((s) => s.id === service)!;
-  const errName = tried && name.trim().length < 2 ? "Adınızı yazın." : null;
-  const errPhone = tried && !PHONE.test(phone.replace(/\D/g, "")) ? "Telefonu 05XX XXX XX XX biçiminde yazın." : null;
+  const errName = tried && name.trim().length < 2 ? c.errName : null;
+  const errPhone = tried && !PHONE.test(phone.replace(/\D/g, "")) ? c.errPhone : null;
 
   if (done) {
     return (
       <div aria-live="polite">
-        <p className="text-[11px] font-bold tracking-[0.16em] text-[#F2A38F] uppercase">Randevunuz alındı</p>
+        <p className="text-[11px] font-bold tracking-[0.16em] text-[#F2A38F] uppercase">{c.booked}</p>
         <p className="mt-2 font-[family-name:var(--sk-display)] text-3xl leading-tight">
-          {done.day === today ? "Bugün" : "Yarın"} {hm(done.time)}
+          {done.day === today ? c.today : c.tomorrow} {hm(done.time)}
         </p>
         <p className="mt-2">
           {barberName(done.barber)} · {serviceName(done.service)} · {tl(services.find((s) => s.id === done.service)!.price)}
         </p>
         <p className="mt-4 text-sm text-[var(--sk-muted)]">
-          Kapora yok. Gelemeyecekseniz en geç bir saat önce SMS&apos;teki bağlantıdan iptal edin; saatiniz sıradaki müşteriye açılsın (örnek; mesaj gönderilmez).
+          {c.noDeposit}
         </p>
         <button
           className="mt-6 min-h-12 bg-[var(--sk-copper)] px-6 font-semibold text-white hover:bg-[#9A5E3F]"
@@ -376,7 +546,7 @@ function BookPanel() {
           }}
           type="button"
         >
-          Başka randevu
+          {c.another}
         </button>
       </div>
     );
@@ -393,7 +563,7 @@ function BookPanel() {
       }}
     >
       <fieldset>
-        <legend className="font-semibold">Hizmet</legend>
+        <legend className="font-semibold">{c.service}</legend>
         <div className="mt-3 flex flex-wrap gap-2">
           {services.map((s) => (
             <button aria-pressed={service === s.id} className={chip(service === s.id)} key={s.id} onClick={() => setService(s.id)} type="button">
@@ -403,19 +573,19 @@ function BookPanel() {
         </div>
       </fieldset>
       <fieldset className="mt-6">
-        <legend className="font-semibold">Berber</legend>
+        <legend className="font-semibold">{c.barber}</legend>
         <div className="mt-3 flex flex-wrap gap-2">
           {[null, ...barbers.map((b) => b.id)].map((b) => (
             <button aria-pressed={barber === b} className={chip(barber === b)} key={b ?? "any"} onClick={() => setBarber(b)} type="button">
-              {b ? barberName(b) : "Fark etmez"}
+              {b ? barberName(b) : c.any}
             </button>
           ))}
         </div>
       </fieldset>
       <fieldset className="mt-6">
-        <legend className="font-semibold">Saat</legend>
+        <legend className="font-semibold">{c.time}</legend>
         <div className="mt-3 flex gap-2">
-          {(["Bugün", "Yarın"] as const).map((l, i) => (
+          {[c.today, c.tomorrow].map((l, i) => (
             <button aria-pressed={day === i} className={chip(day === i)} disabled={i === 0 && !slotsFor(0).length} key={l} onClick={() => setDayPick(i as 0 | 1)} type="button">
               {l}
             </button>
@@ -430,18 +600,18 @@ function BookPanel() {
             ))}
           </div>
         ) : (
-          <p className="mt-3 text-sm text-[var(--sk-muted)]">Bu gün boş saat kalmadı. Canlı sıraya girebilirsiniz.</p>
+          <p className="mt-3 text-sm text-[var(--sk-muted)]">{c.noSlots}</p>
         )}
-        {tried && !slot && <p className="mt-2 text-sm text-[#F2A38F]">Bir saat seçin.</p>}
+        {tried && !slot && <p className="mt-2 text-sm text-[#F2A38F]">{c.pickTime}</p>}
       </fieldset>
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
         <label className="block text-sm font-semibold" htmlFor="sk-bname">
-          Adınız
+          {c.name}
           <input aria-invalid={!!errName} autoComplete="given-name" className={field} id="sk-bname" onChange={(e) => setName(e.target.value)} value={name} />
           {errName && <span className="mt-1 block font-normal text-[#F2A38F]">{errName}</span>}
         </label>
         <label className="block text-sm font-semibold" htmlFor="sk-bphone">
-          Cep telefonu
+          {c.phone}
           <input aria-invalid={!!errPhone} autoComplete="tel" className={field} id="sk-bphone" inputMode="tel" onChange={(e) => setPhone(e.target.value)} placeholder="05XX XXX XX XX" value={phone} />
           {errPhone && <span className="mt-1 block font-normal text-[#F2A38F]">{errPhone}</span>}
         </label>
@@ -451,16 +621,16 @@ function BookPanel() {
       <div className="fixed inset-x-0 bottom-0 z-30 border-t border-[var(--sk-line)] bg-[var(--sk-bg)]/95 p-3 backdrop-blur sm:static sm:mt-7 sm:border-0 sm:bg-transparent sm:p-0">
         <button className="flex min-h-14 w-full items-center justify-between gap-3 bg-[var(--sk-copper)] px-5 text-left text-white hover:bg-[#9A5E3F]" type="submit">
           <span className="min-w-0">
-            <span className="block font-[family-name:var(--sk-display)] tracking-wide">RANDEVUYU AL</span>
+            <span className="block font-[family-name:var(--sk-display)] tracking-wide">{c.bookCta}</span>
             <span className="block truncate text-xs opacity-85">
               {svc.name}
-              {slot ? ` · ${day === 0 ? "bugün" : "yarın"} ${hm(slot.t)} · ${barberName(slot.who)}` : " · saat seçin"}
+              {slot ? c.when(day === 0, hm(slot.t), barberName(slot.who)) : c.chooseTime}
             </span>
           </span>
           <span className="shrink-0 font-semibold">{tl(svc.price)}</span>
         </button>
       </div>
-      <p className="mt-3 text-xs text-[var(--sk-muted)]">Fiyatlar örnektir. Kapora alınmaz.</p>
+      <p className="mt-3 text-xs text-[var(--sk-muted)]">{c.priceNote}</p>
     </form>
   );
 }
@@ -478,24 +648,27 @@ function ShopView({
   setRunning: (r: boolean) => void;
   mine: number | null;
 }) {
+  const lang = useLang();
+  const c = COPY[lang];
+  const { serviceName } = skIn(lang);
   const next = shop.queue[0];
   return (
     <div className="border border-[var(--sk-line)] bg-[var(--sk-panel)] p-5 text-white sm:p-8">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h3 className="font-[family-name:var(--sk-display)] text-3xl text-[var(--sk-copper-light)]">Dükkan ekranı</h3>
+        <h3 className="font-[family-name:var(--sk-display)] text-3xl text-[var(--sk-copper-light)]">{c.shopScreen}</h3>
         <button className="min-h-11 border border-[var(--sk-line)] px-4 text-sm font-semibold hover:bg-white/5" onClick={() => setRunning(!running)} type="button">
-          {running ? "Canlı akışı durdur" : "Canlı akışı başlat"}
+          {running ? c.pause : c.play}
         </button>
       </div>
-      <p className="mt-2 max-w-[60ch] text-sm text-white/60">Duvardaki ekran ve berberin tableti. Kesim bitince “Bitir”e basmak sıradaki müşteriye haber verir.</p>
+      <p className="mt-2 max-w-[60ch] text-sm text-white/60">{c.shopLead}</p>
 
       <div aria-hidden="true" className="mt-8 grid gap-6 md:grid-cols-2">
         <div>
-          <p className="mb-2 text-[11px] font-semibold tracking-[0.16em] text-white/50">SIRADAKİ</p>
-          <SplitFlapText charset="numeric" fontSize={flapSize} loop={false} padTo={4} text={next ? `NO${next.no}` : "YOK"} tileColor="#2B2522" />
+          <p className="mb-2 text-[11px] font-semibold tracking-[0.16em] text-white/50">{c.next}</p>
+          <SplitFlapText charset="numeric" fontSize={flapSize} loop={false} padTo={4} text={next ? `NO${next.no}` : c.none} tileColor="#2B2522" />
         </div>
         <div>
-          <p className="mb-2 text-[11px] font-semibold tracking-[0.16em] text-white/50">SON ÇAĞRILAN</p>
+          <p className="mb-2 text-[11px] font-semibold tracking-[0.16em] text-white/50">{c.lastCalled}</p>
           <SplitFlapText
             charset="numeric"
             fontSize={flapSize}
@@ -508,50 +681,50 @@ function ShopView({
         </div>
       </div>
       <p className="sr-only" aria-live="polite">
-        {shop.last ? `${shop.last.no} numara, ${barberName(shop.last.barber)} koltuğuna.` : ""}
+        {shop.last ? c.srCalled(shop.last.no, barberName(shop.last.barber)) : ""}
       </p>
 
       <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
         <div>
-          <h2 className="text-xs font-bold tracking-[0.2em] text-white/60 uppercase">Koltuklar</h2>
+          <h2 className="text-xs font-bold tracking-[0.2em] text-white/60 uppercase">{c.chairs}</h2>
           <ul className="mt-3 space-y-3">
-            {shop.chairs.map((c) => (
-              <li className="flex items-center justify-between gap-3 border border-[var(--sk-line)] p-4" key={c.barber}>
+            {shop.chairs.map((ch) => (
+              <li className="flex items-center justify-between gap-3 border border-[var(--sk-line)] p-4" key={ch.barber}>
                 <span className="min-w-0">
-                  <span className="block font-semibold">{barberName(c.barber)}</span>
-                  <span className="block truncate text-sm text-white/60">
-                    {c.ticket ? `No ${c.ticket.no} ${c.ticket.name}${c.ticket.no === mine ? " (siz)" : ""} · ${c.left} dk` : "Boş, sırada uygun kimse yok"}
+                  <span className="block font-semibold">{barberName(ch.barber)}</span>
+                  <span className="block min-w-0 [overflow-wrap:anywhere] text-sm text-white/60">
+                    {ch.ticket ? `No ${ch.ticket.no} ${ch.ticket.name}${ch.ticket.no === mine ? c.youParen : ""} · ${ch.left} ${c.min}` : c.emptyChair}
                   </span>
                 </span>
                 <button
                   className="min-h-11 shrink-0 bg-[var(--sk-copper)] px-4 text-sm font-semibold disabled:opacity-30"
-                  disabled={!c.ticket}
-                  onClick={() => setShop((s) => finish(s, c.barber))}
+                  disabled={!ch.ticket}
+                  onClick={() => setShop((s) => finish(s, ch.barber))}
                   type="button"
                 >
-                  Bitir, sıradakini çağır
+                  {c.finish}
                 </button>
               </li>
             ))}
           </ul>
         </div>
         <div>
-          <h2 className="text-xs font-bold tracking-[0.2em] text-white/60 uppercase">Sıra ({shop.queue.length})</h2>
+          <h2 className="text-xs font-bold tracking-[0.2em] text-white/60 uppercase">{c.queue(shop.queue.length)}</h2>
           {shop.queue.length ? (
             <ol className="mt-3 divide-y divide-white/8 border border-[var(--sk-line)]">
               {shop.queue.map((t) => (
                 <li className={`flex items-center justify-between gap-3 px-4 py-3 text-sm ${t.no === mine ? "text-[var(--sk-copper-light)]" : ""}`} key={t.no}>
                   <span className="font-semibold tabular-nums">No {t.no}</span>
-                  <span className="min-w-0 flex-1 truncate">
+                  <span className="min-w-0 flex-1 [overflow-wrap:anywhere]">
                     {t.name}
-                    {t.no === mine ? " (siz)" : ""} · {serviceName(t.service)}
+                    {t.no === mine ? c.youParen : ""} · {serviceName(t.service)}
                   </span>
-                  <span className="shrink-0 text-white/60">{t.pref ? barberName(t.pref) : "ilk boşalan"}</span>
+                  <span className="shrink-0 text-white/60">{t.pref ? barberName(t.pref) : c.firstFreeLower}</span>
                 </li>
               ))}
             </ol>
           ) : (
-            <p className="mt-3 text-sm text-white/60">Sırada kimse yok.</p>
+            <p className="mt-3 text-sm text-white/60">{c.emptyQueue}</p>
           )}
         </div>
       </div>

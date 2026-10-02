@@ -16,16 +16,16 @@ export const nrVars = {
 } as CSSProperties;
 
 export const images = {
-  hero: { id: "photo-1581182800629-7d90925ad072", alt: "Gözleri kapalı, gün ışığında dinlenen bir yüz", by: "Fleur Kaan" },
-  imza: { id: "photo-1683408640631-2c99fff964d7", alt: "Havluya sarılı saçla cilt bakımında uzanan bir kadın", by: "Masum Rahimi" },
-  analiz: { id: "photo-1683579808784-6faf6af67a40", alt: "Damlalıkla cilde serum uygulanıyor", by: "Masum Rahimi" },
-  bakim: { id: "photo-1570172619644-dfd03ed5d881", alt: "Yüze fırçayla maske sürülüyor", by: "Rosa Rafael" },
-  sonra: { id: "photo-1608068811588-3a67006b7489", alt: "Beyaz zemin üzerinde krem dokusu", by: "Jocelyn Morales" },
-  kas: { id: "photo-1718720410649-7524fcb0f0a5", alt: "Kaş şekillendirme sırasında yakın çekim", by: "nastiia nikitenko" },
-  tirnak: { id: "photo-1630843599725-32ead7671867", alt: "Beyaz ojeli, sade bir manikür", by: "Ellie Eshaghi" },
-  studyo: { id: "photo-1706464287882-18cf0f772f79", alt: "Beyaz, ferah bir bekleme alanı", by: "Martin Lysek" },
-  havlu: { id: "photo-1728034261564-18930dcb2c8e", alt: "Katlanmış havlular", by: "Antonio Araujo" },
-  alet: { id: "photo-1775500835259-d3b3f6d6e2f2", alt: "Keten üzerinde manikür aletleri", by: "Ksenia Pixelesse" },
-  serum: { id: "photo-1576426863848-c21f53c60b19", alt: "Beyaz zeminde damlalıklı şişe", by: "Content Pixie" },
-  koltuk: { id: "photo-1776482127816-98d2245d22a6", alt: "Beyaz bakım koltuğu ve gümüş tepsi", by: "Franco Debartolo" },
+  hero: { id: "photo-1581182800629-7d90925ad072", alt: "Gözleri kapalı, gün ışığında dinlenen bir yüz", altEn: "A face resting in daylight, eyes closed", by: "Fleur Kaan" },
+  imza: { id: "photo-1683408640631-2c99fff964d7", alt: "Havluya sarılı saçla cilt bakımında uzanan bir kadın", altEn: "A woman lying back during a facial, hair wrapped in a towel", by: "Masum Rahimi" },
+  analiz: { id: "photo-1683579808784-6faf6af67a40", alt: "Damlalıkla cilde serum uygulanıyor", altEn: "Serum applied to the skin with a dropper", by: "Masum Rahimi" },
+  bakim: { id: "photo-1570172619644-dfd03ed5d881", alt: "Yüze fırçayla maske sürülüyor", altEn: "A mask brushed onto the face", by: "Rosa Rafael" },
+  sonra: { id: "photo-1608068811588-3a67006b7489", alt: "Beyaz zemin üzerinde krem dokusu", altEn: "Cream texture on a white surface", by: "Jocelyn Morales" },
+  kas: { id: "photo-1718720410649-7524fcb0f0a5", alt: "Kaş şekillendirme sırasında yakın çekim", altEn: "Close-up during brow shaping", by: "nastiia nikitenko" },
+  tirnak: { id: "photo-1630843599725-32ead7671867", alt: "Beyaz ojeli, sade bir manikür", altEn: "A simple manicure with white polish", by: "Ellie Eshaghi" },
+  studyo: { id: "photo-1706464287882-18cf0f772f79", alt: "Beyaz, ferah bir bekleme alanı", altEn: "A white, airy waiting area", by: "Martin Lysek" },
+  havlu: { id: "photo-1728034261564-18930dcb2c8e", alt: "Katlanmış havlular", altEn: "Folded towels", by: "Antonio Araujo" },
+  alet: { id: "photo-1775500835259-d3b3f6d6e2f2", alt: "Keten üzerinde manikür aletleri", altEn: "Manicure tools on linen", by: "Ksenia Pixelesse" },
+  serum: { id: "photo-1576426863848-c21f53c60b19", alt: "Beyaz zeminde damlalıklı şişe", altEn: "A dropper bottle on a white surface", by: "Content Pixie" },
+  koltuk: { id: "photo-1776482127816-98d2245d22a6", alt: "Beyaz bakım koltuğu ve gümüş tepsi", altEn: "A white treatment chair and a silver tray", by: "Franco Debartolo" },
 };

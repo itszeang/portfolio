@@ -12,41 +12,42 @@ import { SinekkaydiPage } from "./sinekkaydi/sinekkaydi-page";
 import { NaraAssistant } from "./nara/nara-assistant";
 import { NaraBookingPage } from "./nara/nara-booking-page";
 import { NaraSite } from "./nara/nara-site";
+import type { Lang } from "@/lib/i18n";
 
 /** Demo slugs (content.ts `demos`) that have a component to render. */
 export const demoSlugs = new Set(["nara-studio", "nara-randevu", "nara-asistan", "ferah-ilgaz-hukuk", "etut-mimarlik", "esik-emlak", "lodos-meyhane", "lodos-masa", "mine-dis", "sinekkaydi-berber", "doksan-hali-saha", "mizan-fatura", "pusula-el-kitabi", "kirpi-gelen-kutusu"]);
 
-/** Renders the demo for a slug; add a case here for every new demo. */
-export function DemoView({ slug }: { slug: string }) {
+/** Renders the demo for a slug in a language; add a case here for every new demo. */
+export function DemoView({ slug, lang = "tr" }: { slug: string; lang?: Lang }) {
   switch (slug) {
     case "nara-studio":
-      return <NaraSite />;
+      return <NaraSite lang={lang} />;
     case "nara-randevu":
-      return <NaraBookingPage />;
+      return <NaraBookingPage lang={lang} />;
     case "nara-asistan":
-      return <NaraAssistant />;
+      return <NaraAssistant lang={lang} />;
     case "ferah-ilgaz-hukuk":
-      return <LawSite />;
+      return <LawSite lang={lang} />;
     case "etut-mimarlik":
-      return <EtutSite />;
+      return <EtutSite lang={lang} />;
     case "esik-emlak":
-      return <EsikSite />;
+      return <EsikSite lang={lang} />;
     case "lodos-meyhane":
-      return <LodosSite />;
+      return <LodosSite lang={lang} />;
     case "lodos-masa":
-      return <LodosBookingPage />;
+      return <LodosBookingPage lang={lang} />;
     case "mine-dis":
-      return <MinePage />;
+      return <MinePage lang={lang} />;
     case "sinekkaydi-berber":
-      return <SinekkaydiPage />;
+      return <SinekkaydiPage lang={lang} />;
     case "doksan-hali-saha":
-      return <DoksanPage />;
+      return <DoksanPage lang={lang} />;
     case "mizan-fatura":
-      return <MizanPage />;
+      return <MizanPage lang={lang} />;
     case "pusula-el-kitabi":
-      return <PusulaPage />;
+      return <PusulaPage lang={lang} />;
     case "kirpi-gelen-kutusu":
-      return <KirpiPage />;
+      return <KirpiPage lang={lang} />;
     default:
       return null;
   }

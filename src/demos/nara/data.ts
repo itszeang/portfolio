@@ -121,3 +121,42 @@ export function saveBookings(list: Booking[]) {
 
 export const BOOKING_PATH = "/hizmetler/online-randevu-sistemi/nara-randevu";
 export const SITE_PATH = "/hizmetler/kurumsal-web-sitesi/nara-studio";
+
+// --- English ---------------------------------------------------------------------
+const EN = {
+  categories: {
+    cilt: { name: "Skin care", note: "Matched to what your skin needs, after a short analysis." },
+    kas: { name: "Brows and lashes", note: "Shapes drawn for your face that look natural." },
+    tirnak: { name: "Nails", note: "Hygienic, with single-use sets." },
+  } as Record<Category, { name: string; note: string }>,
+  services: {
+    "klasik-cilt": "Classic facial",
+    hydrafacial: "Hydrafacial",
+    "leke-bakimi": "Pigmentation facial",
+    "kas-tasarimi": "Brow shaping",
+    "kas-laminasyonu": "Brow lamination",
+    "kirpik-lifting": "Lash lift",
+    manikur: "Manicure",
+    "kalici-oje": "Gel polish",
+    pedikur: "Pedicure",
+  } as Record<string, string>,
+  roles: { ece: "Skin care specialist", selin: "Brow and lash specialist", deniz: "Nail specialist" } as Record<string, string>,
+  dayNames: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+  dayShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+};
+
+/** Nara's names and paths in a language. */
+export function naraIn(lang: "tr" | "en") {
+  if (lang === "tr") return { categories, services, staff, dayNames, dayShort, tl, bookingPath: BOOKING_PATH, sitePath: SITE_PATH, assistantPath: "/hizmetler/yapay-zeka-otomasyonu/nara-asistan" };
+  return {
+    categories: categories.map((c) => ({ ...c, ...EN.categories[c.id] })),
+    services: services.map((s) => ({ ...s, name: EN.services[s.id] ?? s.name })),
+    staff: staff.map((p) => ({ ...p, role: EN.roles[p.id] ?? p.role })),
+    dayNames: EN.dayNames,
+    dayShort: EN.dayShort,
+    tl: (n: number) => `₺${n.toLocaleString("en-GB")}`,
+    bookingPath: "/en/services/online-booking-system/nara-randevu",
+    sitePath: "/en/services/business-website/nara-studio",
+    assistantPath: "/en/services/ai-automation/nara-asistan",
+  };
+}

@@ -10,11 +10,13 @@ import type { ReactNode } from "react";
 import { ContactCardCtas } from "./contact-card-ctas";
 import { FadeIn } from "@/components/rbp/motion-primitives";
 import { ShaderFlow } from "@/components/rbp/shader-flow";
+import type { Lang } from "@/lib/i18n";
 
 const CARD_FADE_MASK =
   "radial-gradient(ellipse 90% 110% at 50% 50%, rgba(0,0,0,1) 0%, rgba(0,0,0,0.92) 40%, rgba(0,0,0,0.7) 70%, rgba(0,0,0,0.4) 90%, rgba(0,0,0,0.15) 100%)";
 
-export function ContactCard(): ReactNode {
+export function ContactCard({ lang = "tr" }: { lang?: Lang }): ReactNode {
+  const en = lang === "en";
   return (
     <section className="mx-auto my-12 w-full max-w-275 px-6 sm:my-20 sm:px-10" id="iletisim" data-background-hue="0">
       <FadeIn>
@@ -39,11 +41,12 @@ export function ContactCard(): ReactNode {
             <div className="relative grid gap-8 p-6 sm:gap-10 sm:p-7 md:grid-cols-[1.2fr_1fr] md:items-stretch md:gap-6 md:p-6">
               <div className="flex flex-col gap-5">
                 <h2 className="font-serif text-[2.25rem] font-medium leading-[1.05] tracking-tight text-foreground sm:text-[2.75rem] lg:text-[3.25rem]">
-                  Hadi konuşalım
+                  {en ? "Let's talk" : "Hadi konuşalım"}
                 </h2>
                 <p className="max-w-[29ch] text-[18px] leading-[1.4] tracking-tight text-foreground/65 sm:text-[22px] mb-6">
-                  Yeni projeler, fikirler ya da iş birlikleri için her zaman
-                  açığım. Bir fikrin varsa yaz, birlikte kuralım.
+                  {en
+                    ? "I'm always open to new projects, ideas and collaborations. If you have an idea, write to me and let's build it."
+                    : "Yeni projeler, fikirler ya da iş birlikleri için her zaman açığım. Bir fikrin varsa yaz, birlikte kuralım."}
                 </p>
                 <ContactCardCtas />
               </div>
@@ -52,7 +55,7 @@ export function ContactCard(): ReactNode {
                 <div className="flex flex-wrap items-center justify-center gap-2 opacity-75 sm:gap-3">
                   <SocialIcon
                     href="mailto:hello@burakalpyahsi.com"
-                    label="E-posta"
+                    label={en ? "Email" : "E-posta"}
                     lucideIcon={Mail}
                   />
                   <SocialIcon
@@ -81,7 +84,7 @@ export function ContactCard(): ReactNode {
                     &copy; 2026 Burak Alp Yahşi
                   </p>
                   <p className="text-[12px] tracking-tight text-foreground/45">
-                    Next.js ile geliştirildi
+                    {en ? "Built with Next.js" : "Next.js ile geliştirildi"}
                   </p>
                 </div>
               </div>

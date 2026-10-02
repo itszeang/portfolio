@@ -13,6 +13,8 @@ export function GET() {
     "",
     `${person.bio} ${person.location} merkezli. ${person.availability}.`,
     "",
+    `English version: ${url("/en")}`,
+    "",
     "## Hizmetler",
     "",
     ...services.map((s) => {

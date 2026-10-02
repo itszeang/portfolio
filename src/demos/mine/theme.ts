@@ -1,5 +1,6 @@
 import { IBM_Plex_Mono, Onest } from "next/font/google";
 import type { CSSProperties } from "react";
+import type { UnsplashImage } from "@/demos/shared/unsplash";
 
 // A light, friendly grotesk for everything, and a small mono for durations.
 export const display = Onest({ subsets: ["latin", "latin-ext"], weight: ["300", "400", "500", "600"], variable: "--mine-display" });
@@ -22,10 +23,10 @@ export const mineVars = {
   "--mine-page": "#EEF4E2", // the tinted frame around the page
 } as CSSProperties;
 
-export const images = {
-  hero: { id: "photo-1777331903190-341a3dd0441b", alt: "Diş hekimi, koltukta oturan hastasıyla konuşuyor", by: "Harold Hisona" },
-  oda: { id: "photo-1704455306251-b4634215d98f", alt: "Beyaz, aydınlık bir tedavi odası", by: "Kari Bjorn Photography" },
-  rontgen: { id: "photo-1777444969135-caf869407707", alt: "Hekim ışıklı panoda röntgen filmlerini inceliyor", by: "Harold Hisona" },
-  bekleme: { id: "photo-1762625570087-6d98fca29531", alt: "Sade, beyaz bir bekleme salonu", by: "Amy Vosters" },
-  firca: { id: "photo-1617984161716-189c889bd474", alt: "Beyaz zeminde bambu diş fırçaları", by: "Nataliya Melnychuk" },
+export const images: Record<string, UnsplashImage> = {
+  hero: { id: "photo-1777331903190-341a3dd0441b", alt: "Diş hekimi, koltukta oturan hastasıyla konuşuyor", altEn: "A dentist talking with a patient in the chair", by: "Harold Hisona" },
+  oda: { id: "photo-1704455306251-b4634215d98f", alt: "Beyaz, aydınlık bir tedavi odası", altEn: "A bright, white treatment room", by: "Kari Bjorn Photography" },
+  rontgen: { id: "photo-1777444969135-caf869407707", alt: "Hekim ışıklı panoda röntgen filmlerini inceliyor", altEn: "A dentist looking at X-rays on a light box", by: "Harold Hisona" },
+  bekleme: { id: "photo-1762625570087-6d98fca29531", alt: "Sade, beyaz bir bekleme salonu", altEn: "A plain, white waiting room", by: "Amy Vosters" },
+  firca: { id: "photo-1617984161716-189c889bd474", alt: "Beyaz zeminde bambu diş fırçaları", altEn: "Bamboo toothbrushes on a white surface", by: "Nataliya Melnychuk" },
 };

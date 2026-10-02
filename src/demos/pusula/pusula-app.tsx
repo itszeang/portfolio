@@ -1,11 +1,64 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { type Answer, ask, type Cite, handbook, paraById, suggestions } from "./handbook";
+import { useLang } from "@/lib/lang-context";
+import { type Answer, ask, type Cite, handbookIn, paraById, suggestionsIn } from "./handbook";
+
+const COPY = {
+  tr: {
+    subtitle: "Personel el kitabı asistanı · simülasyon",
+    file: "el-kitabi-v4.pdf · 5 bölüm · 14 madde · güncelleme 01.09.2026",
+    view: "Görünüm",
+    tabs: [
+      ["soru", "Soru"],
+      ["kaynak", "El kitabı"],
+    ] as const,
+    qa: "Soru ve cevap",
+    h1: "El kitabına sorun, cevap kaynağıyla gelsin.",
+    lead: "Asistan yalnızca el kitabında yazanı söyler. Her cümlenin hangi maddeden geldiğini gösterir; kitapta olmayan bir şey sorulursa tahmin etmez.",
+    examples: "Örnek sorular",
+    retrieved: (n: number) => (n ? `${n} madde tarandı` : "Eşleşen madde yok"),
+    similarity: (n: number) => `benzerlik %${n}`,
+    searching: "El kitabı taranıyor…",
+    yourQuestion: "Sorunuz",
+    placeholder: "Örn. 52 yaşındayım, 3 yıldır buradayım; kaç gün iznim var?",
+    ask: "Sor",
+    handbook: "Personel el kitabı",
+    company: "Pusula Lojistik A.Ş. (örnek)",
+    title: "Personel El Kitabı",
+    edition: "Sürüm 4 · 1 Eylül 2026. Yasal kurallar 4857 sayılı İş Kanunu'ndan aktarılmıştır; şirket kuralları örnektir.",
+  },
+  en: {
+    subtitle: "Employee handbook assistant · simulation",
+    file: "handbook-v4-en.pdf · 5 sections · 14 clauses · updated 01/09/2026",
+    view: "View",
+    tabs: [
+      ["soru", "Question"],
+      ["kaynak", "Handbook"],
+    ] as const,
+    qa: "Questions and answers",
+    h1: "Ask the handbook; the answer comes with its source.",
+    lead: "The assistant only says what the handbook says. It shows which clause each sentence comes from, and if you ask about something the handbook doesn't cover, it doesn't guess.",
+    examples: "Example questions",
+    retrieved: (n: number) => (n === 0 ? "No matching clause" : n === 1 ? "1 clause retrieved" : `${n} clauses retrieved`),
+    similarity: (n: number) => `similarity ${n}%`,
+    searching: "Searching the handbook…",
+    yourQuestion: "Your question",
+    placeholder: "e.g. I'm 52 and have been here 3 years; how much leave do I get?",
+    ask: "Ask",
+    handbook: "Employee handbook",
+    company: "Pusula Lojistik A.Ş. (sample)",
+    title: "Employee Handbook",
+    edition: "Version 4 · 1 September 2026, English edition. Legal rules are taken from Turkey's Labour Act No. 4857; company rules are examples.",
+  },
+};
 
 type Msg = { role: "user"; text: string } | { role: "bot"; answer: Answer };
 
 export function PusulaApp() {
+  const lang = useLang();
+  const c = COPY[lang];
+  const handbook = handbookIn(lang);
   const [msgs, setMsgs] = useState<Msg[]>([]);
   const [draft, setDraft] = useState("");
   const [pending, setPending] = useState(false);
@@ -44,7 +97,7 @@ export function PusulaApp() {
     setPending(true);
     // A short pause stands in for retrieval and generation.
     setTimeout(() => {
-      const answer = ask(t);
+      const answer = ask(t, lang);
       setMsgs((m) => [...m, { role: "bot", answer }]);
       setPick({ msg: "last", para: null });
       setPending(false);
@@ -67,21 +120,16 @@ export function PusulaApp() {
             </svg>
             <span>
               <span className="block font-semibold">Pusula Lojistik</span>
-              <span className="block text-xs text-[var(--ps-muted)]">Personel el kitabı asistanı · simülasyon</span>
+              <span className="block text-xs text-[var(--ps-muted)]">{c.subtitle}</span>
             </span>
           </p>
-          <p className="font-[family-name:var(--ps-mono)] text-xs text-[var(--ps-muted)]">el-kitabi-v4.pdf · 5 bölüm · 14 madde · güncelleme 01.09.2026</p>
+          <p className="font-[family-name:var(--ps-mono)] text-xs text-[var(--ps-muted)]">{c.file}</p>
         </div>
       </header>
 
       <div className="mx-auto max-w-7xl px-5 pt-4 sm:px-8 lg:hidden">
-        <div aria-label="Görünüm" className="grid grid-cols-2 gap-1 rounded-xl bg-[var(--ps-paper)]/60 p-1 text-sm font-semibold" role="group">
-          {(
-            [
-              ["soru", "Soru"],
-              ["kaynak", "El kitabı"],
-            ] as const
-          ).map(([k, l]) => (
+        <div aria-label={c.view} className="grid grid-cols-2 gap-1 rounded-xl bg-[var(--ps-paper)]/60 p-1 text-sm font-semibold" role="group">
+          {c.tabs.map(([k, l]) => (
             <button aria-pressed={tab === k} className={`min-h-10 rounded-lg ${tab === k ? "bg-[var(--ps-ink)] text-white" : ""}`} key={k} onClick={() => setTab(k)} type="button">
               {l}
             </button>
@@ -90,17 +138,15 @@ export function PusulaApp() {
       </div>
 
       <main className="mx-auto grid max-w-7xl gap-6 px-5 py-6 sm:px-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:py-8">
-        <section aria-label="Soru ve cevap" className={`${tab === "soru" ? "flex" : "hidden"} min-h-[70dvh] flex-col rounded-2xl bg-[var(--ps-paper)] lg:flex lg:h-[calc(100dvh-9rem)] lg:min-h-0`}>
+        <section aria-label={c.qa} className={`${tab === "soru" ? "flex" : "hidden"} min-h-[70dvh] flex-col rounded-2xl bg-[var(--ps-paper)] lg:flex lg:h-[calc(100dvh-9rem)] lg:min-h-0`}>
           <ol aria-live="polite" className="flex-1 space-y-5 overflow-y-auto p-5 sm:p-6" ref={chat}>
             {msgs.length === 0 && (
               <li>
-                <h1 className="font-[family-name:var(--ps-serif)] text-[clamp(1.6rem,3.2vw,2.3rem)] leading-[1.15] font-semibold">El kitabına sorun, cevap kaynağıyla gelsin.</h1>
-                <p className="mt-3 max-w-[52ch] text-sm leading-6 text-[var(--ps-muted)]">
-                  Asistan yalnızca el kitabında yazanı söyler. Her cümlenin hangi maddeden geldiğini gösterir; kitapta olmayan bir şey sorulursa tahmin etmez.
-                </p>
-                <p className="mt-6 text-xs font-semibold tracking-[0.12em] text-[var(--ps-muted)] uppercase">Örnek sorular</p>
+                <h1 className="font-[family-name:var(--ps-serif)] text-[clamp(1.6rem,3.2vw,2.3rem)] leading-[1.15] font-semibold">{c.h1}</h1>
+                <p className="mt-3 max-w-[52ch] text-sm leading-6 text-[var(--ps-muted)]">{c.lead}</p>
+                <p className="mt-6 text-xs font-semibold tracking-[0.12em] text-[var(--ps-muted)] uppercase">{c.examples}</p>
                 <ul className="mt-2 flex flex-wrap gap-2">
-                  {suggestions.map((s) => (
+                  {suggestionsIn(lang).map((s) => (
                     <li key={s}>
                       <button className="min-h-10 rounded-full border border-[var(--ps-ink)]/15 px-3.5 text-left text-sm hover:border-[var(--ps-blue)] hover:text-[var(--ps-blue)]" onClick={() => send(s)} type="button">
                         {s}
@@ -119,15 +165,15 @@ export function PusulaApp() {
                 <li className={`rounded-2xl border p-4 transition-colors ${active?.msg === i ? "border-[var(--ps-blue)]/40" : "border-[var(--ps-line)]"}`} key={i}>
                   <details className="group text-xs text-[var(--ps-muted)]">
                     <summary className="cursor-pointer list-none select-none">
-                      <span className="underline decoration-dotted underline-offset-2">{m.answer.retrieved.length ? `${m.answer.retrieved.length} madde tarandı` : "Eşleşen madde yok"}</span>
+                      <span className="underline decoration-dotted underline-offset-2">{c.retrieved(m.answer.retrieved.length)}</span>
                       <span aria-hidden="true" className="ml-1 inline-block transition-transform group-open:rotate-90">›</span>
                     </summary>
                     <ul className="mt-2 space-y-1.5">
                       {m.answer.retrieved.map((r) => (
                         <li className="grid grid-cols-[3rem_minmax(0,1fr)_5rem] items-center gap-2" key={r.para}>
                           <span className="font-[family-name:var(--ps-mono)]">§{r.para}</span>
-                          <span className="truncate">{paraById(r.para).title}</span>
-                          <span aria-label={`benzerlik %${Math.round(r.score * 100)}`} className="h-1.5 overflow-hidden rounded-full bg-[var(--ps-line)]">
+                          <span className="min-w-0 [overflow-wrap:anywhere]">{paraById(r.para, lang).title}</span>
+                          <span aria-label={c.similarity(Math.round(r.score * 100))} className="h-1.5 overflow-hidden rounded-full bg-[var(--ps-line)]">
                             <span className="block h-full rounded-full bg-[var(--ps-blue)]" style={{ width: `${r.score * 100}%`, opacity: m.answer.unknown ? 0.35 : 1 }} />
                           </span>
                         </li>
@@ -137,14 +183,14 @@ export function PusulaApp() {
                   <p className={`mt-3 font-[family-name:var(--ps-serif)] text-[1.05rem] leading-7 ${m.answer.unknown ? "text-[var(--ps-muted)] italic" : ""}`}>{m.answer.text}</p>
                   {m.answer.cites.length > 0 && (
                     <div className="mt-3 flex flex-wrap gap-2">
-                      {m.answer.cites.map((c) => (
+                      {m.answer.cites.map((cite) => (
                         <button
-                          className={`inline-flex min-h-9 items-center gap-1.5 rounded-lg px-2.5 text-xs font-semibold transition-colors ${active?.msg === i && (active.para ?? m.answer.cites[0].para) === c.para ? "bg-[var(--ps-blue)] text-white" : "bg-[var(--ps-cite)] text-[var(--ps-blue)] hover:bg-[var(--ps-blue)] hover:text-white"}`}
-                          key={c.para}
-                          onClick={() => openCite(i, c)}
+                          className={`inline-flex min-h-9 items-center gap-1.5 rounded-lg px-2.5 text-xs font-semibold transition-colors ${active?.msg === i && (active.para ?? m.answer.cites[0].para) === cite.para ? "bg-[var(--ps-blue)] text-white" : "bg-[var(--ps-cite)] text-[var(--ps-blue)] hover:bg-[var(--ps-blue)] hover:text-white"}`}
+                          key={cite.para}
+                          onClick={() => openCite(i, cite)}
                           type="button"
                         >
-                          <span className="font-[family-name:var(--ps-mono)]">§{c.para}</span> {paraById(c.para).title}
+                          <span className="font-[family-name:var(--ps-mono)]">§{cite.para}</span> {paraById(cite.para, lang).title}
                         </button>
                       ))}
                     </div>
@@ -154,7 +200,7 @@ export function PusulaApp() {
             )}
             {pending && (
               <li className="flex items-center gap-2 text-sm text-[var(--ps-muted)]">
-                <span className="size-2 rounded-full bg-[var(--ps-blue)] motion-safe:animate-pulse" /> El kitabı taranıyor…
+                <span className="size-2 rounded-full bg-[var(--ps-blue)] motion-safe:animate-pulse" /> {c.searching}
               </li>
             )}
           </ol>
@@ -166,32 +212,32 @@ export function PusulaApp() {
             }}
           >
             <label className="sr-only" htmlFor="ps-q">
-              Sorunuz
+              {c.yourQuestion}
             </label>
             <input
               autoComplete="off"
               className="min-h-12 min-w-0 flex-1 rounded-xl border border-[var(--ps-ink)]/15 bg-white px-4 focus-visible:border-[var(--ps-blue)] focus-visible:outline-2 focus-visible:outline-[var(--ps-blue)]"
               id="ps-q"
               onChange={(e) => setDraft(e.target.value)}
-              placeholder="Örn. 52 yaşındayım, 3 yıldır buradayım; kaç gün iznim var?"
+              placeholder={c.placeholder}
               value={draft}
             />
             <button className="min-h-12 rounded-xl bg-[var(--ps-blue)] px-5 font-semibold text-white disabled:opacity-40" disabled={!draft.trim() || pending} type="submit">
-              Sor
+              {c.ask}
             </button>
           </form>
         </section>
 
         <section
-          aria-label="Personel el kitabı"
+          aria-label={c.handbook}
           className={`${tab === "kaynak" ? "block" : "hidden"} relative h-[75dvh] overflow-y-auto rounded-2xl bg-[var(--ps-paper)] shadow-[0_1px_0_rgba(29,36,51,0.05),0_24px_48px_-32px_rgba(29,36,51,0.4)] lg:block lg:h-[calc(100dvh-9rem)]`}
           ref={doc}
           tabIndex={0}
         >
           <article className="mx-auto max-w-[62ch] px-6 py-10 font-[family-name:var(--ps-serif)] sm:px-10">
-            <p className="font-[family-name:var(--ps-mono)] text-xs tracking-[0.14em] text-[var(--ps-muted)] uppercase">Pusula Lojistik A.Ş. (örnek)</p>
-            <h2 className="mt-2 text-3xl font-semibold">Personel El Kitabı</h2>
-            <p className="mt-2 text-sm text-[var(--ps-muted)]">Sürüm 4 · 1 Eylül 2026. Yasal kurallar 4857 sayılı İş Kanunu&apos;ndan aktarılmıştır; şirket kuralları örnektir.</p>
+            <p className="font-[family-name:var(--ps-mono)] text-xs tracking-[0.14em] text-[var(--ps-muted)] uppercase">{c.company}</p>
+            <h2 className="mt-2 text-3xl font-semibold">{c.title}</h2>
+            <p className="mt-2 text-sm text-[var(--ps-muted)]">{c.edition}</p>
             {handbook.map((s) => (
               <section className="mt-10" key={s.id}>
                 <h3 className="border-b border-[var(--ps-line)] pb-2 text-xl font-semibold">

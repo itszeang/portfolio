@@ -3,8 +3,10 @@
 import GlassCard from "@/components/smoothui/glass-card";
 import { ArrowUpRight, Menu } from "lucide-react";
 import { useState, useSyncExternalStore } from "react";
+import { ui as uiEn } from "@/content.en";
+import { useLang } from "@/lib/lang-context";
 
-const navItems = [
+const navItemsTr = [
   { href: "#hizmetler", label: "Hizmetler" },
   { href: "#projeler", label: "Projeler" },
   { href: "#deneyim", label: "Deneyim" },
@@ -33,6 +35,9 @@ const transition =
   "transition-[transform,opacity,filter] duration-[260ms] ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transform-none motion-reduce:duration-150 motion-reduce:blur-none";
 
 export function PortfolioNav() {
+  const lang = useLang();
+  const en = lang === "en";
+  const navItems = en ? uiEn.nav : navItemsTr;
   const hasScrolled = useSyncExternalStore(
     subscribeToScroll,
     getScrollSnapshot,
@@ -57,7 +62,7 @@ export function PortfolioNav() {
         inert={compact ? true : undefined}
       >
         <GlassCard {...glassProps} className="portfolio-glass" radius={16}>
-          <nav aria-label="Ana menü" className="flex items-center justify-between gap-5">
+          <nav aria-label={en ? "Main menu" : "Ana menü"} className="flex items-center justify-between gap-5">
             <a
               className="-my-3 inline-flex min-h-11 items-center text-sm font-semibold tracking-[-0.02em]"
               href="#baslangic"
@@ -77,14 +82,25 @@ export function PortfolioNav() {
                 </a>
               ))}
             </div>
-            <a
-              className="-my-3 inline-flex min-h-11 items-center gap-2 text-sm font-medium text-white"
-              href="#iletisim"
-              onClick={closeExpandedNav}
-            >
-              Birlikte çalışalım
-              <ArrowUpRight aria-hidden="true" className="size-4" />
-            </a>
+            <div className="flex items-center gap-4 sm:gap-5">
+              <a
+                aria-label={en ? "Türkçe sürüm" : "English version"}
+                className="-my-3 inline-flex min-h-11 items-center font-mono text-xs tracking-[0.08em] text-white/60 transition-colors hover:text-white"
+                href={en ? "/" : "/en"}
+                hrefLang={en ? "tr" : "en"}
+                lang={en ? "tr" : "en"}
+              >
+                {en ? "TR" : "EN"}
+              </a>
+              <a
+                className="-my-3 inline-flex min-h-11 items-center gap-2 text-sm font-medium text-white"
+                href="#iletisim"
+                onClick={closeExpandedNav}
+              >
+                {en ? "Let's work together" : "Birlikte çalışalım"}
+                <ArrowUpRight aria-hidden="true" className="size-4" />
+              </a>
+            </div>
           </nav>
         </GlassCard>
       </div>
@@ -105,7 +121,7 @@ export function PortfolioNav() {
           radius={16}
         >
           <button
-            aria-label="Menüyü aç"
+            aria-label={en ? uiEn.menuOpen : "Menüyü aç"}
             className="-m-3 flex size-11 items-center justify-center text-white/88 transition-colors hover:text-white focus-visible:text-white"
             onClick={() => setManuallyExpanded(true)}
             type="button"

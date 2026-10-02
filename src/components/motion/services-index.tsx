@@ -3,6 +3,8 @@
 import { motion, useMotionValue, useReducedMotion, useSpring } from "motion/react";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
+import type { Lang } from "@/lib/i18n";
+import { useLang } from "@/lib/lang-context";
 
 /**
  * Services as a monospace index. Hovering a row slides a white bar onto it
@@ -99,7 +101,8 @@ function paintArt(art: Art, w: number, h: number, dpr: number): HTMLCanvasElemen
 // Turkish uppercasing turns the "i" in borrowed English words into "İ"
 // (iOS -> İOS). Uppercase in Turkish, then put those words back.
 const LOANWORDS = ["iOS", "Android", "landing", "online", "page"];
-function upper(text: string): string {
+function upper(text: string, lang: Lang = "tr"): string {
+  if (lang === "en") return text.toUpperCase();
   let out = text.toLocaleUpperCase("tr");
   for (const w of LOANWORDS) out = out.replaceAll(w.toLocaleUpperCase("tr"), w.toUpperCase());
   return out;
@@ -204,6 +207,7 @@ function Preview({ index, ids, visible }: { index: number | null; ids: string[];
 }
 
 export function ServicesIndex({ services }: { services: readonly Service[] }) {
+  const lang = useLang();
   const reduce = useReducedMotion();
   const wrapRef = useRef<HTMLDivElement>(null);
   const rowRefs = useRef<(HTMLLIElement | null)[]>([]);
@@ -294,13 +298,13 @@ export function ServicesIndex({ services }: { services: readonly Service[] }) {
                   className="font-medium outline-none after:absolute after:inset-0 after:cursor-pointer after:content-['']"
                   href={s.href}
                 >
-                  {upper(s.name)}
+                  {upper(s.name, lang)}
                 </Link>
               ) : (
-                <span className="font-medium">{upper(s.name)}</span>
+                <span className="font-medium">{upper(s.name, lang)}</span>
               )}
               <span className="text-white/55 md:text-white">{art.tools.toUpperCase()}</span>
-              <span className="text-white/70 md:text-white">{upper(s.includes.slice(0, 3).join(", "))}</span>
+              <span className="text-white/70 md:text-white">{upper(s.includes.slice(0, 3).join(", "), lang)}</span>
             </li>
           );
         })}

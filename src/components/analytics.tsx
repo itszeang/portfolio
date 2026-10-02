@@ -1,6 +1,8 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import Script from "next/script";
+import { isEnglishPath } from "@/lib/i18n";
 import { useEffect, useSyncExternalStore } from "react";
 
 /**
@@ -61,6 +63,7 @@ export const CONSENT_SCRIPT = GA_ID
 type Gtag = (...args: unknown[]) => void;
 
 export function Analytics() {
+  const en = isEnglishPath(usePathname() ?? "");
   const consent = useConsent();
 
   // Contact clicks are the site's conversions; GA doesn't track mailto/tel
@@ -92,12 +95,14 @@ export function Analytics() {
       )}
       {consent === "unset" && (
         <div
-          aria-label="Çerez tercihi"
+          aria-label={en ? "Cookie choice" : "Çerez tercihi"}
           className="consent-banner fixed inset-x-4 bottom-4 z-[60] mx-auto flex max-w-xl flex-col gap-4 rounded-2xl border border-white/12 bg-black/80 p-5 text-sm leading-6 text-white/80 backdrop-blur-xl sm:flex-row sm:items-center"
           role="dialog"
         >
           <p className="flex-1">
-            Siteyi nasıl kullandığını anlamak için Google Analytics çerezleri kullanmak istiyorum. İzin verir misin?
+            {en
+              ? "I'd like to use Google Analytics cookies to understand how the site is used. Is that OK with you?"
+              : "Siteyi nasıl kullandığını anlamak için Google Analytics çerezleri kullanmak istiyorum. İzin verir misin?"}
           </p>
           <div className="flex shrink-0 gap-2">
             <button
@@ -105,14 +110,14 @@ export function Analytics() {
               onClick={() => write("denied")}
               type="button"
             >
-              Reddet
+              {en ? "No thanks" : "Reddet"}
             </button>
             <button
               className="min-h-11 rounded-full bg-[#d4186e] px-4 text-white transition-colors hover:bg-[#e8227a]"
               onClick={() => write("granted")}
               type="button"
             >
-              Kabul et
+              {en ? "Accept" : "Kabul et"}
             </button>
           </div>
         </div>
@@ -123,6 +128,7 @@ export function Analytics() {
 
 /** Footer link that brings the consent banner back. */
 export function CookiePreferencesButton({ className }: { className?: string }) {
+  const en = isEnglishPath(usePathname() ?? "");
   if (!GA_ID) return null;
   return (
     <button
@@ -135,7 +141,7 @@ export function CookiePreferencesButton({ className }: { className?: string }) {
       }}
       type="button"
     >
-      Çerez tercihleri
+      {en ? "Cookie preferences" : "Çerez tercihleri"}
     </button>
   );
 }

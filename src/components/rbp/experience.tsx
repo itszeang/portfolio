@@ -6,6 +6,8 @@
 import { ChevronDown } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useState, type ReactNode } from "react";
+import { experience as experienceEn, ui as uiEn } from "@/content.en";
+import { useLang } from "@/lib/lang-context";
 
 type Entry = {
   company: string;
@@ -52,17 +54,19 @@ const ROW_HEIGHT = 64;
 const ROW_GAP = 8;
 
 export function Experience(): ReactNode {
+  const lang = useLang();
+  const entries = lang === "en" ? ENTRIES.map((e, i) => ({ ...e, ...experienceEn[i] })) : ENTRIES;
   const [open, setOpen] = useState(false);
   const collapsedHeight =
     Math.floor(COLLAPSED_COUNT) * ROW_HEIGHT +
     Math.floor(COLLAPSED_COUNT) * ROW_GAP +
     (COLLAPSED_COUNT % 1) * ROW_HEIGHT;
-  const hiddenCount = ENTRIES.length - Math.floor(COLLAPSED_COUNT);
+  const hiddenCount = entries.length - Math.floor(COLLAPSED_COUNT);
 
   return (
     <div className="flex flex-col gap-3">
       <h3 className="text-foreground text-[15px] font-semibold tracking-tight">
-        Deneyim
+        {lang === "en" ? "Experience" : "Deneyim"}
       </h3>
       <div
         className={`border-foreground/5 bg-foreground/2 dark:bg-foreground/5 relative overflow-hidden rounded-4xl border px-2 pt-2 sm:px-4 sm:pt-4 ${
@@ -79,7 +83,7 @@ export function Experience(): ReactNode {
           style={{ overflow: "hidden" }}
         >
           <ul className="flex flex-col gap-2">
-            {ENTRIES.map((entry) => (
+            {entries.map((entry) => (
               <li
                 key={`${entry.company}-${entry.period}`}
                 className="bg-background border-foreground/5 flex items-center gap-4 rounded-3xl border p-2"
@@ -135,7 +139,7 @@ export function Experience(): ReactNode {
                 : "absolute inset-x-0 bottom-0 z-10 py-3 sm:py-4"
             }`}
           >
-            {open ? "Daha az göster" : `${hiddenCount} tane daha göster`}
+            {lang === "en" ? (open ? uiEn.showLess : uiEn.showMore(hiddenCount)) : open ? "Daha az göster" : `${hiddenCount} tane daha göster`}
             <motion.span
               animate={{ rotate: open ? 180 : 0 }}
               transition={{ duration: 0.25 }}

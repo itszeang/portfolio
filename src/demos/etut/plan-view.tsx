@@ -3,15 +3,48 @@
 import { UnsplashPhoto } from "@/demos/shared/unsplash";
 import { NumberTicker } from "@/components/magicui/number-ticker";
 import { useId, useState } from "react";
-import { type Kind, type Project, type Room, area, kinds, m2, projects } from "./data";
+import { useLang } from "@/lib/lang-context";
+import { locale } from "@/lib/i18n";
+import { type Kind, type Project, type Room, area, etutIn, kinds } from "./data";
 import { images } from "./theme";
+
+const COPY = {
+  tr: {
+    plan: (n: string) => `${n} kat planı`,
+    before: "ÖNCE",
+    after: "SONRA",
+    slide: "Önce ve sonra arasında kaydır",
+    total: "TOPLAM ALAN",
+    selected: "SEÇİLİ MEKÂN",
+    hover: "Plandaki bir mekânın üzerine gelin.",
+    split: "BÖLME",
+    spaces: "mekân",
+    kind: "Proje türü",
+    all: "Tümü",
+    open: "Plan açık",
+    see: "Planı gör",
+    scale: "ÖLÇEK 1:100 · KAT PLANI",
+  },
+  en: {
+    plan: (n: string) => `${n}, floor plan`,
+    before: "BEFORE",
+    after: "AFTER",
+    slide: "Slide between before and after",
+    total: "TOTAL AREA",
+    selected: "SELECTED SPACE",
+    hover: "Hover over or focus a space on the plan.",
+    split: "LAYOUT",
+    spaces: "spaces",
+    kind: "Project type",
+    all: "All",
+    open: "Plan open",
+    see: "See the plan",
+    scale: "SCALE 1:100 · FLOOR PLAN",
+  },
+};
 
 const S = 40; // px per metre
 const PAD = 44; // room for the dimension line
-
-function fmt(n: number) {
-  return n.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-}
 
 /** Rooms as a scaled floor plan. `labels` off for thumbnails. */
 function Rooms({
@@ -27,6 +60,7 @@ function Rooms({
   labels?: boolean;
   tone?: "ink" | "ghost";
 }) {
+  const { m2 } = etutIn(useLang());
   const stroke = tone === "ghost" ? "var(--etut-muted)" : "var(--etut-ink)";
   return (
     <g>
@@ -68,6 +102,7 @@ function Rooms({
 }
 
 function Dimension({ width }: { width: number }) {
+  const { fmt } = etutIn(useLang());
   const w = width * S;
   return (
     <g fill="none" stroke="var(--etut-muted)" strokeWidth={1}>
@@ -85,6 +120,9 @@ function Dimension({ width }: { width: number }) {
 
 /** Large interactive plan, with a before/after split for renovations. */
 function PlanViewer({ project }: { project: Project }) {
+  const lang = useLang();
+  const c = COPY[lang];
+  const { m2, fmt } = etutIn(lang);
   const [hovered, setHovered] = useState<number | null>(null);
   const [split, setSplit] = useState(50);
   const clipA = useId();
@@ -98,7 +136,7 @@ function PlanViewer({ project }: { project: Project }) {
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_260px]">
       <div className="relative overflow-hidden bg-[var(--etut-card)] p-3 sm:p-5">
-        <svg aria-label={`${project.name} kat planı`} className="h-auto w-full" role="img" viewBox={vb}>
+        <svg aria-label={c.plan(project.name)} className="h-auto w-full" role="img" viewBox={vb}>
           <defs>
             <clipPath id={clipA}>
               <rect height={h + PAD * 2} width={at + PAD} x={-PAD} y={-PAD} />
@@ -118,10 +156,10 @@ function PlanViewer({ project }: { project: Project }) {
               </g>
               <line stroke="var(--etut-red)" strokeWidth={2} x1={at} x2={at} y1={-10} y2={h + 10} />
               <text fill="var(--etut-red)" fontFamily="var(--etut-mono)" fontSize={10} textAnchor="end" x={at - 6} y={h + 24}>
-                ÖNCE
+                {c.before}
               </text>
               <text fill="var(--etut-red)" fontFamily="var(--etut-mono)" fontSize={10} x={at + 6} y={h + 24}>
-                SONRA
+                {c.after}
               </text>
             </>
           ) : (
@@ -131,9 +169,9 @@ function PlanViewer({ project }: { project: Project }) {
         </svg>
         {project.before && (
           <label className="mt-4 flex items-center gap-4 font-[family-name:var(--etut-mono)] text-[11px] text-[var(--etut-muted)]">
-            <span>ÖNCE</span>
+            <span>{c.before}</span>
             <input
-              aria-label="Önce ve sonra arasında kaydır"
+              aria-label={c.slide}
               className="h-11 flex-1 accent-[var(--etut-red)]"
               max={100}
               min={0}
@@ -141,20 +179,20 @@ function PlanViewer({ project }: { project: Project }) {
               type="range"
               value={split}
             />
-            <span>SONRA</span>
+            <span>{c.after}</span>
           </label>
         )}
       </div>
 
       <div className="flex flex-col gap-5 font-[family-name:var(--etut-mono)] text-[12px]">
         <div className="border-t-2 border-[var(--etut-ink)] pt-3">
-          <p className="text-[var(--etut-muted)]">TOPLAM ALAN</p>
+          <p className="text-[var(--etut-muted)]">{c.total}</p>
           <p className="mt-1 font-[family-name:var(--etut-display)] text-6xl font-bold tracking-[-0.05em]">
-            <NumberTicker className="text-[var(--etut-ink)] dark:text-[var(--etut-ink)]" key={project.id} value={area(project.plan)} /> m²
+            <NumberTicker className="text-[var(--etut-ink)] dark:text-[var(--etut-ink)]" key={project.id} locale={locale(lang)} value={area(project.plan)} /> m²
           </p>
         </div>
         <div className="min-h-28 border-t border-[var(--etut-ink)]/20 pt-3" aria-live="polite">
-          <p className="text-[var(--etut-muted)]">SEÇİLİ MEKÂN</p>
+          <p className="text-[var(--etut-muted)]">{c.selected}</p>
           {room ? (
             <>
               <p className="mt-1 font-[family-name:var(--etut-body)] text-lg font-semibold">{room.name}</p>
@@ -163,14 +201,14 @@ function PlanViewer({ project }: { project: Project }) {
               </p>
             </>
           ) : (
-            <p className="mt-1 font-[family-name:var(--etut-body)] text-sm text-[var(--etut-muted)]">Plandaki bir mekânın üzerine gelin.</p>
+            <p className="mt-1 font-[family-name:var(--etut-body)] text-sm text-[var(--etut-muted)]">{c.hover}</p>
           )}
         </div>
         {project.before && (
           <div className="border-t border-[var(--etut-ink)]/20 pt-3">
-            <p className="text-[var(--etut-muted)]">BÖLME</p>
+            <p className="text-[var(--etut-muted)]">{c.split}</p>
             <p className="mt-1">
-              {project.before.length} mekân → {project.plan.length} mekân
+              {project.before.length} {c.spaces} → {project.plan.length} {c.spaces}
             </p>
           </div>
         )}
@@ -192,15 +230,18 @@ function Thumb({ project }: { project: Project }) {
 
 /** Project list with a type filter; the chosen one opens in the plan viewer. */
 export function ProjectsExplorer() {
-  const [kind, setKind] = useState<Kind | "Tümü">("Tümü");
+  const lang = useLang();
+  const c = COPY[lang];
+  const { projects, kindName } = etutIn(lang);
+  const [kind, setKind] = useState<Kind | "all">("all");
   const [selectedId, setSelectedId] = useState(projects[0].id);
-  const list = projects.filter((p) => kind === "Tümü" || p.kind === kind);
+  const list = projects.filter((p) => kind === "all" || p.kind === kind);
   const selected = projects.find((p) => p.id === selectedId)!;
 
   return (
     <div>
-      <div aria-label="Proje türü" className="flex flex-wrap gap-x-6 gap-y-2" role="radiogroup">
-        {(["Tümü", ...kinds] as const).map((k) => (
+      <div aria-label={c.kind} className="flex flex-wrap gap-x-6 gap-y-2" role="radiogroup">
+        {(["all", ...kinds] as const).map((k) => (
           <button
             aria-checked={kind === k}
             className={`min-h-10 border-b-2 px-1 text-sm font-medium transition-colors ${kind === k ? "border-[var(--etut-ink)]" : "border-transparent text-[var(--etut-muted)] hover:text-[var(--etut-ink)]"}`}
@@ -209,7 +250,7 @@ export function ProjectsExplorer() {
             role="radio"
             type="button"
           >
-            {k}
+            {k === "all" ? c.all : kindName(k)}
           </button>
         ))}
       </div>
@@ -232,7 +273,8 @@ export function ProjectsExplorer() {
               <span className="relative block aspect-[4/3] overflow-hidden bg-[var(--etut-card)]">
                 <UnsplashPhoto
                   className="grayscale transition-[filter,scale] duration-500 group-hover:scale-[1.02] group-hover:grayscale-0"
-                  image={images[p.id as keyof typeof images]}
+                  image={images[p.id]}
+                  lang={lang}
                   sizes="(min-width: 640px) 50vw, 100vw"
                 />
                 <span className="absolute right-3 bottom-3 w-28 bg-white/90 p-1.5 sm:w-36">
@@ -245,7 +287,7 @@ export function ProjectsExplorer() {
                   <span className="block">{p.place}</span>
                 </span>
                 <span className="font-bold">
-                  {on ? "Plan açık" : "Planı gör"} <span aria-hidden="true" className={`ml-1 inline-block size-2.5 ${on ? "bg-[var(--etut-red)]" : "bg-[var(--etut-ink)]"}`} />
+                  {on ? c.open : c.see} <span aria-hidden="true" className={`ml-1 inline-block size-2.5 ${on ? "bg-[var(--etut-red)]" : "bg-[var(--etut-ink)]"}`} />
                 </span>
               </span>
             </button>
@@ -257,11 +299,11 @@ export function ProjectsExplorer() {
         <div className="flex flex-wrap items-end justify-between gap-4 border-t border-[var(--etut-ink)] pt-4">
           <div>
             <p className="font-[family-name:var(--etut-mono)] text-[11px] text-[var(--etut-muted)]">
-              {selected.kind.toLocaleUpperCase("tr")} · {selected.place.toLocaleUpperCase("tr")} · {selected.year}
+              {kindName(selected.kind).toLocaleUpperCase(locale(lang))} · {selected.place.toLocaleUpperCase(locale(lang))} · {selected.year}
             </p>
             <h3 className="mt-2 font-[family-name:var(--etut-display)] text-[clamp(2.4rem,5vw,4.5rem)] leading-[0.95] font-bold tracking-[-0.05em]">{selected.name}</h3>
           </div>
-          <p className="font-[family-name:var(--etut-mono)] text-[11px] text-[var(--etut-muted)]">ÖLÇEK 1:100 · KAT PLANI</p>
+          <p className="font-[family-name:var(--etut-mono)] text-[11px] text-[var(--etut-muted)]">{c.scale}</p>
         </div>
         <p className="mt-5 max-w-[62ch] leading-7">{selected.story}</p>
         <div className="mt-8">

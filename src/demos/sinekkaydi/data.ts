@@ -1,6 +1,9 @@
 // Sinekkaydı: a fictional Eskişehir barbershop for the "canlı sıra" demo. The
 // queue is a small simulation: every tick is one minute, chairs free up as
 // cuts finish and waiting customers sit in the first chair that suits them.
+// Names are Turkish; `skIn` gives the English ones.
+
+import type { Lang } from "@/lib/i18n";
 
 export type ServiceId = "sac" | "sakal" | "sacsakal" | "cocuk" | "ense";
 export const services: { id: ServiceId; name: string; minutes: number; price: number }[] = [
@@ -148,4 +151,29 @@ export const addDays = (iso: string, n: number) => {
   return isoDay(new Date(y, m - 1, d + n));
 };
 
-export const tl = (n: number) => `${n.toLocaleString("tr-TR")} ₺`;
+export const tl = (n: number, lang: Lang = "tr") => (lang === "en" ? `₺${n.toLocaleString("en-GB")}` : `${n.toLocaleString("tr-TR")} ₺`);
+
+const SERVICE_EN: Record<ServiceId, string> = {
+  sac: "Haircut",
+  sakal: "Beard",
+  sacsakal: "Hair and beard",
+  cocuk: "Child's cut",
+  ense: "Neckline and sides",
+};
+const BARBER_NOTE_EN: Record<BarberId, string> = {
+  huseyin: "Classic cuts, straight razor",
+  kaan: "Fades, modern cuts",
+  deniz: "Beards, children",
+};
+
+/** Services and barbers with their names in one language. */
+export function skIn(lang: Lang) {
+  const en = lang === "en";
+  const list = en ? services.map((x) => ({ ...x, name: SERVICE_EN[x.id] })) : services;
+  return {
+    services: list,
+    barbers: en ? barbers.map((b) => ({ ...b, note: BARBER_NOTE_EN[b.id] })) : barbers,
+    serviceName: (id: ServiceId) => list.find((x) => x.id === id)!.name,
+    tl: (n: number) => tl(n, lang),
+  };
+}

@@ -2,15 +2,42 @@
 
 import { animate, useInView, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { mails, nightMinute, trays } from "./mail";
+import { useLang } from "@/lib/lang-context";
+import { kirpiIn, nightMinute } from "./mail";
+
+const COPY = {
+  tr: {
+    sep: ".",
+    lead: "Dün 18.00'de atölye kapandı. Sabah 08.30'da gelen kutusu açıldığında her şey rafındaydı.",
+    time: "Saat",
+    drag: "Saati sürükleyin ya da ok tuşlarıyla ilerletin.",
+    phish: "Oltalama olarak ayırdı; bağlantıya dokunmadı.",
+    shelved: (tray: string, note: string) => `${tray} rafına koydu: ${note}.`,
+    notYet: "Henüz gelmedi.",
+    closed: "Atölye kapalı. Gelen kutusu boş.",
+    summary: (n: number, drafts: number, blocked: number, morning: boolean) =>
+      `${n} e-posta geldi · ${drafts} cevap taslağı hazır${blocked ? ` · ${blocked} oltalama ayıklandı` : ""}${morning ? " · sabah her şey rafında." : "."}`,
+  },
+  en: {
+    sep: ":",
+    lead: "The workshop closed at 18:00 yesterday. When the inbox was opened at 08:30, everything was on its shelf.",
+    time: "Time",
+    drag: "Drag the clock or move it with the arrow keys.",
+    phish: "Set aside as phishing; didn't touch the link.",
+    shelved: (tray: string, note: string) => `Put on “${tray}”: ${note}.`,
+    notYet: "Not here yet.",
+    closed: "The workshop is closed. The inbox is empty.",
+    summary: (n: number, drafts: number, blocked: number, morning: boolean) =>
+      `${n === 1 ? "1 email" : `${n} emails`} in · ${drafts === 1 ? "1 draft reply" : `${drafts} draft replies`} ready${blocked ? ` · ${blocked} phishing caught` : ""}${morning ? " · by morning, everything's on its shelf." : "."}`,
+  },
+};
 
 // The log runs from closing time (18.00) to when the owner opens the inbox (08.30).
 const END = 14 * 60 + 30;
-const clock = (min: number) => {
+const clockIn = (sep: string) => (min: number) => {
   const t = (18 * 60 + min) % (24 * 60);
-  return `${String(Math.floor(t / 60)).padStart(2, "0")}.${String(t % 60).padStart(2, "0")}`;
+  return `${String(Math.floor(t / 60)).padStart(2, "0")}${sep}${String(t % 60).padStart(2, "0")}`;
 };
-const events = [...mails].sort((a, b) => nightMinute(a.time) - nightMinute(b.time)).map((m) => ({ mail: m, at: nightMinute(m.time), tray: trays.find((t) => t.id === m.tray)! }));
 const hours = [0, 2, 4, 6, 8, 10, 12, 14]; // hours after 18.00 that get a tick label
 const noop = () => () => {};
 
@@ -18,6 +45,11 @@ const noop = () => () => {};
 const dawn = (min: number) => Math.min(1, Math.max(0, (min - 11 * 60) / (END - 11 * 60)));
 
 export function NightLog() {
+  const lang = useLang();
+  const c = COPY[lang];
+  const clock = clockIn(c.sep);
+  const { mails, trays } = kirpiIn(lang);
+  const events = [...mails].sort((a, b) => nightMinute(a.time) - nightMinute(b.time)).map((m) => ({ mail: m, at: nightMinute(m.time), tray: trays.find((t) => t.id === m.tray)! }));
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.35 });
   const reduce = useReducedMotion();
@@ -50,9 +82,7 @@ export function NightLog() {
 
       <div className="relative p-5 sm:p-10">
         <div className="flex flex-wrap items-end justify-between gap-4">
-          <p className="max-w-[34ch] text-[15px] leading-6 text-white/75">
-            Dün 18.00&apos;de atölye kapandı. Sabah 08.30&apos;da gelen kutusu açıldığında her şey rafındaydı.
-          </p>
+          <p className="max-w-[34ch] text-[15px] leading-6 text-white/75">{c.lead}</p>
           <p aria-hidden="true" className="font-[family-name:var(--kp-mono)] text-[clamp(2.8rem,7vw,4.8rem)] leading-none font-medium tracking-[-0.04em] tabular-nums">
             {clock(shown)}
           </p>
@@ -61,7 +91,7 @@ export function NightLog() {
         {/* Hour axis with a mark for every e-mail; the clock is a native range input. */}
         <div className="relative mt-10">
           <input
-            aria-label="Saat"
+            aria-label={c.time}
             aria-valuetext={clock(shown)}
             className="peer absolute inset-x-0 top-0 z-10 h-10 w-full cursor-ew-resize opacity-0"
             max={END}
@@ -97,7 +127,7 @@ export function NightLog() {
               </span>
             ))}
           </div>
-          <p className="mt-2 text-[13px] text-white/60">Saati sürükleyin ya da ok tuşlarıyla ilerletin.</p>
+          <p className="mt-2 text-[13px] text-white/60">{c.drag}</p>
         </div>
 
         <ol className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -109,20 +139,18 @@ export function NightLog() {
                 key={e.mail.id}
               >
                 <p className="flex items-baseline justify-between gap-3">
-                  <span className="truncate font-semibold">{e.mail.from}</span>
-                  <span className="shrink-0 font-[family-name:var(--kp-mono)] text-xs text-white/70 tabular-nums">{e.mail.time.replace(":", ".")}</span>
+                  <span className="min-w-0 [overflow-wrap:anywhere] font-semibold">{e.mail.from}</span>
+                  <span className="shrink-0 font-[family-name:var(--kp-mono)] text-xs text-white/70 tabular-nums">{e.mail.time.replace(":", c.sep)}</span>
                 </p>
-                <p className="mt-0.5 truncate text-sm text-white/70">{e.mail.subject}</p>
-                <p className="mt-3 text-sm">{on ? (e.mail.phishing ? "Oltalama olarak ayırdı; bağlantıya dokunmadı." : `${e.tray.name} rafına koydu: ${e.mail.note}.`) : "Henüz gelmedi."}</p>
+                <p className="mt-0.5 min-w-0 [overflow-wrap:anywhere] text-sm text-white/70">{e.mail.subject}</p>
+                <p className="mt-3 text-sm">{on ? (e.mail.phishing ? c.phish : c.shelved(e.tray.name, e.mail.note)) : c.notYet}</p>
               </li>
             );
           })}
         </ol>
 
         <p aria-live="polite" className="mt-6 text-[15px] text-white/85">
-          {arrived.length === 0
-            ? "Atölye kapalı. Gelen kutusu boş."
-            : `${arrived.length} e-posta geldi · ${drafted} cevap taslağı hazır${blocked ? ` · ${blocked} oltalama ayıklandı` : ""}${shown >= END ? " · sabah her şey rafında." : "."}`}
+          {arrived.length === 0 ? c.closed : c.summary(arrived.length, drafted, blocked, shown >= END)}
         </p>
       </div>
     </div>

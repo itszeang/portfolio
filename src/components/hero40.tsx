@@ -1,6 +1,8 @@
 import DitherReveal from "@/components/originkit/dither-reveal";
 import { ArrowUpRight } from "lucide-react";
-import { archive, contact, hero } from "@/content";
+import { archive, contact, hero as heroTr } from "@/content";
+import { hero as heroEn } from "@/content.en";
+import type { Lang } from "@/lib/i18n";
 import "@/app/hero40.css";
 
 /**
@@ -9,7 +11,9 @@ import "@/app/hero40.css";
  * site-wide PortfolioNav floats above it instead. It sits above the fixed pixel
  * backdrop, so that background only shows once the hero has scrolled away.
  */
-export function Hero40() {
+export function Hero40({ lang = "tr" }: { lang?: Lang }) {
+  const en = lang === "en";
+  const hero = en ? heroEn : heroTr;
   const mail = `mailto:${contact.email}`;
   return (
     <div className="hero40 relative z-20">
@@ -36,13 +40,13 @@ export function Hero40() {
         </section>
 
         <footer className="hero-footer">
-          <p>{archive.signoff}</p>
+          <p>{en ? "Thinks through the design. Builds the system. Ships the product." : archive.signoff}</p>
           <a className="scroll-cue" href="#hizmetler">
-            kaydır <span aria-hidden="true">↓</span>
+            {en ? "scroll" : "kaydır"} <span aria-hidden="true">↓</span>
           </a>
           <p>
-            Ürün geliştirme, yapay zekâ ve web &amp; mobil
-            <br /> Türkiye&apos;den dünyaya açık.
+            {en ? "Product development, AI, web & mobile" : "Ürün geliştirme, yapay zekâ ve web & mobil"}
+            <br /> {en ? "Based in Türkiye, open to the world." : "Türkiye'den dünyaya açık."}
           </p>
         </footer>
       </section>

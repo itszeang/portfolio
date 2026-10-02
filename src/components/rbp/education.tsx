@@ -3,6 +3,8 @@
 // the template itself may not be resold or redistributed.
 
 import type { ReactNode } from "react";
+import { education as educationEn } from "@/content.en";
+import type { Lang } from "@/lib/i18n";
 
 type Entry = {
   school: string;
@@ -35,15 +37,16 @@ const ENTRIES: Entry[] = [
 
 const ROW_HEIGHT = 64;
 
-export function Education(): ReactNode {
+export function Education({ lang = "tr" }: { lang?: Lang }): ReactNode {
+  const entries = lang === "en" ? ENTRIES.map((e, i) => ({ ...e, ...educationEn.entries[i] })) : ENTRIES;
   return (
     <div className="flex flex-col gap-3">
       <h3 className="text-foreground text-[15px] font-semibold tracking-tight">
-        Eğitim
+        {lang === "en" ? educationEn.title : "Eğitim"}
       </h3>
       <div className="border-foreground/5 bg-foreground/2 dark:bg-foreground/5 relative rounded-4xl border p-2 sm:p-4">
         <ul className="flex flex-col gap-2">
-          {ENTRIES.map((entry) => (
+          {entries.map((entry) => (
             <li
               key={`${entry.school}-${entry.period}`}
               className="bg-background border-foreground/5 flex items-center gap-4 rounded-3xl border p-2"

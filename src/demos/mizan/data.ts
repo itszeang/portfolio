@@ -2,6 +2,10 @@
 // model runs here: every document carries the answer and a confidence per
 // field, and the app plays the reading back, checks the numbers and waits for
 // a person wherever the confidence is low. Companies and numbers are invented.
+// The documents are Turkish invoices in both languages; `mizanIn` gives the
+// English words for everything the app writes around them.
+
+import type { Lang } from "@/lib/i18n";
 
 export type FieldKey = "seller" | "vkn" | "no" | "date" | "matrah" | "kdv" | "total";
 export const fieldLabel: Record<FieldKey, string> = {
@@ -194,8 +198,19 @@ export const expenseAccounts = [
   { code: "760", name: "Pazarlama Satış ve Dağıtım Giderleri" },
   { code: "740", name: "Hizmet Üretim Maliyeti" },
 ];
-export const accountName = (code: string) =>
-  expenseAccounts.find((a) => a.code === code)?.name ?? { "191": "İndirilecek KDV", "320": "Satıcılar", "100": "Kasa", "102": "Bankalar" }[code] ?? code;
+const ACCOUNT_EN: Record<string, string> = {
+  "770": "General Administrative Expenses",
+  "760": "Marketing, Sales and Distribution Expenses",
+  "740": "Cost of Services",
+  "191": "Deductible VAT",
+  "320": "Suppliers",
+  "100": "Cash",
+  "102": "Banks",
+};
+export const accountName = (code: string, lang: Lang = "tr") =>
+  lang === "en"
+    ? (ACCOUNT_EN[code] ?? code)
+    : (expenseAccounts.find((a) => a.code === code)?.name ?? { "191": "İndirilecek KDV", "320": "Satıcılar", "100": "Kasa", "102": "Bankalar" }[code] ?? code);
 
 /** How each document is booked: the expense account the reader proposes, and what it was paid from. */
 export const booking: Record<string, { expense: { code: string; conf: number }; pay: string; memo: string }> = {
@@ -209,7 +224,7 @@ export type JournalLine = { code: string; memo: string; debit: number; credit: n
 export type Posted = { no: number; date: string; doc: string; lines: JournalLine[]; by: "auto" | "you" };
 
 /** Already in the journal before the demo starts. */
-export const startJournal: Posted[] = [
+const START_JOURNAL: Posted[] = [
   {
     no: 1,
     date: "05.09.2026",
@@ -234,5 +249,47 @@ export const startJournal: Posted[] = [
   },
 ];
 
-export const money = (n: number) => n.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-export const toNumber = (s: string) => Number(s.replace(/\s|₺|\*/g, "").replace(/\.(?=\d{3}(\D|$))/g, "").replace(",", "."));
+/** Two decimals: "1.731,88" in Turkish, "1,731.88" in English. */
+export const money = (n: number, lang: Lang = "tr") =>
+  n.toLocaleString(lang === "en" ? "en-GB" : "tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+/** Reads an amount written either way back into a number. */
+export const toNumber = (s: string, lang: Lang = "tr") => {
+  const bare = s.replace(/\s|₺|\*/g, "");
+  return lang === "en" ? Number(bare.replace(/,/g, "")) : Number(bare.replace(/\.(?=\d{3}(\D|$))/g, "").replace(",", "."));
+};
+
+// --- English -----------------------------------------------------------------
+const DOC_EN: Record<string, { title: string; source: string }> = {
+  akaryakit: { title: "Yol Enerji · fuel", source: "e-Archive PDF · email" },
+  kirtasiye: { title: "Kalem Ofis · stationery", source: "e-Invoice · tax office (GİB) portal" },
+  lokanta: { title: "Lezzet Durağı · staff lunch", source: "WhatsApp photo" },
+  tekrar: { title: "Yol Enerji · fuel (again)", source: "WhatsApp photo" },
+};
+const MEMO_EN: Record<string, string> = {
+  akaryakit: "Company car fuel",
+  kirtasiye: "Office stationery",
+  lokanta: "Staff lunch",
+  tekrar: "Company car fuel",
+};
+const JOURNAL_MEMO_EN: Record<string, string> = {
+  "Elektrik, Eylül": "Electricity, September",
+  "İnternet, Eylül": "Internet, September",
+  "KDV %20": "VAT 20%",
+  "Ulusal Elektrik (örnek)": "Ulusal Elektrik (sample)",
+  "Hızlı Net (örnek)": "Hızlı Net (sample)",
+};
+
+/** The documents, accounts and opening journal in one language. */
+export function mizanIn(lang: Lang) {
+  const en = lang === "en";
+  return {
+    docs: en ? docs.map((d) => ({ ...d, ...DOC_EN[d.id] })) : docs,
+    expenseAccounts: en ? expenseAccounts.map((a) => ({ ...a, name: ACCOUNT_EN[a.code] })) : expenseAccounts,
+    memo: (id: string) => (en ? MEMO_EN[id] : booking[id].memo),
+    vatMemo: (rate: number) => (en ? `VAT ${rate}%` : `KDV %${rate}`),
+    startJournal: en ? START_JOURNAL.map((p) => ({ ...p, lines: p.lines.map((l) => ({ ...l, memo: JOURNAL_MEMO_EN[l.memo] ?? l.memo })) })) : START_JOURNAL,
+    accountName: (code: string) => accountName(code, lang),
+    money: (n: number) => money(n, lang),
+    toNumber: (v: string) => toNumber(v, lang),
+  };
+}
