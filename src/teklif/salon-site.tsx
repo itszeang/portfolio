@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, ArrowUpRight, AtSign, MapPin, MessageCircle, Nfc, Phone, Star } from "lucide-react";
+import { ArrowRight, ArrowUpRight, AtSign, MapPin, MessageCircle, Phone, Star } from "lucide-react";
 import { useMemo, useState, useSyncExternalStore } from "react";
 import { type UnsplashImage, UnsplashPhoto } from "@/demos/shared/unsplash";
 import { figtree, images as naraImages, newsreader, nrVars } from "@/demos/nara/site-theme";
@@ -87,6 +87,18 @@ const wordmarkSize = (name: string) => {
   return `min(20rem, ${(150 / perLine).toFixed(1)}vw)`;
 };
 
+// Google Maps: the search that was checked to land on the salon's own
+// record when there is one, else the salon's name and address.
+const mapsQuery = (salon: Salon) => encodeURIComponent(salon.google?.query ?? `${salon.name}, ${salon.addr}`);
+const mapsEmbed = (salon: Salon) => `https://www.google.com/maps?q=${mapsQuery(salon)}&output=embed&hl=tr`;
+const placeId = (salon: Salon) => (salon.google?.placeId ? `&query_place_id=${salon.google.placeId}` : "");
+const mapsPlace = (salon: Salon) => `https://www.google.com/maps/search/?api=1&query=${mapsQuery(salon)}${placeId(salon)}`;
+const mapsDirections = (salon: Salon) =>
+  `https://www.google.com/maps/dir/?api=1&destination=${mapsQuery(salon)}${salon.google?.placeId ? `&destination_place_id=${salon.google.placeId}` : ""}`;
+// Opens Google's "write a review" box directly; the same link goes on the NFC card.
+const reviewLink = (salon: Salon) =>
+  salon.google?.placeId ? `https://search.google.com/local/writereview?placeid=${salon.google.placeId}` : mapsPlace(salon);
+
 const DAY = ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"];
 const hhmm = (m: number) => `${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
 const subscribe = () => () => {};
@@ -123,7 +135,7 @@ export function SalonSite({ salon }: { salon: Salon }) {
         {hasRating && (
           <span className="text-[var(--nr-ink)]">
             <Star aria-hidden="true" className="mr-1.5 inline size-3 -translate-y-px fill-[var(--nr-rose)] text-[var(--nr-rose)]" />
-            {rating} · {salon.reviews} değerlendirme
+            {rating} · {salon.reviews.toLocaleString("tr-TR")} değerlendirme
           </span>
         )}
       </div>
@@ -207,8 +219,14 @@ export function SalonSite({ salon }: { salon: Salon }) {
         <Booking salon={salon} services={services} />
 
         <section aria-labelledby="iletisim-baslik" className="scroll-mt-24 grid gap-10 px-5 py-24 sm:px-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]" id="iletisim">
-          <div className="aspect-[16/11] overflow-hidden">
-            <UnsplashPhoto image={kinds.includes("sac") ? hair.koltuk : naraImages.studyo} sizes="(min-width: 1024px) 55vw, 100vw" />
+          <div className="aspect-[16/11] overflow-hidden bg-[var(--nr-alt)]">
+            <iframe
+              className="block h-full w-full border-0"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              src={mapsEmbed(salon)}
+              title={`${salon.name} haritada`}
+            />
           </div>
           <div>
             <p className="text-[11px] tracking-[0.18em] text-[var(--nr-muted)] uppercase">İletişim</p>
@@ -218,7 +236,7 @@ export function SalonSite({ salon }: { salon: Salon }) {
             <ul className="mt-10 divide-y divide-[var(--nr-line)] border-y border-[var(--nr-line)] text-[15px]">
               <li className="flex gap-3 py-4">
                 <MapPin aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-[var(--nr-muted)]" />
-                <a className="hover:opacity-60" href={`https://yandex.com.tr/maps/org/${salon.id}/`} rel="noreferrer" target="_blank">
+                <a className="hover:opacity-60" href={mapsDirections(salon)} rel="noreferrer" target="_blank">
                   {salon.addr}
                 </a>
               </li>
@@ -271,11 +289,11 @@ export function SalonSite({ salon }: { salon: Salon }) {
   );
 }
 
-/** The salon's rating, and the review card that brings in more. */
+/** The salon's rating and a link to leave a review. */
 function Reviews({ salon, hasRating, rating, accent }: { salon: Salon; hasRating: boolean; rating: string; accent: string }) {
   const strong = salon.offer === "randevu";
   return (
-    <section aria-labelledby="yorum-baslik" className="grid items-center gap-12 px-5 py-24 sm:px-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
+    <section aria-labelledby="yorum-baslik" className="grid items-end gap-10 px-5 py-24 sm:px-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
       <div>
         <p className="text-[11px] tracking-[0.18em] text-[var(--nr-muted)] uppercase">Değerlendirmeler</p>
         {hasRating ? (
@@ -287,7 +305,7 @@ function Reviews({ salon, hasRating, rating, accent }: { salon: Salon; hasRating
                   <Star className="size-4" fill={i < Math.round(salon.rating!) ? accent : "none"} key={i} stroke={accent} />
                 ))}
               </span>
-              <span className="mt-1 block text-sm">{salon.reviews} değerlendirme</span>
+              <span className="mt-1 block text-sm">{salon.reviews.toLocaleString("tr-TR")} değerlendirme</span>
             </span>
           </p>
         ) : null}
@@ -302,28 +320,20 @@ function Reviews({ salon, hasRating, rating, accent }: { salon: Salon; hasRating
             </>
           )}
         </h2>
-        <p className="mt-5 max-w-[46ch] leading-7 text-[var(--nr-muted)]">
-          Kasadaki karta telefonunuzu yaklaştırın ya da karekodu okutun; değerlendirme sayfası açılır. Birkaç saniye sürer ve yeni müşterilerin bizi bulmasına yardım eder.
-        </p>
       </div>
-      <figure className="mx-auto w-full max-w-[400px]">
-        <div className="relative aspect-[1.6] rounded-[18px] p-6 text-white shadow-[0_30px_60px_-25px_rgba(0,0,0,.45)]" style={{ background: `linear-gradient(135deg, ${accent}, #1A1A1A)` }}>
-          <p className="font-[family-name:var(--nr-serif)] text-2xl leading-tight">{salon.short}</p>
-          <p className="mt-1 text-xs tracking-[0.14em] text-white/70 uppercase">Bizi değerlendirin</p>
-          <Nfc aria-hidden="true" className="absolute top-6 right-6 size-7 text-white/80" />
-          <div className="absolute right-6 bottom-6 grid size-20 grid-cols-5 gap-[3px] rounded-md bg-white p-2" aria-hidden="true">
-            {Array.from({ length: 25 }, (_, i) => (
-              <span className={busy(`${salon.slug}${i}`) || i % 6 === 0 ? "bg-[#1A1A1A]" : ""} key={i} />
-            ))}
-          </div>
-          <p className="absolute bottom-6 left-6 flex gap-0.5" aria-hidden="true">
-            {[0, 1, 2, 3, 4].map((i) => (
-              <Star className="size-4 fill-white text-white" key={i} />
-            ))}
-          </p>
-        </div>
-        <figcaption className="mt-4 text-center text-xs text-[var(--nr-muted)]">NFC&apos;li değerlendirme kartı: telefonu yaklaştırmak yeterli</figcaption>
-      </figure>
+      <div className="lg:pb-3">
+        <p className="max-w-[46ch] leading-7 text-[var(--nr-muted)]">
+          Yorumunuz, bizi ilk kez arayan birinin karar vermesine yardım eder. Birkaç cümle yeter.
+        </p>
+        <a
+          className="mt-6 inline-flex min-h-12 items-center gap-3 rounded-full border border-[var(--nr-ink)] px-6 font-semibold hover:bg-[var(--nr-ink)] hover:text-white"
+          href={reviewLink(salon)}
+          rel="noreferrer"
+          target="_blank"
+        >
+          Google&apos;da değerlendirin <ArrowUpRight aria-hidden="true" className="size-4" />
+        </a>
+      </div>
     </section>
   );
 }

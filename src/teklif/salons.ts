@@ -22,6 +22,8 @@ export type Salon = {
   day?: number;
   /** Random part of the link, so other salons pages cannot be guessed from a name. */
   key: string;
+  /** The salon's Google Maps record, when one matched its name and address. */
+  google: { query: string; placeId: string | null; name: string; addr: string; rating: number | null; reviews: number } | null;
 };
 
 export const salons = data as Salon[];
