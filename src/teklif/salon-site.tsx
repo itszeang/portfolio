@@ -77,6 +77,16 @@ const KIND: Record<Kind, { label: string; h1: [string, string]; lead: string; ph
 const ACCENTS = ["#D9486F", "#9A5B3C", "#4F6B4A", "#6B4E91", "#B0703A", "#2F5D7C"];
 const accentOf = (slug: string) => ACCENTS[[...slug].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7) % ACCENTS.length];
 
+// Footer wordmark sized to the name so it never runs off the page: long names
+// wrap onto two balanced lines, sized by the longer line or longest word.
+// Wide letters (M, W, &) count for more than narrow ones.
+const units = (t: string) => [...t].reduce((n, c) => n + (/[MWmw&@]/.test(c) ? 1.4 : /[A-ZÇĞİÖŞÜ]/.test(c) ? 1.15 : 1), 0);
+const wordmarkSize = (name: string) => {
+  const longestWord = Math.max(...name.split(/\s+/).map(units));
+  const perLine = Math.max(name.length > 14 ? Math.ceil(units(name) / 2) : units(name), longestWord, 4);
+  return `min(20rem, ${(150 / perLine).toFixed(1)}vw)`;
+};
+
 const DAY = ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"];
 const hhmm = (m: number) => `${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
 const subscribe = () => () => {};
@@ -120,7 +130,10 @@ export function SalonSite({ salon }: { salon: Salon }) {
 
       <header className="sticky top-3 z-30 flex justify-center px-4">
         <nav aria-label={salon.short} className="flex w-full max-w-[560px] items-center justify-between gap-4 rounded-full bg-white/90 py-2 pr-2 pl-6 shadow-[0_8px_30px_-12px_rgba(0,0,0,.25)] backdrop-blur">
-          <a className="truncate font-[family-name:var(--nr-serif)] text-2xl leading-none" href="#">
+          <a
+            className={`min-w-0 font-[family-name:var(--nr-serif)] text-balance ${salon.short.length > 12 ? "text-base leading-tight sm:text-lg" : "text-2xl leading-none"}`}
+            href="#"
+          >
             {salon.short}
           </a>
           <span className="hidden gap-6 text-sm sm:flex">
@@ -140,7 +153,7 @@ export function SalonSite({ salon }: { salon: Salon }) {
       <main>
         <section className="px-5 pt-10 sm:px-10">
           <p className="text-[11px] tracking-[0.18em] text-[var(--nr-muted)] uppercase">
-            {salon.name} — {label}
+            <span className="normal-case">{salon.name}</span> — {label}
           </p>
           <div className="mt-4 grid items-end gap-8 lg:grid-cols-[minmax(0,1fr)_320px]">
             <h1 className="font-[family-name:var(--nr-serif)] text-[clamp(3.2rem,9vw,8.5rem)] leading-[0.9] font-light tracking-[-0.035em]">
@@ -244,7 +257,8 @@ export function SalonSite({ salon }: { salon: Salon }) {
         </div>
         <p
           aria-hidden="true"
-          className="mt-16 overflow-hidden text-center font-[family-name:var(--nr-serif)] text-[clamp(5rem,22vw,20rem)] leading-[0.85] font-light tracking-[-0.04em] whitespace-nowrap text-[#C9C5BE] select-none"
+          className="mt-16 pb-[0.12em] text-center font-[family-name:var(--nr-serif)] leading-[1.02] font-light tracking-[-0.04em] text-balance text-[#C9C5BE] select-none"
+          style={{ fontSize: wordmarkSize(salon.short) }}
         >
           {salon.short}
         </p>
@@ -353,7 +367,7 @@ function Booking({ salon, services }: { salon: Salon; services: { name: string; 
             Saatinizi <span className="text-[var(--nr-quiet)] italic">seçin.</span>
           </h2>
           <p className="mt-5 max-w-[40ch] leading-7 text-[var(--nr-muted)]">
-            Telefonla aramanıza gerek yok. Hizmeti, günü ve saati seçin; randevu talebiniz {salon.short}&apos;in WhatsApp&apos;ına hazır bir mesaj olarak düşer, onaylanınca size dönülür.
+            Telefonla aramanıza gerek yok. Hizmeti, günü ve saati seçin; randevu talebiniz salonun WhatsApp&apos;ına hazır bir mesaj olarak düşer, onaylanınca size dönülür.
           </p>
         </div>
 
