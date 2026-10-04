@@ -63,7 +63,8 @@ export const CONSENT_SCRIPT = GA_ID
 type Gtag = (...args: unknown[]) => void;
 
 export function Analytics() {
-  const en = isEnglishPath(usePathname() ?? "");
+  const path = usePathname() ?? "";
+  const en = isEnglishPath(path);
   const consent = useConsent();
 
   // Contact clicks are the site's conversions; GA doesn't track mailto/tel
@@ -81,7 +82,8 @@ export function Analytics() {
     return () => document.removeEventListener("click", onClick);
   }, [consent]);
 
-  if (!GA_ID) return null;
+  // Sample sites made for a salon are not part of the portfolio: no tracking, no banner.
+  if (!GA_ID || path.startsWith("/teklif")) return null;
 
   return (
     <>

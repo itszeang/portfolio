@@ -11,17 +11,14 @@ import { PusulaPage } from "./pusula/pusula-page";
 import { SinekkaydiPage } from "./sinekkaydi/sinekkaydi-page";
 import { NaraAssistant } from "./nara/nara-assistant";
 import { NaraBookingPage } from "./nara/nara-booking-page";
-import { NaraSite } from "./nara/nara-site";
 import type { Lang } from "@/lib/i18n";
 
 /** Demo slugs (content.ts `demos`) that have a component to render. */
-export const demoSlugs = new Set(["nara-studio", "nara-randevu", "nara-asistan", "ferah-ilgaz-hukuk", "etut-mimarlik", "esik-emlak", "lodos-meyhane", "lodos-masa", "mine-dis", "sinekkaydi-berber", "doksan-hali-saha", "mizan-fatura", "pusula-el-kitabi", "kirpi-gelen-kutusu"]);
+export const demoSlugs = new Set(["nara-randevu", "nara-asistan", "ferah-ilgaz-hukuk", "etut-mimarlik", "esik-emlak", "lodos-meyhane", "lodos-masa", "mine-dis", "sinekkaydi-berber", "doksan-hali-saha", "mizan-fatura", "pusula-el-kitabi", "kirpi-gelen-kutusu"]);
 
 /** Renders the demo for a slug in a language; add a case here for every new demo. */
 export function DemoView({ slug, lang = "tr" }: { slug: string; lang?: Lang }) {
   switch (slug) {
-    case "nara-studio":
-      return <NaraSite lang={lang} />;
     case "nara-randevu":
       return <NaraBookingPage lang={lang} />;
     case "nara-asistan":

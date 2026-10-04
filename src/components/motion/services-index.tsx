@@ -276,9 +276,11 @@ export function ServicesIndex({ services }: { services: readonly Service[] }) {
             <li
               className="relative grid cursor-default gap-1 border-t border-white/10 px-3 py-4 text-white outline-none last:border-b md:grid-cols-[minmax(0,1.15fr)_minmax(0,0.75fr)_minmax(0,1.6fr)] md:gap-6 md:border-t-0 md:py-3.5 md:last:border-b-0"
               key={s.id}
-              onFocus={() => {
+              onFocus={(e) => {
                 const row = rowRefs.current[i];
-                if (row) {
+                // A click focuses the link too; only keyboard focus moves the
+                // preview to the row, otherwise it would jump off the pointer.
+                if (row && (e.target as HTMLElement).matches(":focus-visible")) {
                   px.jump(row.offsetLeft + row.offsetWidth / 2);
                   py.jump(row.offsetTop + row.offsetHeight / 2);
                 }

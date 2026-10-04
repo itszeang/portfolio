@@ -293,7 +293,6 @@ export const sectors: Record<string, string> = {
 export const demos: Record<string, { name: string; kind: string; summary: string }> = {
   "lodos-meyhane": { name: "Lodos Meyhane", kind: "Restaurant website", summary: "A meyhane site where guests build their set menu's meze tray, with a QR menu and the week's busy nights." },
   "esik-emlak": { name: "Eşik Real Estate", kind: "Estate agency website", summary: "Listings ranked by true monthly cost and commute time, with a mortgage calculator." },
-  "nara-studio": { name: "Nara Studio", kind: "Beauty studio website", summary: "A studio site that shows the day's free times and explains prices and durations at a glance." },
   "ferah-ilgaz-hukuk": { name: "Ferah & Ilgaz Law", kind: "Law firm website", summary: "Guides visitors to the right area of law in their own words, within the Turkish bar's advertising rules." },
   "doksan-hali-saha": { name: "Doksan Pitches", kind: "Football pitch booking", summary: "Hourly pitch hire, a deposit and a 24-hour cancellation rule, a regular-slot discount, then the line-up and each player's share." },
   "mine-dis": { name: "Mine Dental Clinic", kind: "Dental clinic booking system", summary: "Patients mark the aching tooth on a chart and get a slot by urgency; health details are taken only with explicit consent." },

@@ -1,0 +1,3496 @@
+[
+ {
+  "slug": "cg-eryaman",
+  "id": "137135211738",
+  "name": "CG Kuaför",
+  "short": "CG",
+  "area": "Eryaman",
+  "mahalle": "Güzelkent",
+  "addr": "Etimesgut, Güzelkent Mah., 2623. Sok., 1/5",
+  "phone": "+90 312 282 91 91",
+  "phoneHref": "tel:+903122829191",
+  "whatsapp": "",
+  "rating": 4.6,
+  "reviews": 20,
+  "offer": "randevu",
+  "level": "Yüksek",
+  "kinds": [
+   "sac",
+   "epilasyon"
+  ],
+  "instagram": "https://instagram.com/cgkuaforgokalp",
+  "rival": null,
+  "day": 1,
+  "key": "us4z8qf"
+ },
+ {
+  "slug": "anatolia-sincan",
+  "id": "215611627796",
+  "name": "Anatolia Güzellik Salonu",
+  "short": "Anatolia",
+  "area": "Sincan",
+  "mahalle": "Atatürk",
+  "addr": "Atatürk Mah., Meltem Sok., No:17, Sincan",
+  "phone": "+90 312 276 11 67",
+  "phoneHref": "tel:+903122761167",
+  "whatsapp": "",
+  "rating": 5,
+  "reviews": 37,
+  "offer": "randevu",
+  "level": "Yüksek",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "",
+  "rival": null,
+  "day": 1,
+  "key": "fcvd37v"
+ },
+ {
+  "slug": "kuafor-resul-sincan",
+  "id": "27526220821",
+  "name": "Kuaför Resul",
+  "short": "Kuaför Resul",
+  "area": "Sincan",
+  "mahalle": "",
+  "addr": "Sincan, Onur Cad., 23B",
+  "phone": "+90 312 270 37 02",
+  "phoneHref": "tel:+903122703702",
+  "whatsapp": "",
+  "rating": 4.8,
+  "reviews": 23,
+  "offer": "randevu",
+  "level": "Yüksek",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "https://instagram.com/kuafor_resulll",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 1,
+  "key": "zpp232k"
+ },
+ {
+  "slug": "meliderm-sincan",
+  "id": "169230697065",
+  "name": "Meliderm Epilasyon Güzellik Sincan Şubesi",
+  "short": "Meliderm",
+  "area": "Sincan",
+  "mahalle": "Mareşal Çakmak",
+  "addr": "Sincan, Mareşal Çakmak Mah., Sıra Sok., 2",
+  "phone": "+90 507 120 97 07",
+  "phoneHref": "tel:+905071209707",
+  "whatsapp": "https://wa.me/905071209707",
+  "rating": 4.9,
+  "reviews": 20,
+  "offer": "randevu",
+  "level": "Yüksek",
+  "kinds": [
+   "cilt",
+   "epilasyon"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 1,
+  "key": "5at3tbh"
+ },
+ {
+  "slug": "beyaz-yildiz-sincan",
+  "id": "47899648853",
+  "name": "Beyaz Yıldız Kuaför",
+  "short": "Beyaz Yıldız",
+  "area": "Sincan",
+  "mahalle": "Atatürk",
+  "addr": "Atatürk Mah., Melek Sok., No:20/3, Sincan, Gül Apt., 1",
+  "phone": "+90 312 270 02 32",
+  "phoneHref": "tel:+903122700232",
+  "whatsapp": "",
+  "rating": 5,
+  "reviews": 20,
+  "offer": "randevu",
+  "level": "Yüksek",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "https://instagram.com/beyazyildizbayankuaforu",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 1,
+  "key": "xh6wsap"
+ },
+ {
+  "slug": "lemond-eryaman",
+  "id": "141146185712",
+  "name": "Lemond Güzellik Merkezi",
+  "short": "Lemond",
+  "area": "Eryaman",
+  "mahalle": "Göksu",
+  "addr": "Etimesgut, Göksu Mah., Kaşmir Mavi Orkide Sitesi",
+  "phone": "+90 505 063 03 00",
+  "phoneHref": "tel:+905050630300",
+  "whatsapp": "https://wa.me/905050630300",
+  "rating": 4.7,
+  "reviews": 19,
+  "offer": "randevu",
+  "level": "Yüksek",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "https://instagram.com/lemondguzellikmerkezi",
+  "rival": {
+   "name": "CG Kuaför",
+   "rating": 4.6,
+   "reviews": 20
+  },
+  "day": 1,
+  "key": "guh55x5"
+ },
+ {
+  "slug": "ozlem-sincan",
+  "id": "145400886246",
+  "name": "Özlem Güzellik Salonu",
+  "short": "Özlem",
+  "area": "Sincan",
+  "mahalle": "Mareşal Çakmak",
+  "addr": "Mareşal Çakmak Mah., Yıldız Sok., No:2/1, Sincan",
+  "phone": "+90 546 875 49 80",
+  "phoneHref": "tel:+905468754980",
+  "whatsapp": "https://wa.me/905468754980",
+  "rating": 5,
+  "reviews": 25,
+  "offer": "randevu",
+  "level": "Yüksek",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 1,
+  "key": "45wa228"
+ },
+ {
+  "slug": "jadore-eryaman",
+  "id": "152093944037",
+  "name": "Jadore Kuaför Güzellik",
+  "short": "Jadore",
+  "area": "Eryaman",
+  "mahalle": "Şehit Osman Avcı",
+  "addr": "Etimesgut, Şehit Osman Avcı Mah., 2651. Cad., 16BC",
+  "phone": "+90 531 277 11 41",
+  "phoneHref": "tel:+905312771141",
+  "whatsapp": "https://wa.me/905312771141",
+  "rating": 4.9,
+  "reviews": 19,
+  "offer": "randevu",
+  "level": "Yüksek",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "https://instagram.com/jadorekuaforguzellik",
+  "rival": {
+   "name": "CG Kuaför",
+   "rating": 4.6,
+   "reviews": 20
+  },
+  "day": 1,
+  "key": "hzqc2m9"
+ },
+ {
+  "slug": "nurhan-bay-sincan",
+  "id": "118930382846",
+  "name": "Nurhan Bay Güzellik Salonu",
+  "short": "Nurhan Bay",
+  "area": "Sincan",
+  "mahalle": "Ekim",
+  "addr": "Sincan, 29 Ekim Mah., 790. Sok.",
+  "phone": "+90 531 262 53 94",
+  "phoneHref": "tel:+905312625394",
+  "whatsapp": "https://wa.me/905312625394",
+  "rating": 4.9,
+  "reviews": 19,
+  "offer": "randevu",
+  "level": "Yüksek",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "https://instagram.com/nurhankuaforguzellik06",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 1,
+  "key": "5am57wx"
+ },
+ {
+  "slug": "redline-x-sincan",
+  "id": "89685982855",
+  "name": "Redline X Kuaför",
+  "short": "Redline X",
+  "area": "Sincan",
+  "mahalle": "",
+  "addr": "Sincan, Onur Sok., 7B",
+  "phone": "+90 536 034 63 74",
+  "phoneHref": "tel:+905360346374",
+  "whatsapp": "https://wa.me/905360346374",
+  "rating": 4.7,
+  "reviews": 18,
+  "offer": "randevu",
+  "level": "Yüksek",
+  "kinds": [
+   "sac",
+   "epilasyon"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 1,
+  "key": "cnu2hh9"
+ },
+ {
+  "slug": "kadinca-sincan",
+  "id": "165132661757",
+  "name": "Kadınca bayan kuaförü ve güzellik salonu",
+  "short": "Kadınca",
+  "area": "Sincan",
+  "mahalle": "Gökçek",
+  "addr": "Sincan, Gökçek Mah., 361. Sok., 22",
+  "phone": "+90 505 182 58 06",
+  "phoneHref": "tel:+905051825806",
+  "whatsapp": "https://wa.me/905051825806",
+  "rating": 4.9,
+  "reviews": 16,
+  "offer": "randevu",
+  "level": "Yüksek",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "https://instagram.com/kadincakuaförtörekent",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 1,
+  "key": "bsh22bk"
+ },
+ {
+  "slug": "lorin-lavin-sincan",
+  "id": "1291376796",
+  "name": "Lorin Lavin Bayan Kuaförü",
+  "short": "Lorin Lavin",
+  "area": "Sincan",
+  "mahalle": "Pınarbaşı",
+  "addr": "Sincan, Pınarbaşı Mah., Lüks Sok., 11",
+  "phone": "+90 541 718 80 90",
+  "phoneHref": "tel:+905417188090",
+  "whatsapp": "https://wa.me/905417188090",
+  "rating": 4.5,
+  "reviews": 13,
+  "offer": "randevu",
+  "level": "Yüksek",
+  "kinds": [
+   "sac",
+   "tirnak"
+  ],
+  "instagram": "https://instagram.com/larin.lavin1",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 1,
+  "key": "uwycamv"
+ },
+ {
+  "slug": "yenikent-sincan",
+  "id": "143584940274",
+  "name": "Yenikent lazer epilasyon",
+  "short": "Yenikent",
+  "area": "Sincan",
+  "mahalle": "",
+  "addr": "Sincan, Orhan Gazi Cad., 71",
+  "phone": "+90 552 360 05 14",
+  "phoneHref": "tel:+905523600514",
+  "whatsapp": "https://wa.me/905523600514",
+  "rating": 4.7,
+  "reviews": 12,
+  "offer": "randevu",
+  "level": "Yüksek",
+  "kinds": [
+   "epilasyon"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 1,
+  "key": "564ry9h"
+ },
+ {
+  "slug": "nur-nergis-sincan",
+  "id": "27584964924",
+  "name": "Nur Nergis Beauty Studio",
+  "short": "Nur Nergis",
+  "area": "Sincan",
+  "mahalle": "",
+  "addr": "Sincan, 249. Cad., 1",
+  "phone": "+90 543 276 06 46",
+  "phoneHref": "tel:+905432760646",
+  "whatsapp": "https://wa.me/905432760646",
+  "rating": 4.9,
+  "reviews": 11,
+  "offer": "randevu",
+  "level": "Yüksek",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 1,
+  "key": "pxcbe7q"
+ },
+ {
+  "slug": "s-m-eryaman",
+  "id": "40700577914",
+  "name": "S&m Güzellik Salonu",
+  "short": "S&m",
+  "area": "Eryaman",
+  "mahalle": "Tunahan",
+  "addr": "Tunahan Mah., 254. Cad., No:8G, Etimesgut",
+  "phone": "+90 552 602 49 89",
+  "phoneHref": "tel:+905526024989",
+  "whatsapp": "https://wa.me/905526024989",
+  "rating": 4.7,
+  "reviews": 10,
+  "offer": "randevu",
+  "level": "Yüksek",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "https://instagram.com/sedamanduzbeauty",
+  "rival": {
+   "name": "CG Kuaför",
+   "rating": 4.6,
+   "reviews": 20
+  },
+  "day": 1,
+  "key": "d6qdm7n"
+ },
+ {
+  "slug": "sultan-tarhan-sincan",
+  "id": "14921199416",
+  "name": "Sultan Tarhan Lazer Epilasyon Güzellik Gençlik Merkezi",
+  "short": "Sultan Tarhan",
+  "area": "Sincan",
+  "mahalle": "Atatürk",
+  "addr": "Sincan, Atatürk Mah., Öncü Sok., 2, 3",
+  "phone": "+90 505 112 71 97",
+  "phoneHref": "tel:+905051127197",
+  "whatsapp": "https://wa.me/905051127197",
+  "rating": 4.5,
+  "reviews": 10,
+  "offer": "randevu",
+  "level": "Yüksek",
+  "kinds": [
+   "cilt",
+   "epilasyon"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 1,
+  "key": "h372pmc"
+ },
+ {
+  "slug": "kubra-duzgun-sincan",
+  "id": "77990501458",
+  "name": "Kübra Düzgün Güzellik Salonu",
+  "short": "Kübra Düzgün",
+  "area": "Sincan",
+  "mahalle": "Gökçek",
+  "addr": "Sincan, Gökçek Mah., Terminal Cad., 17",
+  "phone": "+90 536 403 08 78",
+  "phoneHref": "tel:+905364030878",
+  "whatsapp": "https://wa.me/905364030878",
+  "rating": 4.7,
+  "reviews": 10,
+  "offer": "randevu",
+  "level": "Yüksek",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "https://instagram.com/kubraduzgun.guzellik",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 1,
+  "key": "zsjp2u2"
+ },
+ {
+  "slug": "cherry-sincan",
+  "id": "46026028060",
+  "name": "Cherry",
+  "short": "Cherry",
+  "area": "Sincan",
+  "mahalle": "Tandoğan",
+  "addr": "Sincan, Tandoğan Mah., Yüksel Sok., 38",
+  "phone": "+90 530 049 46 82",
+  "phoneHref": "tel:+905300494682",
+  "whatsapp": "https://wa.me/905300494682",
+  "rating": 4.9,
+  "reviews": 10,
+  "offer": "randevu",
+  "level": "Yüksek",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "https://instagram.com/cherry_beautybar_se",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 1,
+  "key": "dhty2mq"
+ },
+ {
+  "slug": "guzellik-merkezi-niya-victoriia-eryaman",
+  "id": "60146514840",
+  "name": "Güzellik Merkezi Niya & Victoriia",
+  "short": "Güzellik Merkezi Niya & Victoriia",
+  "area": "Eryaman",
+  "mahalle": "Tunahan",
+  "addr": "Etimesgut, Tunahan Mah., 211. Cad.",
+  "phone": "+90 505 130 19 49",
+  "phoneHref": "tel:+905051301949",
+  "whatsapp": "https://wa.me/905051301949",
+  "rating": 4.9,
+  "reviews": 9,
+  "offer": "kart",
+  "level": "Yüksek",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "https://instagram.com/niya_cosmetolog",
+  "rival": {
+   "name": "CG Kuaför",
+   "rating": 4.6,
+   "reviews": 20
+  },
+  "day": 1,
+  "key": "gtgfnfz"
+ },
+ {
+  "slug": "ayzen-eryaman",
+  "id": "1401851000",
+  "name": "Ayzen Güzellik Merkezi",
+  "short": "Ayzen",
+  "area": "Eryaman",
+  "mahalle": "Eryaman",
+  "addr": "Etimesgut, Eryaman Mah., Dil Devrimi Cad., 35A",
+  "phone": "+90 505 883 49 24",
+  "phoneHref": "tel:+905058834924",
+  "whatsapp": "https://wa.me/905058834924",
+  "rating": 4.5,
+  "reviews": 8,
+  "offer": "kart",
+  "level": "Yüksek",
+  "kinds": [
+   "cilt",
+   "epilasyon"
+  ],
+  "instagram": "https://instagram.com/ayzen.guzellik",
+  "rival": {
+   "name": "CG Kuaför",
+   "rating": 4.6,
+   "reviews": 20
+  },
+  "day": 1,
+  "key": "7a6p2hh"
+ },
+ {
+  "slug": "tuna-sincan",
+  "id": "14914681093",
+  "name": "Tuna Saç Tasarım Merkezi",
+  "short": "Tuna",
+  "area": "Sincan",
+  "mahalle": "",
+  "addr": "Sincan, Ahi Mesud Bul., 220",
+  "phone": "+90 507 290 45 51",
+  "phoneHref": "tel:+905072904551",
+  "whatsapp": "https://wa.me/905072904551",
+  "rating": 4.4,
+  "reviews": 26,
+  "offer": "randevu",
+  "level": "Orta",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 1,
+  "key": "c7fk47n"
+ },
+ {
+  "slug": "dolphin-eryaman",
+  "id": "19062131724",
+  "name": "Dolphin Güzellik Salonu",
+  "short": "Dolphin",
+  "area": "Eryaman",
+  "mahalle": "Eryaman",
+  "addr": "Eryaman Mah., 285. Sok., No:3, Etimesgut",
+  "phone": "+90 312 282 67 74",
+  "phoneHref": "tel:+903122826774",
+  "whatsapp": "",
+  "rating": 5,
+  "reviews": 18,
+  "offer": "randevu",
+  "level": "Orta",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "CG Kuaför",
+   "rating": 4.6,
+   "reviews": 20
+  },
+  "day": 1,
+  "key": "rc3ppa9"
+ },
+ {
+  "slug": "elit-sincan",
+  "id": "82192559132",
+  "name": "Elit Kuaför Güzellik Salonu",
+  "short": "Elit",
+  "area": "Sincan",
+  "mahalle": "Atatürk",
+  "addr": "Sincan, Atatürk Mah., Öncü Sok., 15",
+  "phone": "+90 312 268 66 55",
+  "phoneHref": "tel:+903122686655",
+  "whatsapp": "",
+  "rating": 4.9,
+  "reviews": 18,
+  "offer": "randevu",
+  "level": "Orta",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 1,
+  "key": "3umdyxk"
+ },
+ {
+  "slug": "gold-platinium-sincan",
+  "id": "222029165228",
+  "name": "Gold Platinium",
+  "short": "Gold Platinium",
+  "area": "Sincan",
+  "mahalle": "",
+  "addr": "Sincan, Ankara Cad., 11 B",
+  "phone": "+90 544 270 46 53",
+  "phoneHref": "tel:+905442704653",
+  "whatsapp": "https://wa.me/905442704653",
+  "rating": 4.4,
+  "reviews": 16,
+  "offer": "randevu",
+  "level": "Orta",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "https://instagram.com/goldplatinumguzelliksalonu",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 1,
+  "key": "bkdd5vh"
+ },
+ {
+  "slug": "almeyra-eryaman",
+  "id": "1241169150",
+  "name": "Almeyra Kuaför ve Güzellik Salonu",
+  "short": "Almeyra",
+  "area": "Eryaman",
+  "mahalle": "Şeyh Şamil",
+  "addr": "Şeyh Şamil Mah., Tınaztepe Cad. 150. Sok., No:2, Eyaman/Etimesgut",
+  "phone": "+90 312 282 95 35",
+  "phoneHref": "tel:+903122829535",
+  "whatsapp": "",
+  "rating": 4.2,
+  "reviews": 15,
+  "offer": "kart",
+  "level": "Orta",
+  "kinds": [
+   "sac",
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "https://instagram.com/almeyra_kuafor",
+  "rival": {
+   "name": "CG Kuaför",
+   "rating": 4.6,
+   "reviews": 20
+  },
+  "day": 1,
+  "key": "awjmqdu"
+ },
+ {
+  "slug": "matmazel-sincan",
+  "id": "122237758837",
+  "name": "Matmazel Kuaför & Güzellik Salonu",
+  "short": "Matmazel",
+  "area": "Sincan",
+  "mahalle": "Atatürk",
+  "addr": "Atatürk Mah., Meltem Sok., No:25, Sincan",
+  "phone": "+90 312 270 18 19",
+  "phoneHref": "tel:+903122701819",
+  "whatsapp": "",
+  "rating": 4.1,
+  "reviews": 14,
+  "offer": "kart",
+  "level": "Orta",
+  "kinds": [
+   "sac",
+   "cilt",
+   "epilasyon"
+  ],
+  "instagram": "https://instagram.com/matmazel_kuafor_sincan",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 1,
+  "key": "uvq3bqf"
+ },
+ {
+  "slug": "altineller-sincan",
+  "id": "215235462229",
+  "name": "Altıneller Saç Tasarım ve Güzellik Merkezi",
+  "short": "Altıneller",
+  "area": "Sincan",
+  "mahalle": "Mustafa Kemal",
+  "addr": "Mustafa Kemal Mah., Ziya Gökalp Cd. 4-8, Sincan",
+  "phone": "+90 506 154 73 73",
+  "phoneHref": "tel:+905061547373",
+  "whatsapp": "https://wa.me/905061547373",
+  "rating": 4.3,
+  "reviews": 14,
+  "offer": "randevu",
+  "level": "Orta",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 2,
+  "key": "6zy9m2c"
+ },
+ {
+  "slug": "evsen-unal-sincan",
+  "id": "16732491968",
+  "name": "Evşen Ünal Güzellik Salonu",
+  "short": "Evşen Ünal",
+  "area": "Sincan",
+  "mahalle": "",
+  "addr": "Sincan, Gür Sok., 1",
+  "phone": "+90 555 045 82 92",
+  "phoneHref": "tel:+905550458292",
+  "whatsapp": "https://wa.me/905550458292",
+  "rating": 4.5,
+  "reviews": 14,
+  "offer": "randevu",
+  "level": "Orta",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 2,
+  "key": "6tm7vpm"
+ },
+ {
+  "slug": "eylul-eryaman",
+  "id": "1193762004",
+  "name": "Eylül Bayan Kuaförü",
+  "short": "Eylül",
+  "area": "Eryaman",
+  "mahalle": "Şeyh Şamil",
+  "addr": "Şeyh Şamil Mah., 13. Cad., No:10C, Etimesgut",
+  "phone": "+90 507 617 59 49",
+  "phoneHref": "tel:+905076175949",
+  "whatsapp": "https://wa.me/905076175949",
+  "rating": 4.6,
+  "reviews": 13,
+  "offer": "randevu",
+  "level": "Orta",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "CG Kuaför",
+   "rating": 4.6,
+   "reviews": 20
+  },
+  "day": 2,
+  "key": "kzhdx6m"
+ },
+ {
+  "slug": "gulay-cevrim-eryaman",
+  "id": "199704207912",
+  "name": "Gülay Çevrim",
+  "short": "Gülay Çevrim",
+  "area": "Eryaman",
+  "mahalle": "Eryaman",
+  "addr": "Etimesgut, Eryaman Mah., 271. Cad., 4AN",
+  "phone": "+90 506 626 91 82",
+  "phoneHref": "tel:+905066269182",
+  "whatsapp": "https://wa.me/905066269182",
+  "rating": 4.4,
+  "reviews": 13,
+  "offer": "randevu",
+  "level": "Orta",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "https://instagram.com/gulay.cevrim",
+  "rival": {
+   "name": "CG Kuaför",
+   "rating": 4.6,
+   "reviews": 20
+  },
+  "day": 2,
+  "key": "qey635n"
+ },
+ {
+  "slug": "avvio-eryaman",
+  "id": "34271128047",
+  "name": "Avvio Kuaför ve Güzellik Salonu",
+  "short": "Avvio",
+  "area": "Eryaman",
+  "mahalle": "Şehit Osman Avcı",
+  "addr": "Etimesgut, Şehit Osman Avcı Mah., Malazgirt 1071. Cad., 50B",
+  "phone": "+90 545 546 40 22",
+  "phoneHref": "tel:+905455464022",
+  "whatsapp": "https://wa.me/905455464022",
+  "rating": 4.9,
+  "reviews": 13,
+  "offer": "randevu",
+  "level": "Orta",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "CG Kuaför",
+   "rating": 4.6,
+   "reviews": 20
+  },
+  "day": 2,
+  "key": "2gktjud"
+ },
+ {
+  "slug": "gulden-nurlandi-sincan",
+  "id": "176033170827",
+  "name": "Gülden Nurlandı Güzellik Salonu",
+  "short": "Gülden Nurlandı",
+  "area": "Sincan",
+  "mahalle": "Saraycık",
+  "addr": "Sincan, Saraycık Mah., 2435. Cad., 7/2",
+  "phone": "+90 505 007 36 85",
+  "phoneHref": "tel:+905050073685",
+  "whatsapp": "https://wa.me/905050073685",
+  "rating": 4.8,
+  "reviews": 12,
+  "offer": "randevu",
+  "level": "Orta",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 2,
+  "key": "4ht6az4"
+ },
+ {
+  "slug": "elif-ali-eryaman",
+  "id": "160845531185",
+  "name": "Elif & Ali Kuaför Güzellik Salonu",
+  "short": "Elif & Ali",
+  "area": "Eryaman",
+  "mahalle": "Güzelkent",
+  "addr": "Etimesgut, Güzelkent Mah., 511. Cad., 5",
+  "phone": "+90 312 282 32 62",
+  "phoneHref": "tel:+903122823262",
+  "whatsapp": "",
+  "rating": 4.1,
+  "reviews": 11,
+  "offer": "kart",
+  "level": "Orta",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "https://instagram.com/elifalikuafor_guzelliksalonu",
+  "rival": {
+   "name": "CG Kuaför",
+   "rating": 4.6,
+   "reviews": 20
+  },
+  "day": 2,
+  "key": "f8uakjw"
+ },
+ {
+  "slug": "volkan-eryaman",
+  "id": "1372719325",
+  "name": "Volkan Bayan Kuaförü",
+  "short": "Volkan",
+  "area": "Eryaman",
+  "mahalle": "Eryaman",
+  "addr": "Etimesgut, Eryaman Mah., 303. Sok., 11F",
+  "phone": "+90 505 685 55 77",
+  "phoneHref": "tel:+905056855577",
+  "whatsapp": "https://wa.me/905056855577",
+  "rating": 4.3,
+  "reviews": 10,
+  "offer": "randevu",
+  "level": "Orta",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "https://instagram.com/kuafor_volkansalis",
+  "rival": {
+   "name": "CG Kuaför",
+   "rating": 4.6,
+   "reviews": 20
+  },
+  "day": 2,
+  "key": "m4hghsx"
+ },
+ {
+  "slug": "sedat-eryaman",
+  "id": "215245993021",
+  "name": "Sedat Kuaför",
+  "short": "Sedat",
+  "area": "Eryaman",
+  "mahalle": "Eryaman",
+  "addr": "Etimesgut, Eryaman Mah., 2. Cad., 1/3",
+  "phone": "+90 507 116 29 67",
+  "phoneHref": "tel:+905071162967",
+  "whatsapp": "https://wa.me/905071162967",
+  "rating": 4.6,
+  "reviews": 10,
+  "offer": "randevu",
+  "level": "Orta",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "CG Kuaför",
+   "rating": 4.6,
+   "reviews": 20
+  },
+  "day": 2,
+  "key": "khatqf3"
+ },
+ {
+  "slug": "nisa-sincan",
+  "id": "31708809098",
+  "name": "Nisa Güzellik Salonu",
+  "short": "Nisa",
+  "area": "Sincan",
+  "mahalle": "Ekim",
+  "addr": "29 Ekim Mah., 789. Cad., No:9, Sincan",
+  "phone": "+90 555 316 32 67",
+  "phoneHref": "tel:+905553163267",
+  "whatsapp": "https://wa.me/905553163267",
+  "rating": 4.4,
+  "reviews": 10,
+  "offer": "randevu",
+  "level": "Orta",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "https://instagram.com/kuafornisaguzellik",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 2,
+  "key": "9f7qqpq"
+ },
+ {
+  "slug": "sabri-sincan",
+  "id": "218626889808",
+  "name": "Sabri Bayan Kuaförü",
+  "short": "Sabri",
+  "area": "Sincan",
+  "mahalle": "Andiçen",
+  "addr": "Sincan, Andiçen Mah., Gülsuyu Sok., 35B",
+  "phone": "+90 506 900 07 00",
+  "phoneHref": "tel:+905069000700",
+  "whatsapp": "https://wa.me/905069000700",
+  "rating": 4.6,
+  "reviews": 9,
+  "offer": "kart",
+  "level": "Orta",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "https://instagram.com/_kuaforsabriii",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 2,
+  "key": "cbs85ee"
+ },
+ {
+  "slug": "ilknur-sincan",
+  "id": "193681757460",
+  "name": "İlknur güzellik merkezi",
+  "short": "İlknur",
+  "area": "Sincan",
+  "mahalle": "Menderes",
+  "addr": "Sincan, Menderes Mah., Konut Sok., 9",
+  "phone": "+90 505 040 57 06",
+  "phoneHref": "tel:+905050405706",
+  "whatsapp": "https://wa.me/905050405706",
+  "rating": 4.9,
+  "reviews": 9,
+  "offer": "kart",
+  "level": "Orta",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 2,
+  "key": "ta7xxxj"
+ },
+ {
+  "slug": "nry-sincan",
+  "id": "219690735120",
+  "name": "Nry Lazer Epilasyon Güzellik Merkezi Sincan Şube",
+  "short": "Nry",
+  "area": "Sincan",
+  "mahalle": "Atatürk",
+  "addr": "Sincan, Atatürk Mah., Korkmaz Sok., 36",
+  "phone": "+90 505 077 06 79",
+  "phoneHref": "tel:+905050770679",
+  "whatsapp": "https://wa.me/905050770679",
+  "rating": 5,
+  "reviews": 9,
+  "offer": "kart",
+  "level": "Orta",
+  "kinds": [
+   "cilt",
+   "epilasyon"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 2,
+  "key": "ergb39x"
+ },
+ {
+  "slug": "mehtap-uyar-sincan",
+  "id": "112968186159",
+  "name": "Mehtap Uyar Güzellik Salonu",
+  "short": "Mehtap Uyar",
+  "area": "Sincan",
+  "mahalle": "Atatürk",
+  "addr": "Sincan, Atatürk Mah., Öncü Sok., 3",
+  "phone": "+90 537 584 40 81",
+  "phoneHref": "tel:+905375844081",
+  "whatsapp": "https://wa.me/905375844081",
+  "rating": 4.7,
+  "reviews": 8,
+  "offer": "kart",
+  "level": "Orta",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "https://instagram.com/mehtapuyarguzellik",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 2,
+  "key": "eetv8a2"
+ },
+ {
+  "slug": "sueda-semra-sincan",
+  "id": "159914527841",
+  "name": "Sueda & Semra Güzellik Merkezi",
+  "short": "Sueda & Semra",
+  "area": "Sincan",
+  "mahalle": "Plevne",
+  "addr": "Sincan, Plevne Mah., Selvi. Cad., 29A",
+  "phone": "+90 543 736 74 52",
+  "phoneHref": "tel:+905437367452",
+  "whatsapp": "https://wa.me/905437367452",
+  "rating": 4.2,
+  "reviews": 6,
+  "offer": "kart",
+  "level": "Orta",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "https://instagram.com/suedauyarbeauty",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 2,
+  "key": "49k6bct"
+ },
+ {
+  "slug": "milan-man-erkek-sincan",
+  "id": "137645780631",
+  "name": "Milan Man erkek lazer epilasyon",
+  "short": "Milan Man erkek",
+  "area": "Sincan",
+  "mahalle": "Atatürk",
+  "addr": "Sincan, Atatürk Mah., Kutsal Sok., 1",
+  "phone": "+90 544 952 34 54",
+  "phoneHref": "tel:+905449523454",
+  "whatsapp": "https://wa.me/905449523454",
+  "rating": 4.8,
+  "reviews": 5,
+  "offer": "kart",
+  "level": "Orta",
+  "kinds": [
+   "epilasyon"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 2,
+  "key": "pyqephq"
+ },
+ {
+  "slug": "aydin-alkan-eryaman",
+  "id": "234371552376",
+  "name": "Aydın Alkan Kuaför & Güzellik Merkezi",
+  "short": "Aydın Alkan",
+  "area": "Eryaman",
+  "mahalle": "Şehit Osman Avcı",
+  "addr": "Etimesgut, Şehit Osman Avcı Mah., 64. Sok., 6F",
+  "phone": "+90 312 281 01 04",
+  "phoneHref": "tel:+903122810104",
+  "whatsapp": "",
+  "rating": 3.9,
+  "reviews": 4,
+  "offer": "kart",
+  "level": "Orta",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "https://instagram.com/aydinalkankuaforeryaman",
+  "rival": {
+   "name": "CG Kuaför",
+   "rating": 4.6,
+   "reviews": 20
+  },
+  "day": 2,
+  "key": "ttdp8s9"
+ },
+ {
+  "slug": "blue-moon-sincan",
+  "id": "53064779469",
+  "name": "Blue Moon Güzellik Salonu",
+  "short": "Blue Moon",
+  "area": "Sincan",
+  "mahalle": "",
+  "addr": "Sincan, Ankara Cad., 36 A",
+  "phone": "+90 506 263 68 60",
+  "phoneHref": "tel:+905062636860",
+  "whatsapp": "https://wa.me/905062636860",
+  "rating": 4.4,
+  "reviews": 19,
+  "offer": "randevu",
+  "level": "Orta",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 2,
+  "key": "sxvswya"
+ },
+ {
+  "slug": "melih-sincan",
+  "id": "166182213091",
+  "name": "Melih Kuaför",
+  "short": "Melih",
+  "area": "Sincan",
+  "mahalle": "Atatürk",
+  "addr": "Atatürk Mah., İnal Cad., No:14, Sincan",
+  "phone": "+90 312 276 19 94",
+  "phoneHref": "tel:+903122761994",
+  "whatsapp": "",
+  "rating": 4.2,
+  "reviews": 17,
+  "offer": "kart",
+  "level": "Orta",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 2,
+  "key": "xkp8wd3"
+ },
+ {
+  "slug": "igon-eryaman",
+  "id": "160146337992",
+  "name": "İgon Hair Club",
+  "short": "İgon",
+  "area": "Eryaman",
+  "mahalle": "Göksu",
+  "addr": "Göksu Mah., 5352. Cad., No:F1-F3 , Etimesgut",
+  "phone": "+90 312 514 34 35",
+  "phoneHref": "tel:+903125143435",
+  "whatsapp": "",
+  "rating": 3.7,
+  "reviews": 15,
+  "offer": "kart",
+  "level": "Orta",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "CG Kuaför",
+   "rating": 4.6,
+   "reviews": 20
+  },
+  "day": 2,
+  "key": "24w5gkz"
+ },
+ {
+  "slug": "kent-coiffure-sincan",
+  "id": "226637038143",
+  "name": "Kent Coiffure & Güzellik Salonu",
+  "short": "Kent Coiffure",
+  "area": "Sincan",
+  "mahalle": "Atatürk",
+  "addr": "Atatürk Mah., Kutsal Sok., No:1, Sincan",
+  "phone": "+90 312 269 69 60",
+  "phoneHref": "tel:+903122696960",
+  "whatsapp": "",
+  "rating": 4.1,
+  "reviews": 15,
+  "offer": "kart",
+  "level": "Orta",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 2,
+  "key": "6f9c72p"
+ },
+ {
+  "slug": "eflatun-sincan",
+  "id": "76858980027",
+  "name": "Eflatun Kuaför",
+  "short": "Eflatun",
+  "area": "Sincan",
+  "mahalle": "Mustafa Kemal",
+  "addr": "Mustafa Kemal Mah., Keklik Sok., No:1/A, Sincan",
+  "phone": "+90 542 421 17 57",
+  "phoneHref": "tel:+905424211757",
+  "whatsapp": "https://wa.me/905424211757",
+  "rating": 4.4,
+  "reviews": 11,
+  "offer": "randevu",
+  "level": "Orta",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 2,
+  "key": "dsjyh4f"
+ },
+ {
+  "slug": "tutku-sincan",
+  "id": "1232779784",
+  "name": "Tutku Kuaför ve Güzellik Salonu",
+  "short": "Tutku",
+  "area": "Sincan",
+  "mahalle": "Atatürk",
+  "addr": "Sincan, Atatürk Mah., Meltem. Sok., 24H",
+  "phone": "+90 312 270 70 75",
+  "phoneHref": "tel:+903122707075",
+  "whatsapp": "",
+  "rating": 4.3,
+  "reviews": 10,
+  "offer": "randevu",
+  "level": "Orta",
+  "kinds": [
+   "sac",
+   "cilt",
+   "epilasyon"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 2,
+  "key": "u55bhcg"
+ },
+ {
+  "slug": "nirvana-sincan",
+  "id": "158023954118",
+  "name": "Nirvana Kuaför & Güzellik Salonu",
+  "short": "Nirvana",
+  "area": "Sincan",
+  "mahalle": "",
+  "addr": "Sincan, Göktuğ Cad., 45",
+  "phone": "+90 552 209 53 30",
+  "phoneHref": "tel:+905522095330",
+  "whatsapp": "https://wa.me/905522095330",
+  "rating": 4.7,
+  "reviews": 9,
+  "offer": "kart",
+  "level": "Orta",
+  "kinds": [
+   "sac",
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 2,
+  "key": "2qt52qn"
+ },
+ {
+  "slug": "ayse-gamze-sincan",
+  "id": "11276487577",
+  "name": "Ayşe Gamze Güzellik",
+  "short": "Ayşe Gamze",
+  "area": "Sincan",
+  "mahalle": "",
+  "addr": "Sincan, Ankara Cad., 146",
+  "phone": "+90 507 040 39 07",
+  "phoneHref": "tel:+905070403907",
+  "whatsapp": "https://wa.me/905070403907",
+  "rating": 4.4,
+  "reviews": 9,
+  "offer": "kart",
+  "level": "Orta",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "https://instagram.com/kuafor.kemal",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 2,
+  "key": "fxk4r3k"
+ },
+ {
+  "slug": "end-sincan",
+  "id": "130057762402",
+  "name": "End Beauty",
+  "short": "End",
+  "area": "Sincan",
+  "mahalle": "Mustafa Kemal",
+  "addr": "Sincan, Mustafa Kemal Mah., Fatih Cad., 22A",
+  "phone": "+90 531 348 67 85",
+  "phoneHref": "tel:+905313486785",
+  "whatsapp": "https://wa.me/905313486785",
+  "rating": 4.3,
+  "reviews": 9,
+  "offer": "kart",
+  "level": "Orta",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 2,
+  "key": "jp8sfdg"
+ },
+ {
+  "slug": "sion-vip-eryaman-premium-eryaman",
+  "id": "210130351241",
+  "name": "Sion Vıp Eryaman Premium Güzellik Merkezi",
+  "short": "Sion Vıp Eryaman Premium",
+  "area": "Eryaman",
+  "mahalle": "Şehit Osman Avcı",
+  "addr": "Etimesgut, Şehit Osman Avcı Mah., Malazgirt 1071. Cad., 44B1",
+  "phone": "+90 533 625 62 06",
+  "phoneHref": "tel:+905336256206",
+  "whatsapp": "https://wa.me/905336256206",
+  "rating": 3.5,
+  "reviews": 8,
+  "offer": "kart",
+  "level": "Orta",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "CG Kuaför",
+   "rating": 4.6,
+   "reviews": 20
+  },
+  "day": 3,
+  "key": "ewyv3dv"
+ },
+ {
+  "slug": "saniye-kamis-eryaman",
+  "id": "41553457933",
+  "name": "Saniye Kamış/Eryaman Güzellik Salonu",
+  "short": "Saniye Kamış",
+  "area": "Eryaman",
+  "mahalle": "Eryaman",
+  "addr": "Etimesgut, Eryaman Mah., 271. Cad., 4AL",
+  "phone": "+90 553 201 14 74",
+  "phoneHref": "tel:+905532011474",
+  "whatsapp": "https://wa.me/905532011474",
+  "rating": 4.5,
+  "reviews": 8,
+  "offer": "kart",
+  "level": "Orta",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "CG Kuaför",
+   "rating": 4.6,
+   "reviews": 20
+  },
+  "day": 3,
+  "key": "3pyqe5y"
+ },
+ {
+  "slug": "mg-eryaman",
+  "id": "92678599912",
+  "name": "MG Kuaför Güzellik Salonu",
+  "short": "MG",
+  "area": "Eryaman",
+  "mahalle": "Tunahan",
+  "addr": "Etimesgut, Tunahan Mah., 254. Cad., 8T",
+  "phone": "+90 533 027 89 45",
+  "phoneHref": "tel:+905330278945",
+  "whatsapp": "https://wa.me/905330278945",
+  "rating": 4.2,
+  "reviews": 8,
+  "offer": "kart",
+  "level": "Orta",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "https://instagram.com/mgkuaforreryaman",
+  "rival": {
+   "name": "CG Kuaför",
+   "rating": 4.6,
+   "reviews": 20
+  },
+  "day": 3,
+  "key": "2amyajx"
+ },
+ {
+  "slug": "esram-sincan",
+  "id": "96017796442",
+  "name": "Esram Bayan Kuaförü",
+  "short": "Esram",
+  "area": "Sincan",
+  "mahalle": "Akşemsettin",
+  "addr": "Akşemsettin Mah., Çengel Sok., No:1, Sincan",
+  "phone": "+90 312 270 92 20",
+  "phoneHref": "tel:+903122709220",
+  "whatsapp": "",
+  "rating": 4.3,
+  "reviews": 8,
+  "offer": "kart",
+  "level": "Orta",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "https://instagram.com/esrambayankuaforu",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 3,
+  "key": "dpn64bt"
+ },
+ {
+  "slug": "yulia-eryaman",
+  "id": "135734075222",
+  "name": "Yulia Nail Art Studio",
+  "short": "Yulia",
+  "area": "Eryaman",
+  "mahalle": "Şeyh Şamil",
+  "addr": "Etimesgut, Şeyh Şamil Mah., 13. Cad., 10B",
+  "phone": "+90 541 958 51 23",
+  "phoneHref": "tel:+905419585123",
+  "whatsapp": "https://wa.me/905419585123",
+  "rating": 4.5,
+  "reviews": 7,
+  "offer": "kart",
+  "level": "Orta",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "CG Kuaför",
+   "rating": 4.6,
+   "reviews": 20
+  },
+  "day": 3,
+  "key": "t9cc2hs"
+ },
+ {
+  "slug": "duygu-eryaman",
+  "id": "18449833106",
+  "name": "Duygu Güzellik Salonu",
+  "short": "Duygu",
+  "area": "Eryaman",
+  "mahalle": "Eryaman",
+  "addr": "Etimesgut, Eryaman Mah., 2. Cad., 1/3",
+  "phone": "+90 312 279 06 21",
+  "phoneHref": "tel:+903122790621",
+  "whatsapp": "",
+  "rating": 4.6,
+  "reviews": 6,
+  "offer": "kart",
+  "level": "Orta",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "CG Kuaför",
+   "rating": 4.6,
+   "reviews": 20
+  },
+  "day": 3,
+  "key": "a83994s"
+ },
+ {
+  "slug": "azra-sincan",
+  "id": "178690362019",
+  "name": "Azra Bayan Kuaförü ve Güzellik Salonu",
+  "short": "Azra",
+  "area": "Sincan",
+  "mahalle": "Akşemsettin",
+  "addr": "Akşemsettin Mah., Çağlayan Cad., No:36A, Sincan",
+  "phone": "+90 312 276 03 14",
+  "phoneHref": "tel:+903122760314",
+  "whatsapp": "",
+  "rating": 4.1,
+  "reviews": 6,
+  "offer": "kart",
+  "level": "Orta",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "https://instagram.com/kuafor_azra",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 3,
+  "key": "za5jmm8"
+ },
+ {
+  "slug": "la-mode-eryaman",
+  "id": "1103829311",
+  "name": "La Mode Saç Tasarım ve Güzellik Salonu",
+  "short": "La Mode",
+  "area": "Eryaman",
+  "mahalle": "Güzelkent",
+  "addr": "Etimesgut, Güzelkent Mah., Şehit Yusuf Çelik Cad., 16D",
+  "phone": "+90 312 279 10 40",
+  "phoneHref": "tel:+903122791040",
+  "whatsapp": "",
+  "rating": 2.7,
+  "reviews": 5,
+  "offer": "kart",
+  "level": "Orta",
+  "kinds": [
+   "sac",
+   "cilt",
+   "epilasyon"
+  ],
+  "instagram": "https://instagram.com/kuafor.lamode",
+  "rival": {
+   "name": "CG Kuaför",
+   "rating": 4.6,
+   "reviews": 20
+  },
+  "day": 3,
+  "key": "hemhyjm"
+ },
+ {
+  "slug": "yazgul-eryaman",
+  "id": "122723920878",
+  "name": "Yazgül Kuaför & Güzellik Merkezi",
+  "short": "Yazgül",
+  "area": "Eryaman",
+  "mahalle": "Eryaman",
+  "addr": "Etimesgut, Eryaman Mah., 336. Sok., 3A",
+  "phone": "+90 507 999 08 80",
+  "phoneHref": "tel:+905079990880",
+  "whatsapp": "https://wa.me/905079990880",
+  "rating": 4.3,
+  "reviews": 5,
+  "offer": "kart",
+  "level": "Orta",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "CG Kuaför",
+   "rating": 4.6,
+   "reviews": 20
+  },
+  "day": 3,
+  "key": "r2d5eak"
+ },
+ {
+  "slug": "nira-eryaman",
+  "id": "149521809528",
+  "name": "Nira Güzellik Salonu",
+  "short": "Nira",
+  "area": "Eryaman",
+  "mahalle": "Şehit Osman Avcı",
+  "addr": "Etimesgut, Şehit Osman Avcı Mah., Malazgirt 1071. Cad., 46B",
+  "phone": "+90 530 475 54 89",
+  "phoneHref": "tel:+905304755489",
+  "whatsapp": "https://wa.me/905304755489",
+  "rating": 4.2,
+  "reviews": 5,
+  "offer": "kart",
+  "level": "Orta",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "https://instagram.com/niraspaguzellik",
+  "rival": {
+   "name": "CG Kuaför",
+   "rating": 4.6,
+   "reviews": 20
+  },
+  "day": 3,
+  "key": "cvupfr6"
+ },
+ {
+  "slug": "gokyuzu-sincan",
+  "id": "3336781044",
+  "name": "Gökyüzü Kuaför ve Güzellik Salonu",
+  "short": "Gökyüzü",
+  "area": "Sincan",
+  "mahalle": "Selçuklu",
+  "addr": "Sincan, Selçuklu Mah., İlim Sok., 29B",
+  "phone": "+90 534 336 23 83",
+  "phoneHref": "tel:+905343362383",
+  "whatsapp": "https://wa.me/905343362383",
+  "rating": 4.4,
+  "reviews": 5,
+  "offer": "kart",
+  "level": "Orta",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "https://instagram.com/_gokyuzubayankuaforu_",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 3,
+  "key": "9k2jdez"
+ },
+ {
+  "slug": "busram-sincan",
+  "id": "190979936630",
+  "name": "Büşram",
+  "short": "Büşram",
+  "area": "Sincan",
+  "mahalle": "Malazgirt",
+  "addr": "Sincan, Malazgirt Mah., Şelale Sok., 2",
+  "phone": "+90 543 195 84 20",
+  "phoneHref": "tel:+905431958420",
+  "whatsapp": "https://wa.me/905431958420",
+  "rating": 4.3,
+  "reviews": 5,
+  "offer": "kart",
+  "level": "Orta",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "https://instagram.com/busrambeautycenter",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 3,
+  "key": "dmc25bw"
+ },
+ {
+  "slug": "angel-eryaman",
+  "id": "1384220526",
+  "name": "Angel Güzellik Salonu",
+  "short": "Angel",
+  "area": "Eryaman",
+  "mahalle": "Tunahan",
+  "addr": "Tunahan Mah., 211. Cad., No:11B, Etimesgut",
+  "phone": "+90 312 282 75 77",
+  "phoneHref": "tel:+903122827577",
+  "whatsapp": "",
+  "rating": 4.3,
+  "reviews": 4,
+  "offer": "kart",
+  "level": "Orta",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "https://instagram.com/angelguzeellik",
+  "rival": {
+   "name": "CG Kuaför",
+   "rating": 4.6,
+   "reviews": 20
+  },
+  "day": 3,
+  "key": "qdd24xd"
+ },
+ {
+  "slug": "gizay-eryaman",
+  "id": "81280177050",
+  "name": "Gizay Saç Tasarım & Güzellik Merkezi",
+  "short": "Gizay",
+  "area": "Eryaman",
+  "mahalle": "Şehit Osman Avcı",
+  "addr": "Etimesgut, Şehit Osman Avcı Mah., Malazgirt 1071. Cad., 47C",
+  "phone": "+90 531 818 06 60",
+  "phoneHref": "tel:+905318180660",
+  "whatsapp": "https://wa.me/905318180660",
+  "rating": 4.3,
+  "reviews": 4,
+  "offer": "kart",
+  "level": "Orta",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "CG Kuaför",
+   "rating": 4.6,
+   "reviews": 20
+  },
+  "day": 3,
+  "key": "x3v77w3"
+ },
+ {
+  "slug": "canan-sincan",
+  "id": "166236140180",
+  "name": "Canan Güzellik Merkezi",
+  "short": "Canan",
+  "area": "Sincan",
+  "mahalle": "Selçuklu",
+  "addr": "Sincan, Selçuklu Mah., İlim Sok., 17",
+  "phone": "+90 551 851 45 05",
+  "phoneHref": "tel:+905518514505",
+  "whatsapp": "https://wa.me/905518514505",
+  "rating": 4.4,
+  "reviews": 4,
+  "offer": "kart",
+  "level": "Orta",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 3,
+  "key": "srp9vyn"
+ },
+ {
+  "slug": "hm-bay-bayan-sincan",
+  "id": "36622806912",
+  "name": "Hm bay bayan saç tasarım ve güzellik merkezi",
+  "short": "Hm bay bayan",
+  "area": "Sincan",
+  "mahalle": "Mustafa Kemal",
+  "addr": "Sincan, Mustafa Kemal Mah., Papatya Sok., 35",
+  "phone": "+90 549 670 06 16",
+  "phoneHref": "tel:+905496700616",
+  "whatsapp": "https://wa.me/905496700616",
+  "rating": 3.6,
+  "reviews": 4,
+  "offer": "kart",
+  "level": "Orta",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 3,
+  "key": "qwvfw4w"
+ },
+ {
+  "slug": "sincan-mh-sincan",
+  "id": "33707647720",
+  "name": "Sincan Mh Lazer Epilasyon Estetik&güzellik",
+  "short": "Sincan Mh",
+  "area": "Sincan",
+  "mahalle": "Atatürk",
+  "addr": "Sincan, Atatürk Mah., Melek Sok.",
+  "phone": "+90 551 428 74 48",
+  "phoneHref": "tel:+905514287448",
+  "whatsapp": "https://wa.me/905514287448",
+  "rating": null,
+  "reviews": 0,
+  "offer": "kart",
+  "level": "Orta",
+  "kinds": [
+   "cilt",
+   "epilasyon"
+  ],
+  "instagram": "https://instagram.com/mhlazer",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 3,
+  "key": "272tqda"
+ },
+ {
+  "slug": "buket-salih-sincan",
+  "id": "243588824417",
+  "name": "Buket Salih Güzellik Merkezi ve Saç Tasarımı",
+  "short": "Buket Salih",
+  "area": "Sincan",
+  "mahalle": "Plevne",
+  "addr": "Plevne Mah., Selvi Sok., No:1, Sincan",
+  "phone": "+90 507 555 09 05",
+  "phoneHref": "tel:+905075550905",
+  "whatsapp": "https://wa.me/905075550905",
+  "rating": null,
+  "reviews": 0,
+  "offer": "kart",
+  "level": "Orta",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "https://instagram.com/explore/locations/548315447/kuafor-salih-sincan",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 3,
+  "key": "qb45qab"
+ },
+ {
+  "slug": "anka-gold-sincan",
+  "id": "161586253782",
+  "name": "Anka Gold Güzellik Merkezi",
+  "short": "Anka Gold",
+  "area": "Sincan",
+  "mahalle": "Menderes",
+  "addr": "Sincan, Menderes Mah., Yunus Emre Cad., 17",
+  "phone": "+90 533 502 28 55",
+  "phoneHref": "tel:+905335022855",
+  "whatsapp": "https://wa.me/905335022855",
+  "rating": null,
+  "reviews": 0,
+  "offer": "kart",
+  "level": "Orta",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "https://instagram.com/anka_goldguzellik",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 3,
+  "key": "p2bxemm"
+ },
+ {
+  "slug": "busra-gures-sincan",
+  "id": "78268460545",
+  "name": "Büşra Güreş Beauty",
+  "short": "Büşra Güreş",
+  "area": "Sincan",
+  "mahalle": "Saraycık",
+  "addr": "Sincan, Saraycık Mah., 1651. Cad., C4",
+  "phone": "+90 312 911 22 18",
+  "phoneHref": "tel:+903129112218",
+  "whatsapp": "",
+  "rating": null,
+  "reviews": 0,
+  "offer": "kart",
+  "level": "Orta",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "https://instagram.com/busraguresbeauty",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 3,
+  "key": "ts8md8f"
+ },
+ {
+  "slug": "kur-sitesi-canem-eryaman",
+  "id": "87778942938",
+  "name": "Kur Sitesi Canem Güzellik Salonu",
+  "short": "Kur Sitesi Canem",
+  "area": "Eryaman",
+  "mahalle": "Tunahan",
+  "addr": "Etimesgut, Tunahan Mah., 254. Cad., 2D",
+  "phone": "+90 312 282 44 52",
+  "phoneHref": "tel:+903122824452",
+  "whatsapp": "",
+  "rating": 3.8,
+  "reviews": 9,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "CG Kuaför",
+   "rating": 4.6,
+   "reviews": 20
+  },
+  "day": 3,
+  "key": "fb9c7pb"
+ },
+ {
+  "slug": "nesem-sincan",
+  "id": "57532517530",
+  "name": "Neşem Saç Tasarım ve Güzellik Salonu",
+  "short": "Neşem",
+  "area": "Sincan",
+  "mahalle": "",
+  "addr": "Sincan, Peçenek Cad., 22",
+  "phone": "+90 545 979 25 39",
+  "phoneHref": "tel:+905459792539",
+  "whatsapp": "https://wa.me/905459792539",
+  "rating": 4.3,
+  "reviews": 9,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 3,
+  "key": "3zkexar"
+ },
+ {
+  "slug": "selena-sincan",
+  "id": "197862820914",
+  "name": "Selena Bayan Kuaförü",
+  "short": "Selena",
+  "area": "Sincan",
+  "mahalle": "Andiçen",
+  "addr": "Andiçen Mah., Oğuz Yılmaz Cad., 67/A, Sincan",
+  "phone": "+90 537 203 43 64",
+  "phoneHref": "tel:+905372034364",
+  "whatsapp": "https://wa.me/905372034364",
+  "rating": 3.8,
+  "reviews": 8,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 3,
+  "key": "7cwbezd"
+ },
+ {
+  "slug": "fm-eryaman",
+  "id": "119956552154",
+  "name": "FM Güzellik Salonu",
+  "short": "FM",
+  "area": "Eryaman",
+  "mahalle": "Eryaman",
+  "addr": "Etimesgut, Eryaman Mah., 2. Cad., 23B",
+  "phone": "+90 312 969 94 45",
+  "phoneHref": "tel:+903129699445",
+  "whatsapp": "",
+  "rating": 4.3,
+  "reviews": 7,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "CG Kuaför",
+   "rating": 4.6,
+   "reviews": 20
+  },
+  "day": 3,
+  "key": "dzw95gg"
+ },
+ {
+  "slug": "lal-eryaman",
+  "id": "57038436471",
+  "name": "Lal Kuaför & Güzellik Salonu",
+  "short": "Lal",
+  "area": "Eryaman",
+  "mahalle": "Tunahan",
+  "addr": "Tunahan Mah., Üç Şehitler Cad., No:2 D:1, Etimesgut",
+  "phone": "+90 312 282 00 83",
+  "phoneHref": "tel:+903122820083",
+  "whatsapp": "",
+  "rating": 4,
+  "reviews": 7,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "CG Kuaför",
+   "rating": 4.6,
+   "reviews": 20
+  },
+  "day": 3,
+  "key": "zc6shum"
+ },
+ {
+  "slug": "elvis-tulay-sincan",
+  "id": "1301678856",
+  "name": "Elvis Tülay Bayan Kuaförü",
+  "short": "Elvis Tülay",
+  "area": "Sincan",
+  "mahalle": "Andiçen",
+  "addr": "Sincan, Andiçen Mah., Gönlübol Sok., 29/A",
+  "phone": "+90 506 341 42 55",
+  "phoneHref": "tel:+905063414255",
+  "whatsapp": "https://wa.me/905063414255",
+  "rating": 4.3,
+  "reviews": 7,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 3,
+  "key": "6mbk9gq"
+ },
+ {
+  "slug": "melek-sincan",
+  "id": "132112980055",
+  "name": "Melek Güzellik Salonu",
+  "short": "Melek",
+  "area": "Sincan",
+  "mahalle": "Atatürk",
+  "addr": "Sincan, Atatürk Mah., Kutsal Sok., 27A",
+  "phone": "+90 546 134 19 79",
+  "phoneHref": "tel:+905461341979",
+  "whatsapp": "https://wa.me/905461341979",
+  "rating": 4.3,
+  "reviews": 6,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 4,
+  "key": "8emgdde"
+ },
+ {
+  "slug": "baskent-sincan",
+  "id": "38620195745",
+  "name": "Başkent kuaför",
+  "short": "Başkent",
+  "area": "Sincan",
+  "mahalle": "Atatürk",
+  "addr": "Atatürk Mah., Onur Sok., No:18, Sincan",
+  "phone": "+90 312 276 35 15",
+  "phoneHref": "tel:+903122763515",
+  "whatsapp": "",
+  "rating": 1.2,
+  "reviews": 6,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "https://instagram.com/baskentkuaforplaza",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 4,
+  "key": "r7yay98"
+ },
+ {
+  "slug": "kadinin-dunyasi-sincan",
+  "id": "1355903439",
+  "name": "Kadının Dünyası Güzellik Salonu",
+  "short": "Kadının Dünyası",
+  "area": "Sincan",
+  "mahalle": "Atatürk",
+  "addr": "Atatürk Mah., Melek Sok., No:14, Sincan",
+  "phone": "+90 312 268 70 69",
+  "phoneHref": "tel:+903122687069",
+  "whatsapp": "",
+  "rating": 4.3,
+  "reviews": 5,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 4,
+  "key": "p9bw3t7"
+ },
+ {
+  "slug": "mira-sincan",
+  "id": "146949338579",
+  "name": "Mira Kuaför",
+  "short": "Mira",
+  "area": "Sincan",
+  "mahalle": "Atatürk",
+  "addr": "Atatürk Mah., Vatan Cad., No:51, Sincan",
+  "phone": "+90 554 185 95 06",
+  "phoneHref": "tel:+905541859506",
+  "whatsapp": "https://wa.me/905541859506",
+  "rating": 3.8,
+  "reviews": 5,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 4,
+  "key": "6akewzs"
+ },
+ {
+  "slug": "va-sincan",
+  "id": "124323410763",
+  "name": "Va Bayan Kuaförü",
+  "short": "Va",
+  "area": "Sincan",
+  "mahalle": "Atatürk",
+  "addr": "Sincan, Atatürk Mah., Melek Sok., 12A",
+  "phone": "+90 555 205 62 61",
+  "phoneHref": "tel:+905552056261",
+  "whatsapp": "https://wa.me/905552056261",
+  "rating": 3.9,
+  "reviews": 5,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 4,
+  "key": "mynqne7"
+ },
+ {
+  "slug": "tk-sincan",
+  "id": "220635061575",
+  "name": "Tk Güzellik Salonu Tuğba Karagüllü",
+  "short": "Tk",
+  "area": "Sincan",
+  "mahalle": "Pınarbaşı",
+  "addr": "Sincan, Pınarbaşı Mah., 129. Cad., 41",
+  "phone": "+90 553 842 75 43",
+  "phoneHref": "tel:+905538427543",
+  "whatsapp": "https://wa.me/905538427543",
+  "rating": 4.3,
+  "reviews": 5,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 4,
+  "key": "5qgcb9q"
+ },
+ {
+  "slug": "aisa-lumiere-sincan",
+  "id": "165593397854",
+  "name": "Aisa Lumiere",
+  "short": "Aisa Lumiere",
+  "area": "Sincan",
+  "mahalle": "Selçuklu",
+  "addr": "Sincan, Selçuklu Mah., 39. Sok., 10",
+  "phone": "+90 542 564 47 17",
+  "phoneHref": "tel:+905425644717",
+  "whatsapp": "https://wa.me/905425644717",
+  "rating": 4.3,
+  "reviews": 5,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 4,
+  "key": "ebhcqq8"
+ },
+ {
+  "slug": "doga-eryaman",
+  "id": "210643464399",
+  "name": "Doğa Kuaför & Güzellik Salonu",
+  "short": "Doğa",
+  "area": "Eryaman",
+  "mahalle": "Eryaman",
+  "addr": "Etimesgut, Eryaman Mah., Elif Özgen Sitesi, 1A Blok",
+  "phone": "+90 507 430 20 30",
+  "phoneHref": "tel:+905074302030",
+  "whatsapp": "https://wa.me/905074302030",
+  "rating": 4.3,
+  "reviews": 4,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "CG Kuaför",
+   "rating": 4.6,
+   "reviews": 20
+  },
+  "day": 4,
+  "key": "3twb2vj"
+ },
+ {
+  "slug": "kasmir-derya-akbulut-eryaman",
+  "id": "90368946774",
+  "name": "Kaşmir Derya Akbulut Güzellik Salonu",
+  "short": "Kaşmir Derya Akbulut",
+  "area": "Eryaman",
+  "mahalle": "Göksu",
+  "addr": "Etimesgut, Göksu Mah., 108. Sok., 7/2",
+  "phone": "+90 554 016 30 45",
+  "phoneHref": "tel:+905540163045",
+  "whatsapp": "https://wa.me/905540163045",
+  "rating": 4.2,
+  "reviews": 4,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "CG Kuaför",
+   "rating": 4.6,
+   "reviews": 20
+  },
+  "day": 4,
+  "key": "j8zk82q"
+ },
+ {
+  "slug": "may-eryaman",
+  "id": "71103033835",
+  "name": "May Bayan Kuaförü",
+  "short": "May",
+  "area": "Eryaman",
+  "mahalle": "Güzelkent",
+  "addr": "Etimesgut, Güzelkent Mah., Şehit Yusuf Çelik Cad., 16B",
+  "phone": "+90 312 282 00 10",
+  "phoneHref": "tel:+903122820010",
+  "whatsapp": "",
+  "rating": 4,
+  "reviews": 4,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "CG Kuaför",
+   "rating": 4.6,
+   "reviews": 20
+  },
+  "day": 4,
+  "key": "vm57xey"
+ },
+ {
+  "slug": "defnem-bayan-kuaforu-sincan",
+  "id": "5458036081",
+  "name": "Defnem bayan kuaforu",
+  "short": "Defnem bayan kuaforu",
+  "area": "Sincan",
+  "mahalle": "Tandoğan",
+  "addr": "Sincan, Tandoğan Mah., Zuhal Sok., 14",
+  "phone": "+90 554 120 81 96",
+  "phoneHref": "tel:+905541208196",
+  "whatsapp": "https://wa.me/905541208196",
+  "rating": 4.3,
+  "reviews": 4,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 4,
+  "key": "hxafgtn"
+ },
+ {
+  "slug": "golden-touch-eryaman",
+  "id": "66539331358",
+  "name": "Golden Touch Beauty",
+  "short": "Golden Touch",
+  "area": "Eryaman",
+  "mahalle": "Göksu",
+  "addr": "Etimesgut, Göksu Mah., 1. İnönü Cad., 9F",
+  "phone": "+90 532 383 13 97",
+  "phoneHref": "tel:+905323831397",
+  "whatsapp": "https://wa.me/905323831397",
+  "rating": 3.1,
+  "reviews": 3,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "https://instagram.com/goldentouchbeautycenter",
+  "rival": {
+   "name": "CG Kuaför",
+   "rating": 4.6,
+   "reviews": 20
+  },
+  "day": 4,
+  "key": "u6naz2m"
+ },
+ {
+  "slug": "asuman-atasoy-sincan",
+  "id": "21260118181",
+  "name": "Asuman Atasoy Güzellik Merkezi",
+  "short": "Asuman Atasoy",
+  "area": "Sincan",
+  "mahalle": "Menderes",
+  "addr": "Sincan, Menderes Mah., Yıldırım Beyazıt Cad., 20",
+  "phone": "+90 553 112 49 39",
+  "phoneHref": "tel:+905531124939",
+  "whatsapp": "https://wa.me/905531124939",
+  "rating": 3.8,
+  "reviews": 3,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 4,
+  "key": "bm2d7rv"
+ },
+ {
+  "slug": "mc-beaty-clinic-eryaman-eryaman",
+  "id": "32371027883",
+  "name": "MC Beaty Clinic Eryaman/metrokent Avm",
+  "short": "MC Beaty Clinic Eryaman",
+  "area": "Eryaman",
+  "mahalle": "Eryaman",
+  "addr": "Etimesgut, Eryaman Mah., Emir Yaman Cad.",
+  "phone": "+90 553 031 60 24",
+  "phoneHref": "tel:+905530316024",
+  "whatsapp": "https://wa.me/905530316024",
+  "rating": null,
+  "reviews": 0,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "epilasyon"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "CG Kuaför",
+   "rating": 4.6,
+   "reviews": 20
+  },
+  "day": 4,
+  "key": "k8k8ugw"
+ },
+ {
+  "slug": "beyza-sincan",
+  "id": "1313584861",
+  "name": "Beyza Bayan Kuaförü",
+  "short": "Beyza",
+  "area": "Sincan",
+  "mahalle": "Plevne",
+  "addr": "Plevne Mah., Pazar Sok., No:41A, Sincan",
+  "phone": "+90 312 269 75 78",
+  "phoneHref": "tel:+903122697578",
+  "whatsapp": "",
+  "rating": null,
+  "reviews": 0,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "https://instagram.com/beyza_kuafor_murat",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 4,
+  "key": "f7m285v"
+ },
+ {
+  "slug": "kuafor-vizyon-sincan",
+  "id": "1328717657",
+  "name": "Kuaför Vizyon",
+  "short": "Kuaför Vizyon",
+  "area": "Sincan",
+  "mahalle": "Selçuklu",
+  "addr": "Selçuklu Mah., İbni Sina Sok., No:21/D, Sincan",
+  "phone": "+90 312 269 67 47",
+  "phoneHref": "tel:+903122696747",
+  "whatsapp": "",
+  "rating": null,
+  "reviews": 0,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "https://instagram.com/vizyonkuafor_",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 4,
+  "key": "ea3zjsp"
+ },
+ {
+  "slug": "hacer-sincan",
+  "id": "3100808751",
+  "name": "Hacer Hair Desing",
+  "short": "Hacer",
+  "area": "Sincan",
+  "mahalle": "Menderes",
+  "addr": "Sincan, Menderes Mah., Cengiz Topel Cad., 37B",
+  "phone": "+90 546 128 68 68",
+  "phoneHref": "tel:+905461286868",
+  "whatsapp": "https://wa.me/905461286868",
+  "rating": null,
+  "reviews": 0,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "https://instagram.com/hacerhairdressing",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 4,
+  "key": "8agnb4a"
+ },
+ {
+  "slug": "sukse-sincan",
+  "id": "173650561461",
+  "name": "Sükse Güzellik Salonu",
+  "short": "Sükse",
+  "area": "Sincan",
+  "mahalle": "Atatürk",
+  "addr": "Sincan, Atatürk Mah., Meltem Sok., 53",
+  "phone": "+90 506 363 62 40",
+  "phoneHref": "tel:+905063636240",
+  "whatsapp": "https://wa.me/905063636240",
+  "rating": null,
+  "reviews": 0,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "https://instagram.com/sükse",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 4,
+  "key": "c4fwe3z"
+ },
+ {
+  "slug": "gulce-sincan",
+  "id": "150757787919",
+  "name": "Gülce Bayan Kuaförü Ve Güzellik Merkezi",
+  "short": "Gülce",
+  "area": "Sincan",
+  "mahalle": "Andiçen",
+  "addr": "Sincan, Andiçen Mah., İdil. Sok.",
+  "phone": "+90 554 459 46 81",
+  "phoneHref": "tel:+905544594681",
+  "whatsapp": "https://wa.me/905544594681",
+  "rating": null,
+  "reviews": 0,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 4,
+  "key": "m27b7cb"
+ },
+ {
+  "slug": "sea-sincan",
+  "id": "223213527253",
+  "name": "Sea Beauty Salon",
+  "short": "Sea",
+  "area": "Sincan",
+  "mahalle": "Pınarbaşı",
+  "addr": "Sincan, Pınarbaşı Mah., 139. Sok., 7",
+  "phone": "+90 554 854 79 09",
+  "phoneHref": "tel:+905548547909",
+  "whatsapp": "https://wa.me/905548547909",
+  "rating": null,
+  "reviews": 0,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 4,
+  "key": "kxzqpgx"
+ },
+ {
+  "slug": "sahram-sincan",
+  "id": "239801731202",
+  "name": "Sahram Bayan Kuaförü&Güzellik Salonu",
+  "short": "Sahram",
+  "area": "Sincan",
+  "mahalle": "İstasyon",
+  "addr": "Sincan, İstasyon Mah., Kartal Sok., 38",
+  "phone": "+90 543 230 71 61",
+  "phoneHref": "tel:+905432307161",
+  "whatsapp": "https://wa.me/905432307161",
+  "rating": null,
+  "reviews": 0,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "https://instagram.com/sahrambayankuafor",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 4,
+  "key": "fc7jrxt"
+ },
+ {
+  "slug": "belivya-sincan",
+  "id": "62571064360",
+  "name": "Belivya Güzellik Salonu",
+  "short": "Belivya",
+  "area": "Sincan",
+  "mahalle": "",
+  "addr": "Sincan, Atatürk Cad., 60",
+  "phone": "+90 553 915 06 10",
+  "phoneHref": "tel:+905539150610",
+  "whatsapp": "https://wa.me/905539150610",
+  "rating": 2,
+  "reviews": 7,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 4,
+  "key": "ne97hmt"
+ },
+ {
+  "slug": "anatolia-sincan-2",
+  "id": "34002107285",
+  "name": "Anatolia Bayan Kuaförü",
+  "short": "Anatolia",
+  "area": "Sincan",
+  "mahalle": "",
+  "addr": "Fatih Mahallesi, İdareci Sk. 15/C, Sincan",
+  "phone": "+90 312 272 00 15",
+  "phoneHref": "tel:+903122720015",
+  "whatsapp": "",
+  "rating": 3.2,
+  "reviews": 6,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 4,
+  "key": "tcdmawj"
+ },
+ {
+  "slug": "hanimefendi-eryaman",
+  "id": "1380945625",
+  "name": "Hanımefendi Kuaför ve Güzellik Salonu",
+  "short": "Hanımefendi",
+  "area": "Eryaman",
+  "mahalle": "Güzelkent",
+  "addr": "Etimesgut, Güzelkent Mah., 2623. Sok., 1/4",
+  "phone": "+90 312 279 09 94",
+  "phoneHref": "tel:+903122790994",
+  "whatsapp": "",
+  "rating": 3.8,
+  "reviews": 3,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "CG Kuaför",
+   "rating": 4.6,
+   "reviews": 20
+  },
+  "day": 4,
+  "key": "nzhgwq8"
+ },
+ {
+  "slug": "elif-kuzey-sincan",
+  "id": "17741714015",
+  "name": "Elif Kuzey Güzellik Salonu",
+  "short": "Elif Kuzey",
+  "area": "Sincan",
+  "mahalle": "Andiçen",
+  "addr": "Sincan, Andiçen Mah., Dora Park Sitesi, B blok, B blok 2. kat daire 29",
+  "phone": "+90 541 445 65 96",
+  "phoneHref": "tel:+905414456596",
+  "whatsapp": "https://wa.me/905414456596",
+  "rating": 4.2,
+  "reviews": 3,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 4,
+  "key": "r8bh6a9"
+ },
+ {
+  "slug": "aqua-sincan",
+  "id": "193441098749",
+  "name": "Aqua Güzellik Salonu",
+  "short": "Aqua",
+  "area": "Sincan",
+  "mahalle": "",
+  "addr": "Sincan, Bosna Cad., 116",
+  "phone": "+90 551 853 80 01",
+  "phoneHref": "tel:+905518538001",
+  "whatsapp": "https://wa.me/905518538001",
+  "rating": 3,
+  "reviews": 3,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "https://instagram.com/aytentopkaya_",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 4,
+  "key": "g9z4yfb"
+ },
+ {
+  "slug": "cigdemce-sincan",
+  "id": "199604390581",
+  "name": "Çiğdemce Kuaför Salonu",
+  "short": "Çiğdemce",
+  "area": "Sincan",
+  "mahalle": "Mareşal Çakmak",
+  "addr": "Sincan, Mareşal Çakmak Mah., Yakut Sok., 28",
+  "phone": "+90 541 675 28 68",
+  "phoneHref": "tel:+905416752868",
+  "whatsapp": "https://wa.me/905416752868",
+  "rating": 1.2,
+  "reviews": 3,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "https://instagram.com/cigdemceeguzellik",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 5,
+  "key": "rm97r42"
+ },
+ {
+  "slug": "zen-bay-bayan-eryaman",
+  "id": "232838812059",
+  "name": "Zen-bay bayan Hair Designs/eryaman",
+  "short": "Zen-bay bayan",
+  "area": "Eryaman",
+  "mahalle": "Eryaman",
+  "addr": "Etimesgut, Eryaman Mah., Emir Yaman Cad.",
+  "phone": "+90 312 279 19 50",
+  "phoneHref": "tel:+903122791950",
+  "whatsapp": "",
+  "rating": null,
+  "reviews": 0,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "CG Kuaför",
+   "rating": 4.6,
+   "reviews": 20
+  },
+  "day": 5,
+  "key": "cz6a5hv"
+ },
+ {
+  "slug": "ayten-taskiran-eryaman",
+  "id": "230607782317",
+  "name": "Ayten Taşkıran Beauty Center",
+  "short": "Ayten Taşkıran",
+  "area": "Eryaman",
+  "mahalle": "Eryaman",
+  "addr": "Etimesgut, Eryaman Mah., 317. Cad., 38",
+  "phone": "+90 543 228 23 96",
+  "phoneHref": "tel:+905432282396",
+  "whatsapp": "https://wa.me/905432282396",
+  "rating": null,
+  "reviews": 0,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "CG Kuaför",
+   "rating": 4.6,
+   "reviews": 20
+  },
+  "day": 5,
+  "key": "vvymd7b"
+ },
+ {
+  "slug": "family-eryaman",
+  "id": "92000765981",
+  "name": "Family Bay Bayan Kuaförü",
+  "short": "Family",
+  "area": "Eryaman",
+  "mahalle": "Şeyh Şamil",
+  "addr": "Etimesgut, Şeyh Şamil Mah., Nihat Öztay Cad., 9B/L",
+  "phone": "+90 312 282 18 89",
+  "phoneHref": "tel:+903122821889",
+  "whatsapp": "",
+  "rating": null,
+  "reviews": 0,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "CG Kuaför",
+   "rating": 4.6,
+   "reviews": 20
+  },
+  "day": 5,
+  "key": "mdxk57b"
+ },
+ {
+  "slug": "queens-premium-sincan",
+  "id": "173731095741",
+  "name": "Queens Premium",
+  "short": "Queens Premium",
+  "area": "Sincan",
+  "mahalle": "Atatürk",
+  "addr": "Sincan, Atatürk Mah., Kutsal Sok., 9A",
+  "phone": "+90 506 282 25 16",
+  "phoneHref": "tel:+905062822516",
+  "whatsapp": "https://wa.me/905062822516",
+  "rating": null,
+  "reviews": 0,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 5,
+  "key": "6tkezvp"
+ },
+ {
+  "slug": "aybuke-sincan",
+  "id": "199216266111",
+  "name": "Aybüke Kuaför",
+  "short": "Aybüke",
+  "area": "Sincan",
+  "mahalle": "Atatürk",
+  "addr": "Sincan, Atatürk Mah., İnci Sok., 37",
+  "phone": "+90 553 236 67 09",
+  "phoneHref": "tel:+905532366709",
+  "whatsapp": "https://wa.me/905532366709",
+  "rating": null,
+  "reviews": 0,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 5,
+  "key": "4hfnmu9"
+ },
+ {
+  "slug": "mirac-sincan",
+  "id": "5123369327",
+  "name": "Miraç",
+  "short": "Miraç",
+  "area": "Sincan",
+  "mahalle": "Pınarbaşı",
+  "addr": "Sincan, Pınarbaşı Mah., Mesai Sok., 14A",
+  "phone": "+90 553 785 06 06",
+  "phoneHref": "tel:+905537850606",
+  "whatsapp": "https://wa.me/905537850606",
+  "rating": null,
+  "reviews": 0,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 5,
+  "key": "3hm7upr"
+ },
+ {
+  "slug": "sen-sincan",
+  "id": "211340533537",
+  "name": "Şen Beauty Center",
+  "short": "Şen",
+  "area": "Sincan",
+  "mahalle": "İstasyon",
+  "addr": "Sincan, İstasyon Mah., Emre Sok., 6",
+  "phone": "+90 555 151 04 30",
+  "phoneHref": "tel:+905551510430",
+  "whatsapp": "https://wa.me/905551510430",
+  "rating": null,
+  "reviews": 0,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 5,
+  "key": "79vkgyr"
+ },
+ {
+  "slug": "okyanus-sincan",
+  "id": "170562689663",
+  "name": "Okyanus Bayan Kuaförü & Güzellik Salonu",
+  "short": "Okyanus",
+  "area": "Sincan",
+  "mahalle": "Malazgirt",
+  "addr": "Malazgirt Mh., Yaz Sk., No: 5, Sincan",
+  "phone": "+90 507 724 62 44",
+  "phoneHref": "tel:+905077246244",
+  "whatsapp": "https://wa.me/905077246244",
+  "rating": null,
+  "reviews": 0,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 5,
+  "key": "tuqn3w9"
+ },
+ {
+  "slug": "cevik-sincan",
+  "id": "56147513660",
+  "name": "Çevik Bayan Kuaförü ve Güzellik Salonu",
+  "short": "Çevik",
+  "area": "Sincan",
+  "mahalle": "Mustafa Kemal",
+  "addr": "Sincan, Mustafa Kemal Mah., Akşemsettin Cad.",
+  "phone": "+90 312 277 06 03",
+  "phoneHref": "tel:+903122770603",
+  "whatsapp": "",
+  "rating": null,
+  "reviews": 0,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 5,
+  "key": "6a7dy7b"
+ },
+ {
+  "slug": "zenan-sincan",
+  "id": "134645390824",
+  "name": "Zenan güzellik&kuaför salonu",
+  "short": "Zenan",
+  "area": "Sincan",
+  "mahalle": "Akşemsettin",
+  "addr": "Sincan, Akşemsettin Mah., Polatlı 1 Cad.",
+  "phone": "+90 530 914 64 47",
+  "phoneHref": "tel:+905309146447",
+  "whatsapp": "https://wa.me/905309146447",
+  "rating": null,
+  "reviews": 0,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 5,
+  "key": "n2p4ftt"
+ },
+ {
+  "slug": "lavinya-eryaman",
+  "id": "1313165142",
+  "name": "Lavinya Güzellik",
+  "short": "Lavinya",
+  "area": "Eryaman",
+  "mahalle": "Şeyh Şamil",
+  "addr": "Etimesgut, Şeyh Şamil Mah., 598. Sok., 5",
+  "phone": "+90 312 247 37 58",
+  "phoneHref": "tel:+903122473758",
+  "whatsapp": "",
+  "rating": null,
+  "reviews": 0,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "CG Kuaför",
+   "rating": 4.6,
+   "reviews": 20
+  },
+  "day": 5,
+  "key": "fbg875w"
+ },
+ {
+  "slug": "jess-eryaman",
+  "id": "1361552566",
+  "name": "Jess Kuaför",
+  "short": "Jess",
+  "area": "Eryaman",
+  "mahalle": "Şeyh Şamil",
+  "addr": "Şeyh Şamil Mah., 13. Cad., No:10C, Etimesgut",
+  "phone": "+90 312 247 47 80",
+  "phoneHref": "tel:+903122474780",
+  "whatsapp": "",
+  "rating": null,
+  "reviews": 0,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "sac",
+   "tirnak"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "CG Kuaför",
+   "rating": 4.6,
+   "reviews": 20
+  },
+  "day": 5,
+  "key": "n3zq4ca"
+ },
+ {
+  "slug": "sepideh-esmati-eryaman",
+  "id": "190086040873",
+  "name": "Sepideh Esmati",
+  "short": "Sepideh Esmati",
+  "area": "Eryaman",
+  "mahalle": "Eryaman",
+  "addr": "Etimesgut, Eryaman Mah., 337. Sok., 4",
+  "phone": "+90 501 346 91 09",
+  "phoneHref": "tel:+905013469109",
+  "whatsapp": "https://wa.me/905013469109",
+  "rating": null,
+  "reviews": 0,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "CG Kuaför",
+   "rating": 4.6,
+   "reviews": 20
+  },
+  "day": 5,
+  "key": "u2swxsw"
+ },
+ {
+  "slug": "favori-eryaman",
+  "id": "158239798893",
+  "name": "Favori Bayan Kuaför",
+  "short": "Favori",
+  "area": "Eryaman",
+  "mahalle": "Eryaman",
+  "addr": "Etimesgut, Eryaman Mah., 312. Sok., 2A",
+  "phone": "+90 542 696 29 42",
+  "phoneHref": "tel:+905426962942",
+  "whatsapp": "https://wa.me/905426962942",
+  "rating": null,
+  "reviews": 0,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "CG Kuaför",
+   "rating": 4.6,
+   "reviews": 20
+  },
+  "day": 5,
+  "key": "n84javs"
+ },
+ {
+  "slug": "sengul-eryaman",
+  "id": "27768314565",
+  "name": "Şengül Güzellik Salonu Türban",
+  "short": "Şengül",
+  "area": "Eryaman",
+  "mahalle": "Güzelkent",
+  "addr": "Etimesgut, Güzelkent Mah., Şehit Yusuf Çelik Cad., 16B",
+  "phone": "+90 537 661 92 68",
+  "phoneHref": "tel:+905376619268",
+  "whatsapp": "https://wa.me/905376619268",
+  "rating": null,
+  "reviews": 0,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "CG Kuaför",
+   "rating": 4.6,
+   "reviews": 20
+  },
+  "day": 5,
+  "key": "wysgw2a"
+ },
+ {
+  "slug": "eyfel-sincan",
+  "id": "177387363881",
+  "name": "Eyfel Kuaför Ve Güzellik",
+  "short": "Eyfel",
+  "area": "Sincan",
+  "mahalle": "Atatürk",
+  "addr": "Sincan, Atatürk Mah., Güven Sok., 1",
+  "phone": "+90 535 077 58 43",
+  "phoneHref": "tel:+905350775843",
+  "whatsapp": "https://wa.me/905350775843",
+  "rating": null,
+  "reviews": 0,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 5,
+  "key": "z35mdbk"
+ },
+ {
+  "slug": "papatyam-sincan",
+  "id": "118262838503",
+  "name": "Papatyam Güzellik",
+  "short": "Papatyam",
+  "area": "Sincan",
+  "mahalle": "",
+  "addr": "Sincan, Ankara Cad., 14",
+  "phone": "+90 312 275 05 45",
+  "phoneHref": "tel:+903122750545",
+  "whatsapp": "",
+  "rating": null,
+  "reviews": 0,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 5,
+  "key": "buaw4mt"
+ },
+ {
+  "slug": "cagla-dilan-sincan",
+  "id": "144127077935",
+  "name": "Çağla Dilan Güzellik Salonu",
+  "short": "Çağla Dilan",
+  "area": "Sincan",
+  "mahalle": "Plevne",
+  "addr": "Plevne Mah.,Yazı Cad., No:75, Sincan",
+  "phone": "+90 506 061 76 79",
+  "phoneHref": "tel:+905060617679",
+  "whatsapp": "https://wa.me/905060617679",
+  "rating": null,
+  "reviews": 0,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 5,
+  "key": "tamrjgk"
+ },
+ {
+  "slug": "likya-sincan",
+  "id": "99117726518",
+  "name": "Likya Bayan Kuaförü",
+  "short": "Likya",
+  "area": "Sincan",
+  "mahalle": "Plevne",
+  "addr": "Plevne Mah., Pazar Sok., No:39A, Sincan",
+  "phone": "+90 530 961 18 86",
+  "phoneHref": "tel:+905309611886",
+  "whatsapp": "https://wa.me/905309611886",
+  "rating": null,
+  "reviews": 0,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "sac",
+   "cilt"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 5,
+  "key": "xy59va9"
+ },
+ {
+  "slug": "gunan-sincan",
+  "id": "144484680868",
+  "name": "Günan Güzellik Salonu & Türban Tasarım",
+  "short": "Günan",
+  "area": "Sincan",
+  "mahalle": "Mustafa Kemal",
+  "addr": "Mustafa Kemal Mh., Cumhuriyet Blv., No: 7, Sincan",
+  "phone": "+90 312 277 22 25",
+  "phoneHref": "tel:+903122772225",
+  "whatsapp": "",
+  "rating": null,
+  "reviews": 0,
+  "offer": "kart",
+  "level": "Düşük",
+  "kinds": [
+   "cilt",
+   "tirnak"
+  ],
+  "instagram": "",
+  "rival": {
+   "name": "Anatolia Güzellik Salonu",
+   "rating": 5,
+   "reviews": 37
+  },
+  "day": 5,
+  "key": "trwp2nc"
+ }
+]

@@ -548,17 +548,6 @@ export const demos = [
     frames: 5,
   },
   {
-    slug: "nara-studio",
-    service: "web",
-    name: "Nara Studio",
-    kind: "Güzellik stüdyosu web sitesi",
-    sector: "guzellik",
-    summary: "Günün boş saatlerini gösteren, fiyat ve süreleri tek bakışta anlatan bir stüdyo sitesi.",
-    accent: "#D9486F",
-    surface: "#EAEFF1",
-    frames: 5,
-  },
-  {
     slug: "ferah-ilgaz-hukuk",
     service: "web",
     name: "Ferah & Ilgaz Hukuk",
